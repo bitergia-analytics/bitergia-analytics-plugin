@@ -1,0 +1,9 @@
+{
+  "id": "kibiterMenu",
+  "version": "0.0.1",
+  "kibanaVersion": "7.9.1",
+  "requiredPlugins": ["navigation", "data"],
+  "optionalPlugins": ["share"],
+  "server": true,
+  "ui": true
+}
