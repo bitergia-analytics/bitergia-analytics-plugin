@@ -105,6 +105,7 @@ async function locationHashChanged() {
   const url = window.location.href.split("/app/")
   const projectname = await getProjectName()
   const metadashboard = await getMetadashboard()
+  const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
     const navBarMenu = document.querySelectorAll(
@@ -119,7 +120,7 @@ async function locationHashChanged() {
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
         let currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
-        kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, 4, currentDashboard);
+        kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, columns, currentDashboard);
         navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
 
         // Redirect to overview when clicking on project name
@@ -137,13 +138,19 @@ async function locationHashChanged() {
               if ($("#kibiterDropdownTitle0").text() === item.name) {
                 $("#kibiterItemDropdown").hide()
                 $("#kibiterDropdownTitle0").text("")
-                $("#kibiterDrowpdownItems0").html("")
+                for (let i = 0; i < columns; i++) {
+                  $("#kibiterDrowpdownItems" + i).html("")
+                }
               } else {
                 $("#kibiterItemDropdown").show()
                 $("#kibiterDropdownTitle0").text(item.name)
                 let groups = chunkify(item.dashboards, 4, true)
-                for (let i = 0; i < groups.length; i++) {
-                  $("#kibiterDrowpdownItems" + i).html(fillDropdownItems(item, groups[i]))
+                for (let i = 0; i < columns; i++) {
+                  if (groups[i]) {
+                    $("#kibiterDrowpdownItems" + i).html(fillDropdownItems(item, groups[i]))
+                  } else {
+                    $("#kibiterDrowpdownItems" + i).html("")
+                  }
                 }
               }
               console.log(item)
