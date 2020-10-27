@@ -16,8 +16,6 @@
 /* eslint-disable no-restricted-globals */
 import $ from 'jquery';
 import { getKibiterMenu, getKibiterJSMenu, fillDropdownItems, redirectToPanel } from './kibiter_menu_ui';
-import angular from 'angular';
-import { renderKibiterMenu } from './render_kibiter_menu'
 import './kibiter_menu_style.scss';
 
 async function getProjectName() {
@@ -70,7 +68,6 @@ function getCurrentDashboard(metadash) {
 
 
 function chunkify(a, n, balanced) {
-
   if (n < 2)
     return [a];
 
@@ -84,17 +81,12 @@ function chunkify(a, n, balanced) {
     while (i < len) {
       out.push(a.slice(i, i += size));
     }
-  }
-
-  else if (balanced) {
+  } else if (balanced) {
     while (i < len) {
       size = Math.ceil((len - i) / n--);
       out.push(a.slice(i, i += size));
     }
-  }
-
-  else {
-
+  } else {
     n--;
     size = Math.floor(len / n);
     if (len % size === 0)
@@ -103,13 +95,10 @@ function chunkify(a, n, balanced) {
       out.push(a.slice(i, i += size));
     }
     out.push(a.slice(size * n));
-
   }
 
   return out;
 }
-// var alphabet=['a','b','c','d','e','f'];
-// var alphabetPairs=splitArrayIntoChunksOfLen(alphabet,2);
 
 async function locationHashChanged() {
 
@@ -127,31 +116,12 @@ async function locationHashChanged() {
         if ($('#kibiterjsmenu').length) {
           return;
         }
-        // const kibiterMenuItem = document.createElement('div');
-        // kibiterMenuItem.setAttribute("id", "kibitermenu");
-        // let compile = angular.injector(['ng']).get('$compile')
-        // let scope = angular.element(navBarMenu[0]).scope()
-        // //angular.injector(['ng']).get('$rootScope')
-        // //navBarMenu[0].insertBefore(kibiterMenuItem, navBarMenu[0].firstChild)
-        // kibiterMenuItem.innerHTML = getKibiterMenu();
-        // compile(kibiterMenuItem)(scope);
-        // renderKibiterMenu(scope.$root)
-        // scope.$root.appTitleCustom = projectname.data.projectname.name
-        // scope.$root.showKibiterMenu = false
-        // scope.$root.metadash = metadashboard.data.metadashboard
-        // highlightMenu(scope, scope.$root.metadash)
-        // // await getProjectName().then(function (resp) {
-        // //   scope.$root.appTitleCustom = resp
-        // // })
-
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
         let currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
         kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, 4, currentDashboard);
         navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
 
-
-        ///////////////////////////////
         // Redirect to overview when clicking on project name
         $('#kibiterProjectName').click(function () {
           redirectToPanel('', 'Overview')
