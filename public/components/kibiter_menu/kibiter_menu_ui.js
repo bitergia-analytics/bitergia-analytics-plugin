@@ -58,7 +58,7 @@ export const getKibiterJSMenu = ($, projectname, items, columns, currentParent) 
 
   for (let i = 0; i < columns; i++) {
     menu += `<div class="col-md-2">
-    <div class="kibiterLocalDropdownTitle" id="kibiterDropdownTitle` + i + `"></div>
+    <div class="kibiterLocalDropdownTitle" style="height: 20px" id="kibiterDropdownTitle` + i + `"></div>
     <div>
       <ul class="list-unstyled" id="kibiterDrowpdownItems` + i + `">
 
