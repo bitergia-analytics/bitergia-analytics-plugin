@@ -105,21 +105,26 @@ async function locationHashChanged() {
   const url = window.location.href.split("/app/")
   const projectname = await getProjectName()
   const metadashboard = await getMetadashboard()
+  const currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
   const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
     const navBarMenu = document.querySelectorAll(
-      '#dashboardChrome'
+      '.chrHeaderWrapper'
     )
 
     if (navBarMenu && navBarMenu.length) {
       try {
         if ($('#kibiterjsmenu').length) {
+          $(".selected-kibiter-item").removeClass("selected-kibiter-item")
+          if(currentDashboard){
+            $("#kibiterMenuItem" + currentDashboard.name.replace(/[^a-zA-Z0-9]+/g, '') + " div").addClass("selected-kibiter-item")
+          }
           return;
         }
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
-        let currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
+
         kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, columns, currentDashboard);
         navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
 
@@ -134,7 +139,6 @@ async function locationHashChanged() {
             if (item.type === "entry") {
               redirectToPanel(item.name, item.panel_id)
             } else if (item.type === "menu") {
-              let currentPanel = window.location.href.split("/dashboards#/view/")[1].split("?")[0]
               if ($("#kibiterDropdownTitle0").text() === item.name) {
                 $("#kibiterItemDropdown").hide()
                 $("#kibiterDropdownTitle0").text("")
