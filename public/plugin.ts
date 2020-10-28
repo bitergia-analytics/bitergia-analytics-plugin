@@ -23,6 +23,7 @@ import {
 } from './types';
 import './components/kibiter_menu/kibiter_menu';
 import { PLUGIN_NAME } from '../common';
+import { i18n } from '@kbn/i18n';
 
 export class KibiterMenuPlugin
 {
@@ -30,7 +31,15 @@ export class KibiterMenuPlugin
     // Register an application into the side navigation menu
     core.application.register({
       id: PLUGIN_NAME,
-      title: 'KibiterMenu',
+      title: 'Bitergia Analytics',
+      category: {
+        id: 'kibana',
+        label: i18n.translate('core.ui.kibanaNavList.label', {
+          defaultMessage: 'Kibana',
+        }),
+        euiIconType: 'logoKibana',
+        order: 1000,
+      },
       async mount(params: AppMountParameters) {
         // Load application bundle
         const { renderApp } = await import('./application');
