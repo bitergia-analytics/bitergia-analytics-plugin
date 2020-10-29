@@ -33,29 +33,30 @@ export const renderApp = (
   { navigation }: AppPluginStartDependencies,
   { appBasePath, element }: AppMountParameters
 ) => {
-  ReactDOM.render(
-    <EuiPage>
-    <EuiPageBody component="div">
-      <EuiPageHeader>
-        <EuiPageHeaderSection>
-          <EuiTitle size="l">
-            <h1>Kibiter custom Menu</h1>
-          </EuiTitle>
-        </EuiPageHeaderSection>
-      </EuiPageHeader>
-      <EuiPageContent>
-        <EuiPageContentHeader>
-          <EuiPageContentHeaderSection>
-            <EuiTitle>
-              <h2>For seeing the menu at the top, please go to a dashboard page.</h2>
-            </EuiTitle>
-          </EuiPageContentHeaderSection>
-        </EuiPageContentHeader>
-      </EuiPageContent>
-    </EuiPageBody>
-  </EuiPage>,
-    element
-  );
+  window.location.replace(window.location.href.split("app/")[0] + "app/dashboards#/view/Overview")
+  // ReactDOM.render(
+  //   <EuiPage>
+  //   <EuiPageBody component="div">
+  //     <EuiPageHeader>
+  //       <EuiPageHeaderSection>
+  //         <EuiTitle size="l">
+  //           <h1>Kibiter custom Menu</h1>
+  //         </EuiTitle>
+  //       </EuiPageHeaderSection>
+  //     </EuiPageHeader>
+  //     <EuiPageContent>
+  //       <EuiPageContentHeader>
+  //         <EuiPageContentHeaderSection>
+  //           <EuiTitle>
+  //             <h2>For seeing the menu at the top, please go to a dashboard page.</h2>
+  //           </EuiTitle>
+  //         </EuiPageContentHeaderSection>
+  //       </EuiPageContentHeader>
+  //     </EuiPageContent>
+  //   </EuiPageBody>
+  // </EuiPage>,
+  //   element
+  // );
 
   return () => ReactDOM.unmountComponentAtNode(element);
 };
