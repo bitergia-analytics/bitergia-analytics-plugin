@@ -15,7 +15,7 @@
 
 /* eslint-disable no-restricted-globals */
 import $ from 'jquery';
-import { getKibiterMenu, getKibiterJSMenu, fillDropdownItems, redirectToPanel } from './kibiter_menu_ui';
+import { getKibiterMenu, getKibiterJSMenu, fillDropdownItems, redirectToPanel, bitergiaText, bitergiaSVGLogo } from './kibiter_menu_ui';
 import './kibiter_menu_style.scss';
 
 async function getProjectName() {
@@ -100,7 +100,28 @@ function chunkify(a, n, balanced) {
   return out;
 }
 
+function getInheritedBackground(jqueryElement) {
+  // Is current element's background color set?
+  let color = jqueryElement.css("background-color");
+
+  if (color !== 'rgba(0, 0, 0, 0)') {
+    // if so then return that color
+    return color;
+  }
+
+  // if not: are you at the body element?
+  if (jqueryElement.is("body")) {
+    // return known 'false' value
+    return false;
+  } else {
+    // call getBackground with parent item
+    return getInheritedBackground(jqueryElement.parent());
+  }
+}
+
+
 async function locationHashChanged() {
+
 
   const url = window.location.href.split("/app/")
   const projectname = await getProjectName()
@@ -109,6 +130,25 @@ async function locationHashChanged() {
   const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
+    // Branding
+    const elasticChangeBranding = document.querySelectorAll(
+      '.euiHeaderLogo svg'
+    )
+    if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
+      elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
+      elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
+
+      // Color of the text
+      let bgColor = getInheritedBackground($("#bitergiaAnalyticsLogo"))
+      let textColor = "black"
+      if (bgColor !== "rgb(255, 255, 255)") {
+        textColor = "#fcb42e"
+      }
+      const bitergiaTextElement = document.createElement('div');
+      bitergiaTextElement.innerHTML = bitergiaText(textColor)
+      elasticChangeBranding[0].parentNode.appendChild(bitergiaTextElement)
+    }
+
     const navBarMenu = document.querySelectorAll(
       '.chrHeaderWrapper'
     )
@@ -117,7 +157,7 @@ async function locationHashChanged() {
       try {
         if ($('#kibiterjsmenu').length) {
           $(".selected-kibiter-item").removeClass("selected-kibiter-item")
-          if(currentDashboard){
+          if (currentDashboard) {
             $("#kibiterMenuItem" + currentDashboard.name.replace(/[^a-zA-Z0-9]+/g, '') + " div").addClass("selected-kibiter-item")
           }
           return;
@@ -217,5 +257,6 @@ window.addEventListener('popstate', () => {
 window.addEventListener('locationchange', function () {
   locationHashChanged();
 })
+
 
 locationHashChanged();
