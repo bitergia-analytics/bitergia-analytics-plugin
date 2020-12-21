@@ -98,7 +98,7 @@ export const fillDropdownItems = (parent, dashboards) => {
 }
 
 export const bitergiaText = (textColor) => {
-  return `<span style="margin-top: 4px; margin-left: 6px; color: ${textColor}" class="euiBreadcrumb euiBreadcrumb--last" aria-current="page" data-test-subj="breadcrumb first" title="Bitergia Analytics">Bitergia Analytics</span>`
+  return `<span style="margin-top: 4px; margin-left: 2px; color: ${textColor}" class="euiBreadcrumb euiBreadcrumb--last" aria-current="page" data-test-subj="breadcrumb first" title="Bitergia Analytics">Bitergia Analytics</span>`
 }
 
 export const bitergiaSVGLogo = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
