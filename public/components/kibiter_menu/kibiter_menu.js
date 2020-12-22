@@ -100,9 +100,27 @@ function chunkify(a, n, balanced) {
   return out;
 }
 
+function changeBranding() {
+  // Branding
+  const elasticChangeBranding = document.querySelectorAll(
+    '.euiHeaderLogo svg'
+  )
+  if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
+    elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
+    elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
+    document.querySelectorAll(".euiHeaderLogo__text")[0].innerHTML = "Bitergia Analytics"
+  }
+  //Exit FS button
+  const elasticFSChangeBranding = document.querySelectorAll(
+    '.dshExitFullScreenButton svg'
+  )
+  if (elasticFSChangeBranding && elasticFSChangeBranding.length && elasticFSChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsFSLogo") {
+    elasticFSChangeBranding[0].innerHTML = bitergiaSVGLogo
+    elasticFSChangeBranding[0].setAttribute("id", "bitergiaAnalyticsFSLogo")
+  }
+}
 
 async function locationHashChanged() {
-
 
   const url = window.location.href.split("/app/")
   const projectname = await getProjectName()
@@ -111,16 +129,10 @@ async function locationHashChanged() {
   const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
-    // Branding
-    const elasticChangeBranding = document.querySelectorAll(
-      '.euiHeaderLogo svg'
-    )
-    if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
-      elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
-      elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
-      document.querySelectorAll(".euiHeaderLogo__text")[0].innerHTML = "Bitergia Analytics"
-    }
+    // First change branding if needed
+    changeBranding()
 
+    //Then add the navbar
     const navBarMenu = document.querySelectorAll(
       '.application'
     )
@@ -136,7 +148,6 @@ async function locationHashChanged() {
         }
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
-
         kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, columns, currentDashboard);
         navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
 
@@ -206,8 +217,29 @@ async function locationHashChanged() {
     childList: true, //This is a must have for the observer with subtree
     subtree: true, //Set to true if changes must also be observed in descendants.
   });
+
+
+  // Observer for the logos (when entering/exiting Full Screen)
+  let fullScreenObserverEntity = document.getElementById("kibana-body");
+  let config = {
+    attributes: true,
+    childList: true,
+    subtree: true
+  };
+  // Callback function to execute when mutations are observed, when the elements appear
+  let callback = function (mutationsList) {
+    for (let mutation of mutationsList) {
+      if (mutation.type == 'childList') {
+        changeBranding()
+      }
+    }
+  };
+  let fsObserver = new MutationObserver(callback);
+  fsObserver.observe(fullScreenObserverEntity, config);
 }
 
+
+// Catch all the possibilities of moving between the app
 history.pushState = (f => function pushState() {
   var ret = f.apply(this, arguments);
   window.dispatchEvent(new Event('pushstate'));
