@@ -15,10 +15,10 @@
 
 import './index.scss';
 
-import { KibiterMenuPlugin } from './plugin';
+import { BitergiaAnalyticsPlugin } from './plugin';
 
 // This exports static code and TypeScript types,
 // as well as, Kibana Platform `plugin()` initializer.
 export function plugin() {
-  return new KibiterMenuPlugin();
+  return new BitergiaAnalyticsPlugin();
 }

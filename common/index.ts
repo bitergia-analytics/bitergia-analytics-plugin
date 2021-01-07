@@ -1,4 +1,4 @@
-export const PLUGIN_ID = 'kibiterMenu';
-export const PLUGIN_NAME = 'kibiter_menu';
+export const PLUGIN_ID = 'bitergiaAnalytics';
+export const PLUGIN_NAME = 'bitergia_analytics';
 
 export const API_PREFIX = '/api/kibiter';

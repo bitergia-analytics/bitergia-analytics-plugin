@@ -25,7 +25,7 @@ import './components/kibiter_menu/kibiter_menu';
 import { PLUGIN_NAME } from '../common';
 import { i18n } from '@kbn/i18n';
 
-export class KibiterMenuPlugin
+export class BitergiaAnalyticsPlugin
 {
   public setup(core: CoreSetup) {
     // Register an application into the side navigation menu

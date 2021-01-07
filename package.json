@@ -1,7 +1,7 @@
 {
-  "name": "kibitermenu",
+  "name": "bitergia_analytics",
   "version": "0.0.1",
-  "description": "Kibana Custom Menu Plugin",
+  "description": "Bitergia Analytics Plugin",
   "license": "Apache-2.0",
   "main": "index.js",
   "kibana": {

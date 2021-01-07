@@ -22,18 +22,18 @@ import {
 } from '../../../src/core/server';
 import registerRoutes from './routes';
 
-export interface KibiterMenuPluginRequestContext {
+export interface BitergiaAnalyticsPluginRequestContext {
   logger: Logger;
   esClient: ILegacyClusterClient;
 }
 //@ts-ignore
 declare module 'kibana/server' {
   interface RequestHandlerContext {
-    kibiter_menu_plugin: KibiterMenuPluginRequestContext;
+    bitergia_analytics_plugin: BitergiaAnalyticsPluginRequestContext;
   }
 }
 
-export class KibiterMenuPlugin
+export class BitergiaAnalyticsPlugin
 {
   private readonly logger: Logger;
 
@@ -51,7 +51,7 @@ export class KibiterMenuPlugin
   }
 
   public start(core: CoreStart) {
-    this.logger.debug('kibiter menu plugin starting');
+    this.logger.debug('bitergia analytics plugin starting');
 
     return {};
   }

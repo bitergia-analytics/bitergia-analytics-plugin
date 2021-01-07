@@ -1,5 +1,5 @@
 {
-  "id": "kibiterMenu",
+  "id": "bitergiaAnalytics",
   "version": "0.0.1",
   "kibanaVersion": "7.10.0",
   "requiredPlugins": ["navigation", "data"],
