@@ -1,8 +1,18 @@
-# Kibana Custom Menu for Kibiter
+# Bitergia Analytics Plugin
 
-PoC for the Kibiter Custom Menu
+Bitergia Analytics Plugin for Kibana 7.10.0
 
-## Setup
+## Installation steps
+
+Run the following command inside `kibana/bin`.
+
+```
+kibana-plugin install "https://github.com/Bitergia/bitergia-analytics-plugin/releases/download/0.0.1_7.10.0/bitergiaAnalytics-7.10.0.zip"
+```
+
+## Contributing
+
+### Setup
 
 1. Download Elasticsearch for the version that matches the [Kibana version specified in package.json](./package.json#L7).
 1. Download the Kibana source code for the [version specified in package.json](./package.json#L7) you want to set up.
@@ -13,12 +23,12 @@ PoC for the Kibiter Custom Menu
 1. Create a `plugins` directory inside the Kibana source code directory, if `plugins` directory doesn't exist.
 1. Check out this package from version control into the `plugins` directory.
    ```
-   git clone https://github.com/dlumbrer/kibiter-menu-plugin plugins --no-checkout
+   git clone https://github.com/Bitergia/bitergia-analytics-plugin plugins --no-checkout
    cd plugins
-   echo 'kibana-menu-plugin/*' >> .git/info/sparse-checkout
+   echo 'bitergia-analytics-plugin/*' >> .git/info/sparse-checkout
    git config core.sparseCheckout true
    ```
-1. Run `yarn kbn bootstrap` inside `kibana/plugins/kibana-menu-plugin`.
+1. Run `yarn kbn bootstrap` inside `kibana/plugins/bitergia-analytics-plugin`.
 
 Ultimately, your directory structure should look like this:
 
@@ -27,16 +37,16 @@ Ultimately, your directory structure should look like this:
 .
 ├── kibana
 │   └──plugins
-│      └── kibana-menu-plugin
+│      └── bitergiaAnalytics
 ```
 
-## Build
+### Build
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/kibana-menu-plugin-0.0.1.zip`
+Example output: `./build/bitergiaAnalytics-7.10.0.zip`
 
-## Run
+### Run
 
 - `yarn start`
 
