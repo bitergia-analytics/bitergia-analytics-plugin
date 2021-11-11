@@ -1,6 +1,7 @@
 .kibiterLocalNav {
     background-color: #333;
     height: 40px;
+    padding-left: 6px;
 }
 
 .kuiLocalBreadcrumbs {
@@ -31,7 +32,7 @@
     background-color: #525252 !important;
     z-index: 3000 !important;
     position: fixed !important;
-    top: 137px;
+    top: 89px;
     width: 100%;
     height: 140px;
 }
@@ -93,4 +94,25 @@
 
 .submenuitem {
     color: rgb(252, 180, 46) !important;
-} 
+}
+
+#kibiterjsmenu {
+  z-index: 2600;
+}
+
+.euiHeader--fixed + .euiHeader--fixed + .euiHeader--fixed {
+  top: 90px;
+}
+
+.euiBody--headerIsFixed {
+  padding-top: 138px !important;
+}
+
+.euiBody--headerIsFixed .euiFlyout, .euiBody--headerIsFixed .euiCollapsibleNav {
+  top: 140px !important;
+  height: calc(100% - 140px) !important;
+}
+
+.app-wrapper {
+  min-height: calc(100vh - 138px) !important;
+}

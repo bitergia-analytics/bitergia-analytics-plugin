@@ -4,13 +4,8 @@
   "description": "Bitergia Analytics Plugin",
   "license": "Apache-2.0",
   "main": "index.js",
-  "kibana": {
-    "version": "7.10.0",
-    "templateVersion": "1.0.0"
-  },
   "scripts": {
-    "kbn": "node ../../scripts/kbn",
-    "es": "node ../../scripts/es",
+    "osd": "node ../../scripts/osd",
     "lint": "eslint .",
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",

@@ -20,7 +20,7 @@ import './kibiter_menu_style.scss';
 
 async function getProjectName() {
   const url = window.location.href.split("/app/")
-  const response = await fetch(url[0] + '/api/kibiter/getprojectname', {
+  const response = await fetch(url[0] + '/api/dashboards/getprojectname', {
     method: 'GET',
     referrerPolicy: 'strict-origin-when-cross-origin',
     mode: 'cors',
@@ -32,7 +32,7 @@ async function getProjectName() {
 
 async function getMetadashboard() {
   const url = window.location.href.split("/app/")
-  const response = await fetch(url[0] + '/api/kibiter/getmetadashboard', {
+  const response = await fetch(url[0] + '/api/dashboards/getmetadashboard', {
     method: 'GET',
     referrerPolicy: 'strict-origin-when-cross-origin',
     mode: 'cors',
@@ -108,7 +108,13 @@ function changeBranding() {
   if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
     elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
     elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
-    document.querySelectorAll(".euiHeaderLogo__text")[0].innerHTML = "Bitergia Analytics"
+    elasticChangeBranding[0].setAttribute("viewBox", "0 0 32 32")
+    elasticChangeBranding[0].setAttribute("width", "32")
+    elasticChangeBranding[0].setAttribute("height", "32")
+    const text = document.createElement("span")
+    document.querySelector(".euiHeaderLogo").appendChild(text)
+    text.classList.add("euiHeaderLogo__text")
+    text.innerHTML = "Bitergia Analytics"
   }
   //Exit FS button
   const elasticFSChangeBranding = document.querySelectorAll(
@@ -134,7 +140,7 @@ async function locationHashChanged() {
 
     //Then add the navbar
     const navBarMenu = document.querySelectorAll(
-      '.application'
+      '#globalHeaderBars'
     )
 
     if (navBarMenu && navBarMenu.length) {
@@ -148,8 +154,9 @@ async function locationHashChanged() {
         }
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
+        kibiterJSMenuItem.classList.add("euiHeader--fixed")
         kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, columns, currentDashboard);
-        navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
+        navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].lastChild)
 
         // Redirect to overview when clicking on project name
         $('#kibiterProjectName').click(function () {

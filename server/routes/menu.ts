@@ -15,13 +15,13 @@
 
 import {
   IRouter,
-  IKibanaResponse,
+  OpenSearchDashboardsResponse,
   ResponseError
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
 
 export default function (router: IRouter) {
-  
+
   //get project name
   router.get(
     {
@@ -32,9 +32,9 @@ export default function (router: IRouter) {
       context,
       request,
       response
-    ): Promise<IKibanaResponse<any | ResponseError>> => {
+    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
       try {
-        const esResp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+        const esResp = await context.core.opensearch.legacy.client.callAsCurrentUser(
           'get',
           {
             index: ".kibana",
@@ -76,9 +76,9 @@ export default function (router: IRouter) {
       context,
       request,
       response
-    ): Promise<IKibanaResponse<any | ResponseError>> => {
+    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
       try {
-        const esResp = await context.core.elasticsearch.legacy.client.callAsCurrentUser(
+        const esResp = await context.core.opensearch.legacy.client.callAsCurrentUser(
           'get',
           {
             index: ".kibana",

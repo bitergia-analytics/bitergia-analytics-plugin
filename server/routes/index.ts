@@ -16,6 +16,6 @@
 import registerKibiterMenuRetrieveRoute from './menu';
 import { IRouter } from '../../../../src/core/server';
 
-export default function (router: IRouter) {
+export function defineRoutes(router: IRouter) {
   registerKibiterMenuRetrieveRoute(router);
 }
