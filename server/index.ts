@@ -13,11 +13,27 @@
  * permissions and limitations under the License.
  */
 
+import { schema } from '@osd/config-schema';
 import { PluginInitializerContext } from '../../../src/core/server';
 import { BitergiaAnalyticsPlugin } from './plugin';
 
 // This exports static code and TypeScript types,
 // as well as, OpenSearch Dashboards Platform `plugin()` initializer.
+
+export const config = {
+  exposeToBrowser: {
+    branding: true
+  },
+  schema: schema.object({
+    branding: schema.object({
+      backgroundColor: schema.string({ defaultValue: '#333' }),
+      textColor: schema.string({ defaultValue: '#cecece' }),
+      menuItemColor: schema.string({ defaultValue: '#dedede' }),
+      linkColor: schema.string({ defaultValue: '#fcb42e' }),
+      selectedItemColor: schema.string({ defaultValue: '#f49e42' }),
+    }),
+  })
+};
 
 export function plugin(initializerContext: PluginInitializerContext) {
   return new BitergiaAnalyticsPlugin(initializerContext);

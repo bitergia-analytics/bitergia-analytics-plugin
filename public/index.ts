@@ -16,9 +16,10 @@
 import './index.scss';
 
 import { BitergiaAnalyticsPlugin } from './plugin';
+import { PluginInitializerContext } from '../../../src/core/public';
 
 // This exports static code and TypeScript types,
 // as well as, Kibana Platform `plugin()` initializer.
-export function plugin() {
-  return new BitergiaAnalyticsPlugin();
+export function plugin(initializerContext: PluginInitializerContext) {
+  return new BitergiaAnalyticsPlugin(initializerContext);
 }
