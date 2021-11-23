@@ -1,27 +1,35 @@
+:root {
+  --background-color: #333;
+  --text-color: #cecece;
+  --link-color: #fcb42e;
+  --menu-item-color: #dedede;
+  --selected-item-color: #f49e42;
+}
+
+.euiHeader--dark {
+  background-color: var(--background-color);
+  border-bottom-color: var(--background-color);
+}
+
 .kibiterLocalNav {
-    background-color: #333;
-    height: 40px;
+    background-color: var(--background-color);
+    height: 41px;
     padding-left: 6px;
 }
 
 .kuiLocalBreadcrumbs {
-    background-color: #333 !important;
+    background-color: var(--background-color);
     border: none;
 }
 
 .kibiterLocalDropdownTitle{
-    color: #cecece !important;
+    color: var(--text-color);
     font-size: 20px !important;
     margin-bottom: 5px !important;
 }
 
 .kibiterLocalDropdownText{
-    color: #cecece !important;
-}
-
-.kibiterLocalMenuItem:hover, .kibiterLocalMenuItem:focus {
-    background-color: #000000 !important;
-    color: #F5F5F5 !important;
+    color: var(--text-color);
 }
 
 .kibiterLocalMenuItem::-moz-focus-inner {
@@ -29,15 +37,14 @@
 }
 
 .kibiterLocalDropdown {
-    background-color: #525252 !important;
-    z-index: 3000 !important;
+    background-color: var(--background-color);
+    z-index: 4000 !important;
     position: fixed !important;
     top: 89px;
     width: 100%;
     height: 140px;
+    color: var(--link-color);
 }
-
-
 
 .kuiLocalMenu {
     padding: 0px !important;
@@ -48,7 +55,7 @@
     color: #ffffff;
 }
 .theme-dark .kuiLocalMenuItem {
-    color: #dedede;
+    color: var(--menu-item-color);
 }
 .kuiLocalMenuItem:hover, .kuiLocalMenuItem:focus {
     background-color: #006BB4;
@@ -80,20 +87,20 @@
 }
 
 .selected-kibiter-item {
-    background-color: #f49e42 !important;
-    color: #FFF !important;
+    background-color: var(--selected-item-color);
+    color: var(--menu-item-color) !important;
 }
 
 .projectName {
-    color: rgb(252, 180, 46) !important;
+    color: var(--link-color);
     padding-right: 20px;
 }
 .projectName:hover {
-    color: rgb(255, 200, 98) !important;
+    color: var(--link-color);
 }
 
 .submenuitem {
-    color: rgb(252, 180, 46) !important;
+  color: currentColor !important;
 }
 
 #kibiterjsmenu {
