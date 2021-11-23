@@ -17,17 +17,25 @@ import {
   AppMountParameters,
   CoreSetup,
   CoreStart,
+  PluginInitializerContext,
 } from '../../../src/core/public';
 import {
   AppPluginStartDependencies,
 } from './types';
 import './components/kibiter_menu/kibiter_menu';
+import { init } from './components/kibiter_menu/kibiter_menu';
 import { PLUGIN_NAME } from '../common';
 import { i18n } from '@osd/i18n';
 
 export class BitergiaAnalyticsPlugin
   implements Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+  // @ts-ignore : initializerContext not used
+  constructor(private readonly initializerContext: PluginInitializerContext) {}
   public setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
+    // Get branding from opensearch_dashboards.yml and initialize plugin
+    const config = this.initializerContext.config.get();
+    init(config);
+
     // Register an application into the side navigation menu
     core.application.register({
       id: PLUGIN_NAME,
@@ -39,7 +47,7 @@ export class BitergiaAnalyticsPlugin
         // Get start services as specified in opensearch_dashboards.json
         const [coreStart, depsStart] = await core.getStartServices();
         // Render the application
-        return renderApp(coreStart, depsStart as AppPluginStartDependencies, params);
+        return renderApp(coreStart, depsStart as AppPluginStartDependencies, params, config);
       },
     });
 
@@ -47,7 +55,7 @@ export class BitergiaAnalyticsPlugin
     return {};
   }
 
-  public start(core: CoreStart): BitergiaAnalyticsPluginStart {
+  public async start(core: CoreStart): BitergiaAnalyticsPluginStart {
     return {};
   }
 

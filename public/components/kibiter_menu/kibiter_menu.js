@@ -100,45 +100,25 @@ function chunkify(a, n, balanced) {
   return out;
 }
 
-function changeBranding() {
-  // Branding
-  const elasticChangeBranding = document.querySelectorAll(
-    '.euiHeaderLogo svg'
-  )
-  if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
-    elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
-    elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
-    elasticChangeBranding[0].setAttribute("viewBox", "0 0 32 32")
-    elasticChangeBranding[0].setAttribute("width", "32")
-    elasticChangeBranding[0].setAttribute("height", "32")
-    const text = document.createElement("span")
-    document.querySelector(".euiHeaderLogo").appendChild(text)
-    text.classList.add("euiHeaderLogo__text")
-    text.innerHTML = "Bitergia Analytics"
-  }
-  //Exit FS button
-  const elasticFSChangeBranding = document.querySelectorAll(
-    '.dshExitFullScreenButton svg'
-  )
-  if (elasticFSChangeBranding && elasticFSChangeBranding.length && elasticFSChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsFSLogo") {
-    elasticFSChangeBranding[0].innerHTML = bitergiaSVGLogo
-    elasticFSChangeBranding[0].setAttribute("id", "bitergiaAnalyticsFSLogo")
+function changeBranding(branding) {
+  if (Object.keys(branding).length !== 0) {
+    document.body.style.setProperty("--background-color", branding.backgroundColor);
+    document.body.style.setProperty("--text-color", branding.textColor);
+    document.body.style.setProperty("--menu-item-color", branding.menuItemColor);
+    document.body.style.setProperty("--link-color", branding.linkColor);
+    document.body.style.setProperty("--selected-item-color", branding.selectedItemColor);
   }
 }
 
 async function locationHashChanged() {
-
-  const url = window.location.href.split("/app/")
+  const url = window.location.href.split("/app/");
+  const columns = 4;
   const projectname = await getProjectName()
   const metadashboard = await getMetadashboard()
   const currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
-  const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
-    // First change branding if needed
-    changeBranding()
-
-    //Then add the navbar
+    // Add the navbar
     const navBarMenu = document.querySelectorAll(
       '#globalHeaderBars'
     )
@@ -187,7 +167,6 @@ async function locationHashChanged() {
                   }
                 }
               }
-              console.log(item)
             }
           });
 
@@ -208,7 +187,6 @@ async function locationHashChanged() {
               });
             })
           }
-
         });
       } catch (e) {
         return e
@@ -238,28 +216,32 @@ async function locationHashChanged() {
 }
 
 
-// Catch all the possibilities of moving between the app
-history.pushState = (f => function pushState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('pushstate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.pushState);
+export function init(config) {
+  // Change branding
+  changeBranding(config.branding);
 
-history.replaceState = (f => function replaceState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('replacestate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.replaceState);
+  // Catch all the possibilities of moving between the app
+  history.pushState = (f => function pushState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('pushstate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.pushState);
 
-window.addEventListener('popstate', () => {
-  window.dispatchEvent(new Event('locationchange'))
-});
+  history.replaceState = (f => function replaceState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('replacestate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.replaceState);
 
-window.addEventListener('locationchange', function () {
+  window.addEventListener('popstate', () => {
+    window.dispatchEvent(new Event('locationchange'))
+  });
+
+  window.addEventListener('locationchange', function () {
+    locationHashChanged();
+  })
+
   locationHashChanged();
-})
-
-
-locationHashChanged();
+}
