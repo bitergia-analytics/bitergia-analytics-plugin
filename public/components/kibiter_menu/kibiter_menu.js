@@ -220,21 +220,13 @@ async function locationHashChanged() {
 
 
   // Observer for the logos (when entering/exiting Full Screen)
-  let fullScreenObserverEntity = document.getElementById("kibana-body");
+  // TODO: Remove observer in OpenSearch 1.2.0
+  let fullScreenObserverEntity = document.querySelector(".app-wrapper");
   let config = {
     attributes: true,
-    childList: true,
-    subtree: true
+    attributeFilter: ["class"]
   };
-  // Callback function to execute when mutations are observed, when the elements appear
-  let callback = function (mutationsList) {
-    for (let mutation of mutationsList) {
-      if (mutation.type == 'childList') {
-        changeBranding()
-      }
-    }
-  };
-  let fsObserver = new MutationObserver(callback);
+  let fsObserver = new MutationObserver(changeBranding);
   fsObserver.observe(fullScreenObserverEntity, config);
 }
 
