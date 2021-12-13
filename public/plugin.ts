@@ -17,40 +17,37 @@ import {
   AppMountParameters,
   CoreSetup,
   CoreStart,
+  PluginInitializerContext,
 } from '../../../src/core/public';
 import {
   AppPluginStartDependencies,
 } from './types';
 import './components/kibiter_menu/kibiter_menu';
+import { init } from './components/kibiter_menu/kibiter_menu';
 import { PLUGIN_NAME } from '../common';
-import { i18n } from '@kbn/i18n';
+import { i18n } from '@osd/i18n';
 
 export class BitergiaAnalyticsPlugin
-{
-  public setup(core: CoreSetup) {
+  implements Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+  // @ts-ignore : initializerContext not used
+  constructor(private readonly initializerContext: PluginInitializerContext) {}
+  public setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
+    // Get branding from opensearch_dashboards.yml and initialize plugin
+    const config = this.initializerContext.config.get();
+    init(config);
+
     // Register an application into the side navigation menu
     core.application.register({
       id: PLUGIN_NAME,
       title: 'Bitergia Analytics',
-      category: {
-        id: 'kibana',
-        label: i18n.translate('core.ui.kibanaNavList.label', {
-          defaultMessage: 'Kibana',
-        }),
-        euiIconType: 'logoKibana',
-        order: 1000,
-      },
+      updater$: this.appUpdater,
       async mount(params: AppMountParameters) {
         // Load application bundle
         const { renderApp } = await import('./application');
-        // Get start services as specified in kibana.json
+        // Get start services as specified in opensearch_dashboards.json
         const [coreStart, depsStart] = await core.getStartServices();
         // Render the application
-        return renderApp(
-          coreStart,
-          depsStart as AppPluginStartDependencies,
-          params
-        );
+        return renderApp(coreStart, depsStart as AppPluginStartDependencies, params, config);
       },
     });
 
@@ -58,7 +55,7 @@ export class BitergiaAnalyticsPlugin
     return {};
   }
 
-  public start(core: CoreStart) {
+  public async start(core: CoreStart): BitergiaAnalyticsPluginStart {
     return {};
   }
 

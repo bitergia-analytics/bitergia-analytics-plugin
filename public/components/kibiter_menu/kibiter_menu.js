@@ -20,7 +20,7 @@ import './kibiter_menu_style.scss';
 
 async function getProjectName() {
   const url = window.location.href.split("/app/")
-  const response = await fetch(url[0] + '/api/kibiter/getprojectname', {
+  const response = await fetch(url[0] + '/api/dashboards/getprojectname', {
     method: 'GET',
     referrerPolicy: 'strict-origin-when-cross-origin',
     mode: 'cors',
@@ -32,7 +32,7 @@ async function getProjectName() {
 
 async function getMetadashboard() {
   const url = window.location.href.split("/app/")
-  const response = await fetch(url[0] + '/api/kibiter/getmetadashboard', {
+  const response = await fetch(url[0] + '/api/dashboards/getmetadashboard', {
     method: 'GET',
     referrerPolicy: 'strict-origin-when-cross-origin',
     mode: 'cors',
@@ -100,41 +100,27 @@ function chunkify(a, n, balanced) {
   return out;
 }
 
-function changeBranding() {
-  // Branding
-  const elasticChangeBranding = document.querySelectorAll(
-    '.euiHeaderLogo svg'
-  )
-  if (elasticChangeBranding && elasticChangeBranding.length && elasticChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsLogo") {
-    elasticChangeBranding[0].innerHTML = bitergiaSVGLogo
-    elasticChangeBranding[0].setAttribute("id", "bitergiaAnalyticsLogo")
-    document.querySelectorAll(".euiHeaderLogo__text")[0].innerHTML = "Bitergia Analytics"
-  }
-  //Exit FS button
-  const elasticFSChangeBranding = document.querySelectorAll(
-    '.dshExitFullScreenButton svg'
-  )
-  if (elasticFSChangeBranding && elasticFSChangeBranding.length && elasticFSChangeBranding[0].getAttribute("id") !== "bitergiaAnalyticsFSLogo") {
-    elasticFSChangeBranding[0].innerHTML = bitergiaSVGLogo
-    elasticFSChangeBranding[0].setAttribute("id", "bitergiaAnalyticsFSLogo")
+function changeBranding(branding) {
+  if (Object.keys(branding).length !== 0) {
+    document.body.style.setProperty("--background-color", branding.backgroundColor);
+    document.body.style.setProperty("--text-color", branding.textColor);
+    document.body.style.setProperty("--menu-item-color", branding.menuItemColor);
+    document.body.style.setProperty("--link-color", branding.linkColor);
+    document.body.style.setProperty("--selected-item-color", branding.selectedItemColor);
   }
 }
 
 async function locationHashChanged() {
-
-  const url = window.location.href.split("/app/")
+  const url = window.location.href.split("/app/");
+  const columns = 4;
   const projectname = await getProjectName()
   const metadashboard = await getMetadashboard()
   const currentDashboard = getCurrentDashboard(metadashboard.data.metadashboard)
-  const columns = 4;
 
   const observer = new MutationObserver(async function (mutations) {
-    // First change branding if needed
-    changeBranding()
-
-    //Then add the navbar
+    // Add the navbar
     const navBarMenu = document.querySelectorAll(
-      '.application'
+      '#globalHeaderBars'
     )
 
     if (navBarMenu && navBarMenu.length) {
@@ -148,8 +134,9 @@ async function locationHashChanged() {
         }
         const kibiterJSMenuItem = document.createElement('div');
         kibiterJSMenuItem.setAttribute("id", "kibiterjsmenu");
+        kibiterJSMenuItem.classList.add("euiHeader--fixed")
         kibiterJSMenuItem.innerHTML = getKibiterJSMenu($, projectname.data.projectname.name, metadashboard.data.metadashboard, columns, currentDashboard);
-        navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].firstChild)
+        navBarMenu[0].insertBefore(kibiterJSMenuItem, navBarMenu[0].lastChild)
 
         // Redirect to overview when clicking on project name
         $('#kibiterProjectName').click(function () {
@@ -180,7 +167,6 @@ async function locationHashChanged() {
                   }
                 }
               }
-              console.log(item)
             }
           });
 
@@ -201,7 +187,6 @@ async function locationHashChanged() {
               });
             })
           }
-
         });
       } catch (e) {
         return e
@@ -231,28 +216,32 @@ async function locationHashChanged() {
 }
 
 
-// Catch all the possibilities of moving between the app
-history.pushState = (f => function pushState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('pushstate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.pushState);
+export function init(config) {
+  // Change branding
+  changeBranding(config.branding);
 
-history.replaceState = (f => function replaceState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('replacestate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.replaceState);
+  // Catch all the possibilities of moving between the app
+  history.pushState = (f => function pushState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('pushstate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.pushState);
 
-window.addEventListener('popstate', () => {
-  window.dispatchEvent(new Event('locationchange'))
-});
+  history.replaceState = (f => function replaceState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('replacestate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.replaceState);
 
-window.addEventListener('locationchange', function () {
+  window.addEventListener('popstate', () => {
+    window.dispatchEvent(new Event('locationchange'))
+  });
+
+  window.addEventListener('locationchange', function () {
+    locationHashChanged();
+  })
+
   locationHashChanged();
-})
-
-
-locationHashChanged();
+}
