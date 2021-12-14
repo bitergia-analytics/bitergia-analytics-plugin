@@ -1,0 +1,72 @@
+:root {
+  --background-color: #333;
+  --text-color: #cecece;
+  --link-color: #fcb42e;
+  --menu-item-color: #dedede;
+  --selected-item-color: #f49e42;
+  --dropdown-color: #525252;
+}
+
+.euiHeader--dark {
+  background-color: var(--background-color);
+  border-bottom-color: var(--background-color);
+}
+
+.euiHeader--dark .euiHeaderLogo__text,
+.euiHeader--dark .euiHeaderLink,
+.euiHeader--dark .euiHeaderSectionItem__button {
+  color: var(--menu-item-color) !important;
+  font-size: 14px;
+  height: 48px;
+}
+
+.euiHeader--dark .euiHeaderLink-isActive {
+  background-color: var(--selected-item-color);
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.euiHeader--dark .euiHeaderLink:focus {
+  background-color: rgba(105, 112, 125, 0.5);
+}
+
+.euiHeader--dark .euiHeaderLink:not(.project-link):hover {
+  background-color: #000000;
+}
+
+.euiHeader--dark .euiHeaderSection:last-child .euiHeaderSectionItem:last-child {
+  order: -1;
+}
+
+.euiHeader--dark .project-link {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  letter-spacing: -0.025em;
+  font-weight: 300;
+}
+
+.logoContainer img {
+  height: 100%;
+  max-width: 100%;
+}
+
+.euiHeader--dark .euiHeaderSection--dontGrow:nth-of-type(2) {
+  flex-grow: 1;
+}
+
+.custom-panel {
+  background-color: var(--dropdown-color);
+
+  .euiPopoverTitle {
+    color: var(--text-color);
+  }
+
+  a {
+    color: var(--link-color);
+  }
+
+  .euiPopover__panelArrow.euiPopover__panelArrow--bottom::after,
+  .euiPopover__panelArrow.euiPopover__panelArrow--bottom::before {
+    border-bottom-color: var(--dropdown-color);
+  }
+}
