@@ -21,51 +21,6 @@ import {
 import { API_PREFIX } from '../../common';
 
 export default function (router: IRouter) {
-
-  //get project name
-  router.get(
-    {
-      path: `${API_PREFIX}/getprojectname`,
-      validate: {}
-    },
-    async (
-      context,
-      request,
-      response
-    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
-      try {
-        const esResp = await context.core.opensearch.legacy.client.callAsCurrentUser(
-          'get',
-          {
-            index: ".kibana",
-            id: "projectname",
-          }
-        );
-        const responseES = esResp._source;
-        return response.ok({
-          body: {
-            data: responseES
-          }
-        })
-
-      } catch (error) {
-        let responseError
-        if (error.response) {
-          try {
-            const esErrorResponse = JSON.parse(error.response);
-            responseError = esErrorResponse.reason || error.response;
-          } catch (parsingError) {
-            responseError = error.response;
-          }
-        }
-        return response.custom({
-          statusCode: error.statusCode,
-          body: responseError,
-        })
-      }
-    }
-  );
-
   //get metadashboard
   router.get(
     {
