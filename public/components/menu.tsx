@@ -34,6 +34,11 @@ const Menu = (props) => {
   useEffect(() => {
     // Set active link on first load
     setActiveLink();
+
+    // Add class to parent container
+    const menu = document.querySelector('.bitergia-menu');
+    const parent = menu.closest('.euiHeaderSectionItem').parentElement;
+    parent.classList.add('bitergia-menu-parent');
   }, []);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ const Menu = (props) => {
   }, []);
 
   return(
-    <EuiHeaderLinks gutterSize="xs">
+    <EuiHeaderLinks gutterSize="xs" className="bitergia-menu">
       {metadashboard.map((link, index) => (
         link.type === 'entry' ?
         <Link item={link} key={index} />

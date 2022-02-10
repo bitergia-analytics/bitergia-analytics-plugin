@@ -60,15 +60,16 @@ export class BitergiaAnalyticsPlugin
 
     // Add project name to header
     core.chrome.navControls.registerCenter({
-      mount: (target) => this.mountProjectName(branding.projectName, target)
+      mount: (target) => this.mountProjectName(branding.projectName, target),
+      order: 1
     })
 
     // Fetch and add metadashboard to header
     try {
-      const response = await core.http.fetch('/api/dashboards/get_metadashboard');
+      const response = await core.http.fetch('/api/dashboards/getmetadashboard');
       const metadashboard = response.data.metadashboard;
-      core.chrome.navControls.registerRight({
-        order: 0,
+      core.chrome.navControls.registerCenter({
+        order: 2,
         mount: (target) => this.mountMenu(metadashboard, target),
       });
     } catch (error) {

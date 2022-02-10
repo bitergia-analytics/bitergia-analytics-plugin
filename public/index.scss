@@ -34,8 +34,9 @@
   background-color: #000000;
 }
 
-.euiHeader--dark .euiHeaderSection:last-child .euiHeaderSectionItem:last-child {
-  order: -1;
+.bitergia-menu-parent {
+  width: 100%;
+  justify-content: space-between;
 }
 
 .euiHeader--dark .project-link {
