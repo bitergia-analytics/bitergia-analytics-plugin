@@ -31,6 +31,8 @@ export const config = {
       menuItemColor: schema.string({ defaultValue: '#dedede' }),
       linkColor: schema.string({ defaultValue: '#fcb42e' }),
       selectedItemColor: schema.string({ defaultValue: '#f49e42' }),
+      dropdownColor: schema.string({ defaultValue: '#525252'}),
+      projectName: schema.string({ defaultValue: 'Bitergia Analytics' }),
     }),
   })
 };
