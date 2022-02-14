@@ -1,0 +1,97 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+      - '*.*.*-*'
+
+jobs:
+  build:
+    name: Build Bitergia Analytics Plugin
+    runs-on: ubuntu-latest
+    outputs:
+      filename: ${{ steps.build_zip.outputs.filename }}
+    steps:
+      - name: Checkout plugin source code
+        uses: actions/checkout@v2
+        with:
+          path: bitergia-analytics-plugin
+      - name: Get Bitergia Analytics Plugin version
+        id: bap_version
+        run: |
+          echo "::set-output name=version::$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').version).match(/[.0-9]+/)[0]")"
+      - name: Get OpenSearch Dashboards version
+        id: osd_version
+        run: |
+          echo "::set-output name=version::$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")"
+      - name: Checkout OpenSearch Dashboards
+        uses: actions/checkout@v2
+        with:
+          repository: opensearch-project/OpenSearch-Dashboards
+          ref: ${{ steps.osd_version.outputs.version }}
+          path: osd
+      - name: Get node and yarn versions
+        id: versions
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./osd/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./osd/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ steps.versions.outputs.node_version }}
+      - name: Setup yarn
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions.outputs.yarn_version }}
+      - name: Move plugin to OpenSearch Dashboards folder
+        run: |
+          mkdir -p osd/plugins
+          mv bitergia-analytics-plugin osd/plugins
+      - name: Bootstrap plugin/opensearch-dashboards
+        run: |
+          cd osd/plugins/bitergia-analytics-plugin
+          yarn osd bootstrap
+      - name: Build plugin
+        id: build_zip
+        run: |
+          cd osd/plugins/bitergia-analytics-plugin
+          yarn build
+          tmp_zip_path=`ls $(pwd)/build/*.zip`
+          filename=bitergia-analytics-plugin-${{ steps.bap_version.outputs.version }}_${{ steps.osd_version.outputs.version }}.zip
+          zip_path=$(pwd)/build/$filename
+          mv $tmp_zip_path $zip_path
+          echo "::set-output name=zip_path::$zip_path"
+          echo "::set-output name=filename::$filename"
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bap-plugin
+          path: ${{ steps.build_zip.outputs.zip_path }}
+
+  release:
+    name: Release Bitergia Analytics Plugin
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get release tag
+        id: tag
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+        shell: bash
+      - name: Checkout plugin source code
+        uses: actions/checkout@v2
+        with:
+          path: bitergia-analytics-plugin
+      - name: Download plugin artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: bap-plugin
+          path: bitergia-analytics-plugin/build
+      - name: Create release
+        run: |
+          cd bitergia-analytics-plugin
+          gh release create ${{ steps.tag.outputs.tag }} build/${{ needs.build.outputs.filename }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
