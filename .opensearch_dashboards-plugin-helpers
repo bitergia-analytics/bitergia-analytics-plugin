@@ -3,7 +3,7 @@
     "package.json",
     "tsconfig.json",
     "yarn.lock",
-    "kibana.json",
+    "opensearch_dashboards.json",
     "common/**/*",
     "public/**/*",
     "server/**/*"
