@@ -14,9 +14,9 @@
  * permissions and limitations under the License.
  */
 
-import registerKibiterMenuRetrieveRoute from './menu';
+import registerGetMetadashboardRoute from './menu';
 import { IRouter } from '../../../../src/core/server';
 
 export function defineRoutes(router: IRouter) {
-  registerKibiterMenuRetrieveRoute(router);
+  registerGetMetadashboardRoute(router);
 }
