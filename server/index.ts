@@ -23,7 +23,7 @@ import { BitergiaAnalyticsPlugin } from './plugin';
 
 export const config = {
   exposeToBrowser: {
-    branding: true
+    branding: true,
   },
   schema: schema.object({
     branding: schema.object({
@@ -32,10 +32,10 @@ export const config = {
       menuItemColor: schema.string({ defaultValue: '#dedede' }),
       linkColor: schema.string({ defaultValue: '#fcb42e' }),
       selectedItemColor: schema.string({ defaultValue: '#f49e42' }),
-      dropdownColor: schema.string({ defaultValue: '#525252'}),
+      dropdownColor: schema.string({ defaultValue: '#525252' }),
       projectName: schema.string({ defaultValue: 'Bitergia Analytics' }),
     }),
-  })
+  }),
 };
 
 export function plugin(initializerContext: PluginInitializerContext) {
@@ -44,5 +44,5 @@ export function plugin(initializerContext: PluginInitializerContext) {
 
 export {
   BitergiaAnalyticsPluginSetup,
-  BitergiaAnalyticsPluginStart
+  BitergiaAnalyticsPluginStart,
 } from './types';

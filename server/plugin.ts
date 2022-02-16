@@ -22,12 +22,13 @@ import {
 } from '../../../src/core/server';
 import {
   BitergiaAnalyticsPluginSetup,
-  BitergiaAnalyticsPluginStart
+  BitergiaAnalyticsPluginStart,
 } from './types';
 import { defineRoutes } from './routes';
 
 export class BitergiaAnalyticsPlugin
-  implements Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+  implements
+    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
   private readonly logger: Logger;
 
   constructor(initializerContext: PluginInitializerContext) {

@@ -18,19 +18,19 @@ import {
   EuiHeaderLink,
   EuiPopover,
   EuiPopoverTitle,
-  EuiListGroup
+  EuiListGroup,
 } from '@elastic/eui';
 
-const Dropdown = ({ item }) => {
+export const Dropdown = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dashboards = getDashboardLinks(item.dashboards);
 
-  function getDashboardLinks(dashboards) {
-    return dashboards.map(dashboard => {
+  function getDashboardLinks(links) {
+    return links.map((dashboard) => {
       return {
         label: dashboard.name,
-        href: `dashboards#/view/${dashboard.panel_id}`
-      }
+        href: `dashboards#/view/${dashboard.panel_id}`,
+      };
     });
   }
 
@@ -46,8 +46,8 @@ const Dropdown = ({ item }) => {
     <EuiPopover
       button={
         <EuiHeaderLink
-          iconType='arrowDown'
-          iconSide='right'
+          iconType="arrowDown"
+          iconSide="right"
           onClick={handleClick}
           isActive={item.isActive}
         >
@@ -60,9 +60,7 @@ const Dropdown = ({ item }) => {
       panelPaddingSize="m"
       panelClassName="custom-panel"
     >
-      <EuiPopoverTitle paddingsize="l">
-        {item.name}
-      </EuiPopoverTitle>
+      <EuiPopoverTitle paddingsize="l">{item.name}</EuiPopoverTitle>
       <EuiListGroup
         listItems={dashboards}
         flush={true}
@@ -72,6 +70,4 @@ const Dropdown = ({ item }) => {
       />
     </EuiPopover>
   );
-}
-
-export default Dropdown;
+};

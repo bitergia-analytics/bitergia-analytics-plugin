@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "osd": "node ../../scripts/osd",
-    "lint": "eslint .",
+    "lint": "../../node_modules/.bin/eslint '**/*.tsx' '**/*.ts' -c .eslintrc --ignore-path .gitignore",
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",
     "plugin_helpers": "node ../../scripts/plugin_helpers"
@@ -37,7 +37,8 @@
     "ws": "^7.2.3"
   },
   "devDependencies": {
-    "@elastic/eslint-import-resolver-kibana": "link:../../packages/kbn-eslint-import-resolver-kibana",
+    "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
+    "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@types/dompurify": "^2.0.4",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jsdom": "^16.2.3",

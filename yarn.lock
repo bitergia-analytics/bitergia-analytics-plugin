@@ -299,7 +299,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@elastic/eslint-import-resolver-kibana@link:../../packages/kbn-eslint-import-resolver-kibana":
+"@elastic/elastic-eslint-config-kibana@link:../../packages/opensearch-eslint-config-opensearch-dashboards":
+  version "0.0.0"
+  uid ""
+
+"@elastic/eslint-import-resolver-kibana@link:../../packages/osd-eslint-import-resolver-opensearch-dashboards":
   version "0.0.0"
   uid ""
 

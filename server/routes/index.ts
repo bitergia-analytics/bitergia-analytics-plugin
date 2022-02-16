@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-import registerGetMetadashboardRoute from './menu';
+import { registerGetMetadashboardRoute } from './menu';
 import { IRouter } from '../../../../src/core/server';
 
 export function defineRoutes(router: IRouter) {
