@@ -1,4 +1,5 @@
 /*
+ * Copyright Bitergia 2021-2022
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,25 +14,24 @@
  * permissions and limitations under the License.
  */
 
+import { i18n } from '@osd/i18n';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
+import { EuiHeaderLink } from '@elastic/eui';
+import { Menu } from './components/menu.tsx';
+import { PLUGIN_NAME } from '../common';
+import { AppPluginStartDependencies } from './types';
 import {
   AppMountParameters,
   CoreSetup,
   CoreStart,
   PluginInitializerContext,
 } from '../../../src/core/public';
-import {
-  AppPluginStartDependencies,
-} from './types';
-import { PLUGIN_NAME } from '../common';
-import { i18n } from '@osd/i18n';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
-import Menu from './components/menu.tsx';
-import { EuiHeaderLink } from '@elastic/eui';
 
 export class BitergiaAnalyticsPlugin
-  implements Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+  implements
+    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
   // @ts-ignore : initializerContext not used
   constructor(private readonly initializerContext: PluginInitializerContext) {}
   public setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
@@ -46,7 +46,11 @@ export class BitergiaAnalyticsPlugin
         // Get start services as specified in opensearch_dashboards.json
         const [coreStart, depsStart] = await core.getStartServices();
         // Render the application
-        return renderApp(coreStart, depsStart as AppPluginStartDependencies, params);
+        return renderApp(
+          coreStart,
+          depsStart as AppPluginStartDependencies,
+          params
+        );
       },
     });
 
@@ -61,12 +65,14 @@ export class BitergiaAnalyticsPlugin
     // Add project name to header
     core.chrome.navControls.registerCenter({
       mount: (target) => this.mountProjectName(branding.projectName, target),
-      order: 1
-    })
+      order: 1,
+    });
 
     // Fetch and add metadashboard to header
     try {
-      const response = await core.http.fetch('/api/dashboards/getmetadashboard');
+      const response = await core.http.fetch(
+        '/api/dashboards/getmetadashboard'
+      );
       const metadashboard = response.data.metadashboard;
       core.chrome.navControls.registerCenter({
         order: 2,
@@ -101,7 +107,7 @@ export class BitergiaAnalyticsPlugin
         color="ghost"
         className="project-link"
       >
-        { name }
+        {name}
       </EuiHeaderLink>,
       targetDomElement
     );
@@ -110,12 +116,24 @@ export class BitergiaAnalyticsPlugin
 
   private changeBranding(branding) {
     if (Object.keys(branding).length !== 0) {
-      document.body.style.setProperty("--background-color", branding.backgroundColor);
-      document.body.style.setProperty("--text-color", branding.textColor);
-      document.body.style.setProperty("--menu-item-color", branding.menuItemColor);
-      document.body.style.setProperty("--link-color", branding.linkColor);
-      document.body.style.setProperty("--selected-item-color", branding.selectedItemColor);
-      document.body.style.setProperty("--dropdown-color", branding.dropdownColor);
+      document.body.style.setProperty(
+        '--background-color',
+        branding.backgroundColor
+      );
+      document.body.style.setProperty('--text-color', branding.textColor);
+      document.body.style.setProperty(
+        '--menu-item-color',
+        branding.menuItemColor
+      );
+      document.body.style.setProperty('--link-color', branding.linkColor);
+      document.body.style.setProperty(
+        '--selected-item-color',
+        branding.selectedItemColor
+      );
+      document.body.style.setProperty(
+        '--dropdown-color',
+        branding.dropdownColor
+      );
     }
   }
 }

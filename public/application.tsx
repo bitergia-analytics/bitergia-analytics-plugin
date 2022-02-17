@@ -1,4 +1,5 @@
 /*
+ * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -23,7 +24,9 @@ export const renderApp = (
   { navigation }: AppPluginStartDependencies,
   { appBasePath, element }: AppMountParameters
 ) => {
-  window.location.replace(window.location.href.split("app/")[0] + "app/dashboards#/view/Overview")
+  window.location.replace(
+    window.location.href.split('app/')[0] + 'app/dashboards#/view/Overview'
+  );
 
   return () => ReactDOM.unmountComponentAtNode(element);
 };

@@ -1,62 +1,91 @@
 # Bitergia Analytics Plugin
 
-Bitergia Analytics Plugin for Kibana 7.10.0
+Bitergia Analytics Plugin for OpenSearch.
 
-## Installation steps
+This plugin allows to define a dashboards menu on the top bar of the app
+and configure the branding of the app (color, logos, text, etc).
 
-Run the following command inside `kibana/bin`.
+
+## Installation
+
+You can find the different versions of the plugins on the
+[releases page on Github](https://github.com/Bitergia/bitergia-analytics-plugin/releases).
+
+Copy the link of the asset you want to install and run the following command inside
+`opensearch-dashboards/bin` folder of your `opensearch-dashboard` instance.
 
 ```
-kibana-plugin install "https://github.com/Bitergia/bitergia-analytics-plugin/releases/download/0.0.1_7.10.0/bitergiaAnalytics-7.10.0.zip"
+opensearch-dashboards-plugin install <url>
 ```
 
-## Contributing
+For example:
+
+```
+opensearch-dashboards-plugin install https://github.com/Bitergia/bitergia-analytics-plugin/releases/download/0.0.3_1.2.0/bitergia-analytics-plugin-0.0.3_1.2.0.zip
+```
+
+## Developing
+
+In order to make changes to this plugin or contributing to it, please read the following
+sections.
+
+### Prerequisites
+
+You will need `node.js` and `yarn` to build the plugin. You can use
+[nvm](https://github.com/nvm-sh/nvm) to install the required node version
+of this plugin.
 
 ### Setup
 
-1. Download Elasticsearch for the version that matches the [Kibana version specified in package.json](./package.json#L7).
-1. Download the Kibana source code for the [version specified in package.json](./package.json#L7) you want to set up.
-
-   See the [Kibana contributing guide](https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md#setting-up-your-development-environment) for more instructions on setting up your development environment.
-
-1. Change your node version to the version specified in `.node-version` inside the Kibana root directory.
-1. Create a `plugins` directory inside the Kibana source code directory, if `plugins` directory doesn't exist.
-1. Check out this package from version control into the `plugins` directory.
+1. Download **OpenSearch Dashboards** source code for the version that matches the
+   [OpenSearch Dashboards version specified in opensearch_dashboards.json](./opensearch_dashboards.json#L4).
+   You can download it from their
+   [release page](https://github.com/opensearch-project/OpenSearch-Dashboards/releases)
+   or clone the repository. We recommend to follow the
+   [OpenSearch Dashboards' developers guide](https://github.com/opensearch-project/OpenSearch-Dashboards/blob/main/DEVELOPER_GUIDE.md#getting-started)
+   to configure the environment.
+1. Change your node version to the version specified in `.node-version` inside
+   the **OpenSearch Dashboards** root directory. You can use `nvm` to do it.
+1. Create a `plugins` directory inside the **OpenSearch Dashboards** source code
+   directory, if `plugins` directory doesn't exist.
    ```
-   git clone https://github.com/Bitergia/bitergia-analytics-plugin plugins --no-checkout
-   cd plugins
-   echo 'bitergia-analytics-plugin/*' >> .git/info/sparse-checkout
-   git config core.sparseCheckout true
+   cd OpenSearchDashboards
+   mkdir plugins
    ```
-1. Run `yarn kbn bootstrap` inside `kibana/plugins/bitergia-analytics-plugin`.
-
-Ultimately, your directory structure should look like this:
-
-<!-- prettier-ignore -->
-```md
-.
-├── kibana
-│   └──plugins
-│      └── bitergiaAnalytics
-```
+1. Check out this repository into the `plugins` directory.
+   ```
+   git clone https://github.com/Bitergia/bitergia-analytics-plugin plugins
+   ```
+1. Install the dependencies.
+   ```
+   cd OpenSearchDashboards/plugins/bitergia-analytics-plugin
+   yarn osd bootstrap
+   ```
 
 ### Build
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/bitergiaAnalytics-7.10.0.zip`
+Example output: `./build/bitergia-analytics-plugin-0.0.3_1.2.0.zip`
 
 ### Run
 
-- `yarn start`
+To run and test the built version of plugin run inside **OpenSearch-Dashboards**
+folder the following command:
 
-  Starts Kibana and includes this plugin. Kibana will be available on `localhost:5601`.
+```
+yarn start
+```
 
 
 ## License
 
-See the [LICENSE](./LICENSE.txt) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
+This project is licensed under Apache 2.0. See the [LICENSE](./LICENSE) file
+for more information about it.
+
 
 ## Acknowledgments
 
-Thanks to the great work of https://github.com/opendistro-for-elasticsearch/kibana-reports
+Thanks to the great work of
+[OpenDistro's Kibana Reports plugin](https://github.com/opendistro-for-elasticsearch/kibana-reports).
+We took some of their files to create the skeleton of this plugin.

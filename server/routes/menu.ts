@@ -1,4 +1,5 @@
 /*
+ * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -16,16 +17,16 @@
 import {
   IRouter,
   OpenSearchDashboardsResponse,
-  ResponseError
+  ResponseError,
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
 
-export default function (router: IRouter) {
-  //get metadashboard
+export const registerGetMetadashboardRoute = function (router: IRouter) {
+  // get metadashboard
   router.get(
     {
       path: `${API_PREFIX}/getmetadashboard`,
-      validate: {}
+      validate: {},
     },
     async (
       context,
@@ -36,19 +37,18 @@ export default function (router: IRouter) {
         const esResp = await context.core.opensearch.legacy.client.callAsCurrentUser(
           'get',
           {
-            index: ".kibana",
-            id: "metadashboard",
+            index: '.kibana',
+            id: 'metadashboard',
           }
         );
         const responseES = esResp._source;
         return response.ok({
           body: {
-            data: responseES
-          }
-        })
-
+            data: responseES,
+          },
+        });
       } catch (error) {
-        let responseError
+        let responseError;
         if (error.response) {
           try {
             const esErrorResponse = JSON.parse(error.response);
@@ -60,8 +60,8 @@ export default function (router: IRouter) {
         return response.custom({
           statusCode: error.statusCode,
           body: responseError,
-        })
+        });
       }
     }
   );
-}
+};

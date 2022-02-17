@@ -1,4 +1,5 @@
 /*
+ * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,9 +14,9 @@
  * permissions and limitations under the License.
  */
 
-import registerKibiterMenuRetrieveRoute from './menu';
+import { registerGetMetadashboardRoute } from './menu';
 import { IRouter } from '../../../../src/core/server';
 
 export function defineRoutes(router: IRouter) {
-  registerKibiterMenuRetrieveRoute(router);
+  registerGetMetadashboardRoute(router);
 }

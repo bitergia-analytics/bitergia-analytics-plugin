@@ -1,4 +1,5 @@
 /*
+ * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -21,12 +22,13 @@ import {
 } from '../../../src/core/server';
 import {
   BitergiaAnalyticsPluginSetup,
-  BitergiaAnalyticsPluginStart
+  BitergiaAnalyticsPluginStart,
 } from './types';
 import { defineRoutes } from './routes';
 
 export class BitergiaAnalyticsPlugin
-  implements Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+  implements
+    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
   private readonly logger: Logger;
 
   constructor(initializerContext: PluginInitializerContext) {

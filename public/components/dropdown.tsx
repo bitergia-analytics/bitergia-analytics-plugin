@@ -1,21 +1,36 @@
+/*
+ * Copyright 2021-2022 Bitergia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 import React, { useState, useEffect } from 'react';
 import {
   EuiHeaderLink,
   EuiPopover,
   EuiPopoverTitle,
-  EuiListGroup
+  EuiListGroup,
 } from '@elastic/eui';
 
-const Dropdown = ({ item }) => {
+export const Dropdown = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dashboards = getDashboardLinks(item.dashboards);
 
-  function getDashboardLinks(dashboards) {
-    return dashboards.map(dashboard => {
+  function getDashboardLinks(links) {
+    return links.map((dashboard) => {
       return {
         label: dashboard.name,
-        href: `dashboards#/view/${dashboard.panel_id}`
-      }
+        href: `dashboards#/view/${dashboard.panel_id}`,
+      };
     });
   }
 
@@ -31,8 +46,8 @@ const Dropdown = ({ item }) => {
     <EuiPopover
       button={
         <EuiHeaderLink
-          iconType='arrowDown'
-          iconSide='right'
+          iconType="arrowDown"
+          iconSide="right"
           onClick={handleClick}
           isActive={item.isActive}
         >
@@ -45,9 +60,7 @@ const Dropdown = ({ item }) => {
       panelPaddingSize="m"
       panelClassName="custom-panel"
     >
-      <EuiPopoverTitle paddingsize="l">
-        {item.name}
-      </EuiPopoverTitle>
+      <EuiPopoverTitle paddingsize="l">{item.name}</EuiPopoverTitle>
       <EuiListGroup
         listItems={dashboards}
         flush={true}
@@ -57,6 +70,4 @@ const Dropdown = ({ item }) => {
       />
     </EuiPopover>
   );
-}
-
-export default Dropdown;
+};

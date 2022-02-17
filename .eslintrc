@@ -1,9 +1,8 @@
 ---
-extends: '@elastic/kibana'
+extends:
+  - "@elastic/eslint-config-kibana"
 
-settings:
-  import/resolver:
-    '@kbn/eslint-import-resolver-kibana':
-      rootPackageName: 'kibiter-menu-plugin'
-      pluginPaths:
-        - .
+rules:
+  "@osd/eslint/require-license-header": off
+  "react-hooks/exhaustive-deps": off
+  "no-console": off
