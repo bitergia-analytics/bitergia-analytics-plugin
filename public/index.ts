@@ -1,4 +1,5 @@
 /*
+ * Copyright Bitergia 2021-2022
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -16,9 +17,10 @@
 import './index.scss';
 
 import { BitergiaAnalyticsPlugin } from './plugin';
+import { PluginInitializerContext } from '../../../src/core/public';
 
 // This exports static code and TypeScript types,
 // as well as, Kibana Platform `plugin()` initializer.
-export function plugin() {
-  return new BitergiaAnalyticsPlugin();
+export function plugin(initializerContext: PluginInitializerContext) {
+  return new BitergiaAnalyticsPlugin(initializerContext);
 }

@@ -1,6 +1,5 @@
 /*
  * Copyright 2021-2022 Bitergia
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -14,9 +13,16 @@
  * permissions and limitations under the License.
  */
 
-import { registerGetMetadashboardRoute } from './menu';
-import { IRouter } from '../../../../src/core/server';
+import React from 'react';
+import { EuiHeaderLink } from '@elastic/eui';
 
-export function defineRoutes(router: IRouter) {
-  registerGetMetadashboardRoute(router);
-}
+export const Link = ({ item }) => {
+  return (
+    <EuiHeaderLink
+      href={`dashboards#/view/${item.panel_id}`}
+      isActive={item.isActive}
+    >
+      {item.name}
+    </EuiHeaderLink>
+  );
+};

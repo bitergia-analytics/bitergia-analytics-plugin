@@ -1,4 +1,5 @@
 /*
+ * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -18,23 +19,16 @@ import {
   CoreSetup,
   CoreStart,
   Logger,
-  ILegacyClusterClient,
 } from '../../../src/core/server';
-import registerRoutes from './routes';
-
-export interface BitergiaAnalyticsPluginRequestContext {
-  logger: Logger;
-  esClient: ILegacyClusterClient;
-}
-//@ts-ignore
-declare module 'kibana/server' {
-  interface RequestHandlerContext {
-    bitergia_analytics_plugin: BitergiaAnalyticsPluginRequestContext;
-  }
-}
+import {
+  BitergiaAnalyticsPluginSetup,
+  BitergiaAnalyticsPluginStart,
+} from './types';
+import { defineRoutes } from './routes';
 
 export class BitergiaAnalyticsPlugin
-{
+  implements
+    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
   private readonly logger: Logger;
 
   constructor(initializerContext: PluginInitializerContext) {
@@ -42,17 +36,17 @@ export class BitergiaAnalyticsPlugin
   }
 
   public setup(core: CoreSetup) {
+    this.logger.debug('bitergia_analytics: Setup');
     const router = core.http.createRouter();
 
     // Register server side APIs
-    registerRoutes(router);
+    defineRoutes(router);
 
     return {};
   }
 
   public start(core: CoreStart) {
     this.logger.debug('bitergia analytics plugin starting');
-
     return {};
   }
 
