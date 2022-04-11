@@ -62,9 +62,11 @@ export class BitergiaAnalyticsPlugin
     // Get branding from opensearch_dashboards.yml
     const { branding } = this.initializerContext.config.get();
 
+    const baseURL = core.application.getUrlForApp('dashboards');
+
     // Add project name to header
     core.chrome.navControls.registerCenter({
-      mount: (target) => this.mountProjectName(branding.projectName, target),
+      mount: (target) => this.mountProjectName(branding.projectName, baseURL, target),
       order: 1,
     });
 
@@ -76,7 +78,7 @@ export class BitergiaAnalyticsPlugin
       const metadashboard = response.data.metadashboard;
       core.chrome.navControls.registerCenter({
         order: 2,
-        mount: (target) => this.mountMenu(metadashboard, target),
+        mount: (target) => this.mountMenu(metadashboard, baseURL, target),
       });
     } catch (error) {
       console.log(error);
@@ -89,21 +91,21 @@ export class BitergiaAnalyticsPlugin
 
   public stop() {}
 
-  private mountMenu(metadashboard, targetDomElement) {
+  private mountMenu(metadashboard, baseURL, targetDomElement) {
     // Initialize router history to know which route is active
     const history = createBrowserHistory();
 
     ReactDOM.render(
-      <Menu metadashboard={metadashboard} history={history} />,
+      <Menu metadashboard={metadashboard} baseURL={baseURL} history={history} />,
       targetDomElement
     );
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);
   }
 
-  private mountProjectName(name, targetDomElement) {
+  private mountProjectName(name, baseURL, targetDomElement) {
     ReactDOM.render(
       <EuiHeaderLink
-        href="dashboards#/view/Overview"
+        href={`${baseURL}#/view/Overview`}
         color="ghost"
         className="project-link"
       >

@@ -16,10 +16,10 @@
 import React from 'react';
 import { EuiHeaderLink } from '@elastic/eui';
 
-export const Link = ({ item }) => {
+export const Link = ({ item, baseURL }) => {
   return (
     <EuiHeaderLink
-      href={`dashboards#/view/${item.panel_id}`}
+      href={`${baseURL}#/view/${item.panel_id}`}
       isActive={item.isActive}
     >
       {item.name}

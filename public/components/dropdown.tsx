@@ -21,7 +21,7 @@ import {
   EuiListGroup,
 } from '@elastic/eui';
 
-export const Dropdown = ({ item }) => {
+export const Dropdown = ({ item, baseURL }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dashboards = getDashboardLinks(item.dashboards);
 
@@ -29,7 +29,7 @@ export const Dropdown = ({ item }) => {
     return links.map((dashboard) => {
       return {
         label: dashboard.name,
-        href: `dashboards#/view/${dashboard.panel_id}`,
+        href: `${baseURL}#/view/${dashboard.panel_id}`,
       };
     });
   }
