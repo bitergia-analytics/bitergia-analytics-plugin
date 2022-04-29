@@ -3,6 +3,7 @@
   --text-color: #cecece;
   --link-color: #fcb42e;
   --menu-item-color: #dedede;
+  --menu-item-color--hover: #000000;
   --selected-item-color: #f49e42;
   --dropdown-color: #525252;
 }
@@ -31,7 +32,7 @@
 }
 
 .euiHeader--dark .euiHeaderLink:not(.project-link):hover {
-  background-color: #000000;
+  background-color: var(--menu-item-color--hover);
 }
 
 .bitergia-menu-parent {
@@ -40,7 +41,7 @@
 }
 
 .euiHeader--dark .project-link {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.25rem;
   letter-spacing: -0.025em;
   font-weight: 300;

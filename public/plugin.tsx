@@ -66,7 +66,8 @@ export class BitergiaAnalyticsPlugin
 
     // Add project name to header
     core.chrome.navControls.registerCenter({
-      mount: (target) => this.mountProjectName(branding.projectName, baseURL, target),
+      mount: (target) =>
+        this.mountProjectName(branding.projectName, baseURL, target),
       order: 1,
     });
 
@@ -96,7 +97,11 @@ export class BitergiaAnalyticsPlugin
     const history = createBrowserHistory();
 
     ReactDOM.render(
-      <Menu metadashboard={metadashboard} baseURL={baseURL} history={history} />,
+      <Menu
+        metadashboard={metadashboard}
+        baseURL={baseURL}
+        history={history}
+      />,
       targetDomElement
     );
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);
@@ -126,6 +131,10 @@ export class BitergiaAnalyticsPlugin
       document.body.style.setProperty(
         '--menu-item-color',
         branding.menuItemColor
+      );
+      document.body.style.setProperty(
+        '--menu-item-color--hover',
+        branding.menuItemHoverColor
       );
       document.body.style.setProperty('--link-color', branding.linkColor);
       document.body.style.setProperty(
