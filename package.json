@@ -1,6 +1,6 @@
 {
   "name": "bitergia_analytics",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Bitergia Analytics Plugin",
   "license": "Apache-2.0",
   "main": "index.js",
