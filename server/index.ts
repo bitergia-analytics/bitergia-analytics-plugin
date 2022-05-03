@@ -30,6 +30,7 @@ export const config = {
       backgroundColor: schema.string({ defaultValue: '#333' }),
       textColor: schema.string({ defaultValue: '#cecece' }),
       menuItemColor: schema.string({ defaultValue: '#dedede' }),
+      menuItemHoverColor: schema.string({ defaultValue: '#000000' }),
       linkColor: schema.string({ defaultValue: '#fcb42e' }),
       selectedItemColor: schema.string({ defaultValue: '#f49e42' }),
       dropdownColor: schema.string({ defaultValue: '#525252' }),
