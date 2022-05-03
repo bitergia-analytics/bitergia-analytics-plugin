@@ -20,14 +20,14 @@ import { Dropdown } from './dropdown.tsx';
 
 export const Menu = (props) => {
   const [metadashboard, setMetadashboard] = useState(props.metadashboard);
-  const { baseURL } = props
+  const { baseURL, history } = props;
 
   function setActiveLink() {
     let updated = metadashboard;
 
-    if (props.history.location.hash.includes(`${baseURL}#/view/`)) {
-      const currentDashboard = props.history.location.hash
-        .split(`${baseURL}#/view/`)[1]
+    if (history.location.hash.includes('#/view/')) {
+      const currentDashboard = history.location.hash
+        .split('#/view/')[1]
         .split('?')[0];
 
       updated = metadashboard.map((dashboard) => {
@@ -63,9 +63,9 @@ export const Menu = (props) => {
 
   useEffect(() => {
     // Listen to route changes
-    const unlisten = props.history.listen(setActiveLink);
+    const unlisten = history.listen(setActiveLink);
     return unlisten;
-  }, []);
+  }, [history]);
 
   return (
     <EuiHeaderLinks gutterSize="xs" className="bitergia-menu">
