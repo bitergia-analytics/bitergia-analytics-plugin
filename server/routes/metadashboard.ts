@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
+import { schema } from '@osd/config-schema';
 import {
   IRouter,
   OpenSearchDashboardsResponse,
@@ -21,8 +21,7 @@ import {
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
 
-export const registerGetMetadashboardRoute = function (router: IRouter) {
-  // get metadashboard
+export const registerMetadashboardRoutes = function (router: IRouter) {
   router.get(
     {
       path: `${API_PREFIX}/getmetadashboard`,
@@ -60,6 +59,65 @@ export const registerGetMetadashboardRoute = function (router: IRouter) {
         return response.custom({
           statusCode: error.statusCode,
           body: responseError,
+        });
+      }
+    }
+  );
+
+  router.put(
+    {
+      authRequired: true,
+      path: `${API_PREFIX}/metadashboard/edit`,
+      validate: {
+        body: schema.object({
+          metadashboard: schema.arrayOf(
+            schema.object({
+              name: schema.string(),
+              type: schema.oneOf([
+                schema.literal('menu'),
+                schema.literal('entry'),
+              ]),
+              panel_id: schema.maybe(schema.string()),
+              description: schema.maybe(schema.string()),
+              title: schema.maybe(schema.string()),
+              dashboards: schema.maybe(
+                schema.arrayOf(
+                  schema.object({
+                    name: schema.string(),
+                    type: schema.string(),
+                    panel_id: schema.string(),
+                    description: schema.maybe(schema.string()),
+                    title: schema.maybe(schema.string()),
+                  })
+                )
+              ),
+            })
+          ),
+        }),
+      },
+    },
+
+    async (
+      context,
+      request,
+      response
+    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
+      try {
+        const requestClient = context.core.opensearch.client.asCurrentUser;
+
+        const result = await requestClient.update({
+          index: '.kibana',
+          id: 'metadashboard',
+          body: {
+            doc: request.body,
+          },
+        });
+
+        return response.ok({ body: result });
+      } catch (error) {
+        return response.customError({
+          body: error,
+          statusCode: error.statusCode,
         });
       }
     }
