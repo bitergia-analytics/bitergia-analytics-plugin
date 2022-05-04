@@ -39,16 +39,26 @@ export class BitergiaAnalyticsPlugin
     core.application.register({
       id: PLUGIN_NAME,
       title: 'Bitergia Analytics',
+      category: {
+        id: 'management',
+        label: i18n.translate('core.ui.managementNavList.label', {
+          defaultMessage: 'Management',
+        }),
+        order: 5000,
+        euiIconType: 'managementApp',
+      },
       updater$: this.appUpdater,
       async mount(params: AppMountParameters) {
         // Load application bundle
         const { renderApp } = await import('./application');
         // Get start services as specified in opensearch_dashboards.json
-        const [coreStart, depsStart] = await core.getStartServices();
+        const [coreStart, depsStart, methods] = await core.getStartServices();
+
         // Render the application
         return renderApp(
           coreStart,
           depsStart as AppPluginStartDependencies,
+          methods,
           params
         );
       },
@@ -73,13 +83,12 @@ export class BitergiaAnalyticsPlugin
 
     // Fetch and add metadashboard to header
     try {
-      const response = await core.http.fetch(
-        '/api/dashboards/getmetadashboard'
-      );
-      const metadashboard = response.data.metadashboard;
+      var response = await core.http.fetch('/api/dashboards/getmetadashboard');
+      const menuItems = JSON.parse(JSON.stringify(response.data.metadashboard));
+
       core.chrome.navControls.registerCenter({
         order: 2,
-        mount: (target) => this.mountMenu(metadashboard, baseURL, target),
+        mount: (target) => this.mountMenu(menuItems, baseURL, target),
       });
     } catch (error) {
       console.log(error);
@@ -87,7 +96,12 @@ export class BitergiaAnalyticsPlugin
 
     this.changeBranding(branding);
 
-    return {};
+    // Methods available at core.getStartServices()
+    return {
+      getMetadashboard: () => {
+        return response.data;
+      },
+    };
   }
 
   public stop() {}
