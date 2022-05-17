@@ -21,6 +21,54 @@ import {
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
 
+const metadashboardSchema = schema.object({
+  metadashboard: schema.arrayOf(
+    schema.object({
+      name: schema.string(),
+      type: schema.oneOf([schema.literal('menu'), schema.literal('entry')]),
+      panel_id: schema.maybe(schema.string()),
+      description: schema.maybe(schema.string()),
+      title: schema.maybe(schema.string()),
+      dashboards: schema.maybe(
+        schema.arrayOf(
+          schema.object({
+            name: schema.string(),
+            type: schema.string(),
+            panel_id: schema.string(),
+            description: schema.maybe(schema.string()),
+            title: schema.maybe(schema.string()),
+          })
+        )
+      ),
+    })
+  ),
+});
+
+const customErrorMessage = (error) => {
+  const errors = [
+    {
+      error: /\[(.*?)\.(\w*)]: expected at least one defined value but got \[undefined\]/,
+      message: `[$1] missing field "$2"`,
+    },
+    {
+      error: /\[(.*?)\.(\w*)]: expected value of type \[\w*\] but got \[undefined\]/,
+      message: `[$1] missing field "$2"`,
+    },
+    {
+      error: /\[(.*?)\.(\w*)]: definition for this key is missing/,
+      message: `wrong key "$2" at [$1]`,
+    },
+  ];
+
+  let newError = error.message;
+
+  errors.forEach((e) => {
+    newError = newError.replace(e.error, e.message);
+  });
+
+  return newError;
+};
+
 export const registerMetadashboardRoutes = function (router: IRouter) {
   router.get(
     {
@@ -40,7 +88,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
             id: 'metadashboard',
           }
         );
-      
+
         const responseES = esResp._source;
         return response.ok({
           body: {
@@ -64,12 +112,12 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
       }
     }
   );
-  
+
   router.put(
     {
       authRequired: true,
       path: `${API_PREFIX}/metadashboard/create`,
-      validate: {}
+      validate: {},
     },
     async (
       context,
@@ -82,21 +130,21 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
           index: '.kibana',
           type: '_mapping',
           body: {
-            dynamic: true
+            dynamic: true,
           },
         });
-        
+
         const index = await requestClient.create({
           index: '.kibana',
           id: 'metadashboard',
-          body: request.body
+          body: request.body,
         });
-        
+
         return response.ok({
           body: {
-            mapping: mapping,
-            metadashboard: index
-          }
+            mapping,
+            metadashboard: index,
+          },
         });
       } catch (error) {
         return response.customError({
@@ -105,49 +153,30 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
         });
       }
     }
-  )
+  );
 
   router.put(
     {
       authRequired: true,
       path: `${API_PREFIX}/metadashboard/edit`,
       validate: {
-        body: schema.object({
-          metadashboard: schema.arrayOf(
-            schema.object({
-              name: schema.string(),
-              type: schema.oneOf([
-                schema.literal('menu'),
-                schema.literal('entry'),
-              ]),
-              panel_id: schema.maybe(schema.string()),
-              description: schema.maybe(schema.string()),
-              title: schema.maybe(schema.string()),
-              dashboards: schema.maybe(
-                schema.arrayOf(
-                  schema.object({
-                    name: schema.string(),
-                    type: schema.string(),
-                    panel_id: schema.string(),
-                    description: schema.maybe(schema.string()),
-                    title: schema.maybe(schema.string()),
-                  })
-                )
-              ),
-            })
-          ),
-        }),
+        body: schema.any(),
       },
     },
-
     async (
       context,
       request,
       response
     ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
       try {
-        const requestClient = context.core.opensearch.client.asCurrentUser;
-
+        metadashboardSchema.validate(request.body);
+      } catch (error) {
+        return response.badRequest({
+          body: customErrorMessage(error),
+        });
+      }
+      const requestClient = context.core.opensearch.client.asCurrentUser;
+      try {
         const result = await requestClient.update({
           index: '.kibana',
           id: 'metadashboard',
