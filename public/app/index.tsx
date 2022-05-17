@@ -36,11 +36,22 @@ import {
 import { toMountPoint } from '../../../../src/plugins/opensearch_dashboards_react/public';
 
 export const App = ({ basename, notifications, http, navigation, methods }) => {
-  const metadashboard = methods.getMetadashboard();
   const [jsonValue, setJsonValue] = useState(JSON.stringify({}));
   const [isInvalid, setIsInvalid] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [errors, setErrors] = useState([]);
+  
+  const placeholderJson = `{
+    "metadashboard": [
+      {
+        "name": "Panel name",
+        "type": "entry",
+        "panel_id": "id"
+      }
+    ]
+  }`;
+  
+  const metadashboard = methods.getMetadashboard();
 
   const setInitialValue = () => {
     setJsonValue(JSON.stringify(metadashboard, null, 2));
@@ -59,6 +70,11 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
 
   const onSave = async () => {
     try {
+      if (!metadashboard) {
+        await http.put('/api/dashboards/metadashboard/create', {
+          body: jsonValue
+        });
+      }
       const response = await http.put('/api/dashboards/metadashboard/edit', {
         body: jsonValue,
       });
@@ -134,6 +150,7 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
                   <EuiCodeEditor
                     mode="hjson"
                     value={jsonValue}
+                    placeholder={placeholderJson}
                     onChange={onCodeEditorChange}
                     width="100%"
                     height="auto"

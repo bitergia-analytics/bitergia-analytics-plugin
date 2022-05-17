@@ -40,6 +40,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
             id: 'metadashboard',
           }
         );
+      
         const responseES = esResp._source;
         return response.ok({
           body: {
@@ -63,6 +64,48 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
       }
     }
   );
+  
+  router.put(
+    {
+      authRequired: true,
+      path: `${API_PREFIX}/metadashboard/create`,
+      validate: {}
+    },
+    async (
+      context,
+      request,
+      response
+    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
+      try {
+        const requestClient = context.core.opensearch.client.asCurrentUser;
+        const mapping = await requestClient.index({
+          index: '.kibana',
+          type: '_mapping',
+          body: {
+            dynamic: true
+          },
+        });
+        
+        const index = await requestClient.create({
+          index: '.kibana',
+          id: 'metadashboard',
+          body: request.body
+        });
+        
+        return response.ok({
+          body: {
+            mapping: mapping,
+            metadashboard: index
+          }
+        });
+      } catch (error) {
+        return response.customError({
+          body: error.body?.error?.reason || error,
+          statusCode: error.statusCode || 500,
+        });
+      }
+    }
+  )
 
   router.put(
     {

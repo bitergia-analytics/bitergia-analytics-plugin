@@ -99,7 +99,7 @@ export class BitergiaAnalyticsPlugin
     // Methods available at core.getStartServices()
     return {
       getMetadashboard: () => {
-        return response.data;
+        return response?.data;
       },
     };
   }
