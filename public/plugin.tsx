@@ -85,11 +85,15 @@ export class BitergiaAnalyticsPlugin
     try {
       var response = await core.http.fetch('/api/dashboards/getmetadashboard');
       const menuItems = JSON.parse(JSON.stringify(response.data.metadashboard));
-
-      core.chrome.navControls.registerCenter({
-        order: 2,
-        mount: (target) => this.mountMenu(menuItems, baseURL, target),
-      });
+      
+      if (Array.isArray(menuItems)) {
+        core.chrome.navControls.registerCenter({
+          order: 2,
+          mount: (target) => this.mountMenu(menuItems, baseURL, target),
+        });
+      } else {
+        console.error('Error loading menu: invalid metadashboard data');
+      }
     } catch (error) {
       console.log(error);
     }
