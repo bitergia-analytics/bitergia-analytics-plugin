@@ -116,48 +116,6 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
   router.put(
     {
       authRequired: true,
-      path: `${API_PREFIX}/metadashboard/create`,
-      validate: {},
-    },
-    async (
-      context,
-      request,
-      response
-    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
-      try {
-        const requestClient = context.core.opensearch.client.asCurrentUser;
-        const mapping = await requestClient.index({
-          index: '.kibana',
-          type: '_mapping',
-          body: {
-            dynamic: true,
-          },
-        });
-
-        const index = await requestClient.create({
-          index: '.kibana',
-          id: 'metadashboard',
-          body: request.body,
-        });
-
-        return response.ok({
-          body: {
-            mapping,
-            metadashboard: index,
-          },
-        });
-      } catch (error) {
-        return response.customError({
-          body: error.body?.error?.reason || error,
-          statusCode: error.statusCode || 500,
-        });
-      }
-    }
-  );
-
-  router.put(
-    {
-      authRequired: true,
       path: `${API_PREFIX}/metadashboard/edit`,
       validate: {
         body: schema.any(),
@@ -177,12 +135,17 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
       }
       const requestClient = context.core.opensearch.client.asCurrentUser;
       try {
-        const result = await requestClient.update({
+        await requestClient.indices.putMapping({
+          index: '.kibana',
+          body: {
+            dynamic: true,
+          },
+        });
+
+        const result = await requestClient.index({
           index: '.kibana',
           id: 'metadashboard',
-          body: {
-            doc: request.body,
-          },
+          body: request.body,
         });
 
         return response.ok({ body: result });

@@ -40,18 +40,18 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
   const [isInvalid, setIsInvalid] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [errors, setErrors] = useState([]);
-  
-  const placeholderJson = `{
-    "metadashboard": [
+
+  const placeholderJson = {
+    metadashboard: [
       {
-        "name": "Panel name",
-        "type": "entry",
-        "panel_id": "id"
-      }
-    ]
-  }`;
-  
-  const metadashboard = methods.getMetadashboard();
+        name: 'Panel name',
+        type: 'entry',
+        panel_id: 'id',
+      },
+    ],
+  };
+
+  const metadashboard = methods.getMetadashboard() || placeholderJson;
 
   const setInitialValue = () => {
     setJsonValue(JSON.stringify(metadashboard, null, 2));
@@ -70,11 +70,6 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
 
   const onSave = async () => {
     try {
-      if (!metadashboard) {
-        await http.put('/api/dashboards/metadashboard/create', {
-          body: jsonValue
-        });
-      }
       const response = await http.put('/api/dashboards/metadashboard/edit', {
         body: jsonValue,
       });
@@ -150,7 +145,6 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
                   <EuiCodeEditor
                     mode="hjson"
                     value={jsonValue}
-                    placeholder={placeholderJson}
                     onChange={onCodeEditorChange}
                     width="100%"
                     height="auto"
@@ -161,6 +155,7 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
                     setOptions={{
                       showLineNumbers: false,
                       tabSize: 2,
+                      wrap: true,
                     }}
                   />
                 </EuiFormRow>
