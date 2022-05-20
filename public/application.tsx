@@ -18,14 +18,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppMountParameters, CoreStart } from '../../../src/core/public';
 import { AppPluginStartDependencies } from './types';
+import { App } from './app';
 
 export const renderApp = (
   { notifications, http, chrome }: CoreStart,
   { navigation }: AppPluginStartDependencies,
+  methods,
   { appBasePath, element }: AppMountParameters
 ) => {
-  window.location.replace(
-    window.location.href.split('app/')[0] + 'app/dashboards#/view/Overview'
+  chrome.setBreadcrumbs([{ text: 'Bitergia Analytics' }]);
+
+  ReactDOM.render(
+    <App
+      basename={appBasePath}
+      notifications={notifications}
+      http={http}
+      navigation={navigation}
+      methods={methods}
+    />,
+    element
   );
 
   return () => ReactDOM.unmountComponentAtNode(element);
