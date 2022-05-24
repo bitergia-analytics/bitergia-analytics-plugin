@@ -1,7 +1,7 @@
 {
   "id": "bitergiaAnalytics",
-  "version": "0.0.7",
-  "opensearchDashboardsVersion": "1.2.0",
+  "version": "0.0.8-dev",
+  "opensearchDashboardsVersion": "1.3.2",
   "configPath": ["bitergia_analytics"],
   "requiredPlugins": ["navigation", "data", "opensearchDashboardsReact"],
   "optionalPlugins": ["share"],
