@@ -13,16 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiCodeEditor,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiForm,
-  EuiFormRow,
   EuiPage,
   EuiPageBody,
   EuiPageContent,
@@ -31,55 +24,19 @@ import {
   EuiPageHeader,
   EuiSpacer,
   EuiTitle,
+  EuiTabbedContent,
+  EuiText,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiToast,
+  EuiButton,
 } from '@elastic/eui';
 import { toMountPoint } from '../../../../src/plugins/opensearch_dashboards_react/public';
+import { DragDropEditor } from './../components/dragDropEditor';
+import { JsonEditor } from './../components/jsonEditor';
 
 export const App = ({ basename, notifications, http, navigation, methods }) => {
-  const [jsonValue, setJsonValue] = useState(JSON.stringify({}));
-  const [isInvalid, setIsInvalid] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  const [errors, setErrors] = useState([]);
-
-  const placeholderJson = {
-    metadashboard: [
-      {
-        name: 'Panel name',
-        type: 'entry',
-        panel_id: 'id',
-      },
-    ],
-  };
-
-  const metadashboard = methods.getMetadashboard() || placeholderJson;
-
-  const setInitialValue = () => {
-    setJsonValue(JSON.stringify(metadashboard, null, 2));
-    setErrors([]);
-  };
-
-  const onCodeEditorChange = (value) => {
-    try {
-      JSON.parse(value);
-      setErrors([]);
-    } catch (error) {
-      setErrors(['Invalid JSON syntax']);
-    }
-    setJsonValue(value);
-  };
-
-  const onSave = async () => {
-    try {
-      const response = await http.put('/api/dashboards/metadashboard/edit', {
-        body: jsonValue,
-      });
-      renderToast();
-    } catch (error) {
-      const message = error.body?.message || error.toString();
-      setErrors([message]);
-      renderToast(error);
-    }
-  };
+  const metadashboard = methods.getMetadashboard()?.metadashboard;
 
   const renderToast = (error) => {
     if (error) {
@@ -105,23 +62,40 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
     }
   };
 
-  useEffect(() => {
-    setInitialValue();
-  }, [methods]);
-
-  useEffect(() => {
-    const isInvalid = errors.length > 0;
-    setIsInvalid(isInvalid);
-  }, [errors]);
-
-  useEffect(() => {
-    const oldValue = JSON.stringify(metadashboard, null, 2);
-    setIsChanged(oldValue !== jsonValue);
-  }, [jsonValue]);
+  const tabs = [
+    {
+      id: 'dnd',
+      name: 'Visual interface',
+      content: (
+        <Fragment>
+          <EuiSpacer />
+          <DragDropEditor
+            renderToast={renderToast}
+            http={http}
+            value={metadashboard}
+          />
+        </Fragment>
+      ),
+    },
+    {
+      id: 'json',
+      name: 'JSON',
+      content: (
+        <Fragment>
+          <EuiSpacer />
+          <JsonEditor
+            renderToast={renderToast}
+            http={http}
+            value={methods.getMetadashboard()}
+          />
+        </Fragment>
+      ),
+    },
+  ];
 
   return (
     <Router basename={basename}>
-      <EuiPage restrictWidth={true}>
+      <EuiPage restrictWidth="1300px">
         <EuiPageBody>
           <EuiPageHeader>
             <EuiTitle>
@@ -135,55 +109,11 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
               </EuiTitle>
             </EuiPageContentHeader>
             <EuiPageContentBody>
-              <EuiForm>
-                <EuiFormRow
-                  label="JSON"
-                  isInvalid={isInvalid}
-                  error={errors}
-                  fullWidth
-                >
-                  <EuiCodeEditor
-                    mode="hjson"
-                    value={jsonValue}
-                    onChange={onCodeEditorChange}
-                    width="100%"
-                    height="auto"
-                    minLines={6}
-                    maxLines={20}
-                    showGutter={false}
-                    fontSize={14}
-                    setOptions={{
-                      showLineNumbers: false,
-                      tabSize: 2,
-                      wrap: true,
-                    }}
-                  />
-                </EuiFormRow>
-                <EuiSpacer size="m" />
-                <EuiFlexGroup>
-                  <EuiFlexItem grow={false}>
-                    <EuiButton
-                      onClick={onSave}
-                      disabled={isInvalid || !isChanged}
-                      iconType="check"
-                      fill
-                    >
-                      Save changes
-                    </EuiButton>
-                  </EuiFlexItem>
-                  {isChanged && (
-                    <EuiFlexItem grow={false}>
-                      <EuiButtonEmpty
-                        iconType="cross"
-                        flush="left"
-                        onClick={setInitialValue}
-                      >
-                        Cancel changes
-                      </EuiButtonEmpty>
-                    </EuiFlexItem>
-                  )}
-                </EuiFlexGroup>
-              </EuiForm>
+              <EuiTabbedContent
+                tabs={tabs}
+                initialSelectedTab={tabs[0]}
+                autoFocus="selected"
+              />
             </EuiPageContentBody>
           </EuiPageContent>
         </EuiPageBody>
