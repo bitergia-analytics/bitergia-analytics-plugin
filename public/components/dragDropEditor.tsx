@@ -134,8 +134,11 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
               isRemovable={true}
             >
               {(provided, state) => (
-                <EuiPanel paddingSize="s" grow={false}>
-                  <EuiFlexGroup justifyContent="spaceBetween">
+                <EuiPanel
+                  paddingSize="s"
+                  style={{ minWidth: '150px', padding: '14px' }}
+                >
+                  <EuiFlexGroup justifyContent="spaceBetween" gutterSize="xl">
                     <EuiFlexItem grow={false}>
                       <EuiText size="s">{dashboard.name}</EuiText>
                     </EuiFlexItem>
@@ -160,7 +163,8 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
                     </EuiFlexItem>
                   </EuiFlexGroup>
                   {metadashboard[index].dashboards && (
-                    <EuiDroppable droppableId={index.toString()} spacing="s">
+                    <EuiDroppable droppableId={index.toString()} spacing="none">
+                      <EuiSpacer size="s" />
                       {metadashboard[index].dashboards.map(({ name }, idx) => (
                         <DraggableMenuItem
                           name={name}

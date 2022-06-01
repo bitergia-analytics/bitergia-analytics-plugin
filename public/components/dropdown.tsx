@@ -27,9 +27,13 @@ export const Dropdown = ({ item, baseURL }) => {
 
   function getDashboardLinks(links) {
     return links.map((dashboard) => {
+      const url = dashboard.panel_id.includes('http')
+        ? dashboard.panel_id
+        : `${baseURL}#/view/${dashboard.panel_id}`;
+        
       return {
         label: dashboard.name,
-        href: `${baseURL}#/view/${dashboard.panel_id}`,
+        href: url,
       };
     });
   }

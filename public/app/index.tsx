@@ -31,7 +31,6 @@ import {
   EuiToast,
   EuiButton,
 } from '@elastic/eui';
-import { toMountPoint } from '../../../../src/plugins/opensearch_dashboards_react/public';
 import { DragDropEditor } from './../components/dragDropEditor';
 import { JsonEditor } from './../components/jsonEditor';
 
@@ -45,20 +44,7 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
         { title: 'Error saving menu' }
       );
     } else {
-      notifications.toasts.addSuccess({
-        title: 'Menu saved successfully',
-        text: toMountPoint(
-          <>
-            <EuiFlexGroup justifyContent="flexEnd" gutterSize="s">
-              <EuiFlexItem grow={false}>
-                <EuiButton size="s" onClick={() => window.location.reload()}>
-                  Reload page
-                </EuiButton>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </>
-        ),
-      });
+      window.location.reload();
     }
   };
 
