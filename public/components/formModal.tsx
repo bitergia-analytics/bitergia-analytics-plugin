@@ -32,20 +32,26 @@ import {
   EuiSpacer,
   EuiTitle,
   EuiButtonIcon,
+  EuiComboBox,
 } from '@elastic/eui';
 
-export const FormModal = ({ showModal, saveItem, item }) => {
+export const FormModal = ({ showModal, saveItem, item, http }) => {
   const initialValues = {
     isModalVisible: false,
     isInvalid: false,
     errors: [],
     name: '',
     type: 'entry',
-    panelId: '',
+    dashboardId: {
+      label: '',
+      panel_id: '',
+    },
     dashboards: [
       {
         name: '',
         type: 'entry',
+        label: '',
+        panel_id: '',
       },
     ],
   };
@@ -56,23 +62,64 @@ export const FormModal = ({ showModal, saveItem, item }) => {
   const [errors, setErrors] = useState(initialValues.errors);
   const [name, setName] = useState(initialValues.name);
   const [type, setType] = useState(initialValues.type);
-  const [panelId, setPanelId] = useState(initialValues.panelId);
+  const [dashboardId, setDashboardId] = useState(initialValues.dashboardId);
   const [dashboards, setDashboards] = useState(initialValues.dashboards);
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
+    function findOption(id) {
+      if (!id) {
+        return;
+      }
+      const found = options.find((option) => option.panel_id === id);
+      return found ? found : createOption(id, options);
+    }
+
     setIsModalVisible(showModal || initialValues.showModal);
     setName(item?.name || initialValues.name);
     setType(item?.type || initialValues.type);
-    setPanelId(item?.panel_id || initialValues.panelId);
-    setDashboards(item?.dashboards || initialValues.dashboards);
+    setDashboardId(findOption(item?.panel_id) || initialValues.dashboardId);
+    setDashboards(initialValues.dashboards);
+
+    if (item?.dashboards) {
+      const copy = [...item.dashboards];
+      const dashboardsData = copy.map((dashboard) => {
+        const optionData = findOption(dashboard.panel_id);
+        return { ...optionData, ...dashboard };
+      });
+      setDashboards(dashboardsData);
+    }
   }, [showModal, item]);
+
+  useEffect(() => {
+    async function fetchDashboards() {
+      try {
+        const response = await http.put('/api/dashboards/search');
+
+        const options = response.hits.map((hit) => {
+          return {
+            label: hit._source.dashboard.title,
+            panel_id: hit._id.replace('dashboard:', ''),
+          };
+        });
+
+        setOptions(options);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchDashboards();
+  }, []);
 
   const addDashboard = () => {
     setDashboards([
       ...dashboards,
       {
         name: '',
+        type: 'entry',
         panel_id: '',
+        label: '',
       },
     ]);
   };
@@ -83,17 +130,43 @@ export const FormModal = ({ showModal, saveItem, item }) => {
     setDashboards(copy);
   };
 
-  const setDashboardData = (index, key, value) => {
+  const createOption = (searchValue = '', flattenedOptions = []) => {
+    const normalizedSearchValue = searchValue.trim().toLowerCase();
+
+    if (!normalizedSearchValue) {
+      return;
+    }
+
+    const newOption = {
+      label: searchValue,
+      panel_id: searchValue,
+    };
+
+    if (
+      !flattenedOptions.find(
+        (option) =>
+          option.panel_id.trim().toLowerCase() === normalizedSearchValue
+      )
+    ) {
+      setOptions([...options, newOption]);
+    }
+
+    return newOption;
+  };
+
+  const setDashboardData = (index, value) => {
     const copy = [...dashboards];
-    copy[index][key] = value;
+    Object.assign(copy[index], value);
     setDashboards(copy);
   };
 
   const closeModal = () => {
+    setIsInvalid(false);
+    setErrors([]);
     setIsModalVisible(false);
-    setName(initialValues.Name);
+    setName(initialValues.name);
     setType(initialValues.type);
-    setPanelId(initialValues.panelId);
+    setDashboardId(initialValues.dashboardId);
     setDashboards(initialValues.dashboards);
   };
 
@@ -103,8 +176,8 @@ export const FormModal = ({ showModal, saveItem, item }) => {
     if (!name) {
       messages.push('Name is required');
     }
-    if (type === 'entry' && !panelId) {
-      messages.push('Panel ID is required');
+    if (type === 'entry' && !dashboardId.panel_id) {
+      messages.push('Dashboard ID is required');
     }
     if (type === 'menu' && dashboards.some((d) => !d.name || !d.panel_id)) {
       messages.push('Missing menu item data');
@@ -118,11 +191,15 @@ export const FormModal = ({ showModal, saveItem, item }) => {
     const item = { name, type };
 
     if (type === 'entry') {
-      item.panel_id = panelId;
+      item.panel_id = dashboardId.panel_id;
     } else {
-      item.dashboards = dashboards.map((d) =>
-        Object.assign(d, { type: 'entry' })
-      );
+      item.dashboards = dashboards.map((dashboard) => {
+        return {
+          panel_id: dashboard.panel_id,
+          name: dashboard.name,
+          type: 'entry'
+        };
+      });
     }
 
     saveItem(item);
@@ -143,11 +220,13 @@ export const FormModal = ({ showModal, saveItem, item }) => {
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiFormRow label="Panel ID">
-            <EuiFieldText
-              name="panel_id"
-              value={panelId}
-              onChange={(e) => setPanelId(e.target.value)}
+          <EuiFormRow label="Dashboard ID or URL">
+            <EuiComboBox
+              options={options}
+              selectedOptions={[dashboardId]}
+              singleSelection={{ asPlainText: true }}
+              onChange={(e) => setDashboardId(e[0] || initialValues.dashboardId)}
+              onCreateOption={(e) => setDashboardId(createOption(e))}
             />
           </EuiFormRow>
         </EuiFlexItem>
@@ -163,18 +242,29 @@ export const FormModal = ({ showModal, saveItem, item }) => {
             <EuiFieldText
               name="name"
               value={dashboard.name}
-              onChange={(e) => setDashboardData(index, 'name', e.target.value)}
+              onChange={(e) =>
+                setDashboardData(index, { name: e.target.value })
+              }
             />
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiFormRow label="Panel ID">
-            <EuiFieldText
-              name="panel_id"
-              value={dashboards[index].panel_id}
+          <EuiFormRow label="Dashboard ID or URL">
+            <EuiComboBox
+              options={options}
+              selectedOptions={[dashboards[index]]}
+              singleSelection={{ asPlainText: true }}
               onChange={(e) =>
-                setDashboardData(index, 'panel_id', e.target.value)
+                setDashboardData(
+                  index,
+                  e[0] || {
+                    panel_id: '',
+                    label: '',
+                  }
+                )
               }
+              onCreateOption={(e) => setDashboardData(index, createOption(e))}
+              style={{ width: '350px' }}
             />
           </EuiFormRow>
         </EuiFlexItem>

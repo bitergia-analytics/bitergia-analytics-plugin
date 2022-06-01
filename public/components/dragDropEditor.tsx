@@ -96,6 +96,7 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
         saveItem={saveItem}
         showModal={showModal}
         item={editableItem}
+        http={http}
       />
 
       <EuiFlexGroup alignItems="center">
