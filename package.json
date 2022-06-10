@@ -9,7 +9,8 @@
     "lint": "../../node_modules/.bin/eslint '**/*.tsx' '**/*.ts' -c .eslintrc --ignore-path .gitignore",
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",
-    "plugin_helpers": "node ../../scripts/plugin_helpers"
+    "plugin_helpers": "node ../../scripts/plugin_helpers",
+    "test:jest": "node ./test/run_jest_tests.js --config ./test/jest.config.js"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
