@@ -36,7 +36,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
       {
         name: 'Panel name',
         type: 'entry',
-        panel_id: 'id',
+        dashboard_id: 'id',
       },
     ],
   };

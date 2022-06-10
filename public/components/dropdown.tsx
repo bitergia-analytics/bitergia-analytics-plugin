@@ -27,10 +27,10 @@ export const Dropdown = ({ item, baseURL }) => {
 
   function getDashboardLinks(links) {
     return links.map((dashboard) => {
-      const url = dashboard.panel_id.includes('http')
-        ? dashboard.panel_id
-        : `${baseURL}#/view/${dashboard.panel_id}`;
-        
+      const url = dashboard.dashboard_id?.includes('http')
+        ? dashboard.dashboard_id
+        : `${baseURL}#/view/${dashboard.dashboard_id}`;
+
       return {
         label: dashboard.name,
         href: url,

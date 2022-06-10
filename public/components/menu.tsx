@@ -33,12 +33,12 @@ export const Menu = (props) => {
       updated = metadashboard.map((dashboard) => {
         if (dashboard.type === 'entry') {
           return Object.assign(dashboard, {
-            isActive: currentDashboard === dashboard.panel_id,
+            isActive: currentDashboard === dashboard.dashboard_id,
           });
         }
         return Object.assign(dashboard, {
           isActive: dashboard.dashboards.some(
-            (d) => currentDashboard === d.panel_id
+            (d) => currentDashboard === d.dashboard_id
           ),
         });
       });

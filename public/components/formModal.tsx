@@ -44,14 +44,14 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
     type: 'entry',
     dashboardId: {
       label: '',
-      panel_id: '',
+      dashboard_id: '',
     },
     dashboards: [
       {
         name: '',
         type: 'entry',
         label: '',
-        panel_id: '',
+        dashboard_id: '',
       },
     ],
   };
@@ -71,20 +71,20 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       if (!id) {
         return;
       }
-      const found = options.find((option) => option.panel_id === id);
+      const found = options.find((option) => option.dashboard_id === id);
       return found ? found : createOption(id, options);
     }
 
     setIsModalVisible(showModal || initialValues.showModal);
     setName(item?.name || initialValues.name);
     setType(item?.type || initialValues.type);
-    setDashboardId(findOption(item?.panel_id) || initialValues.dashboardId);
+    setDashboardId(findOption(item?.dashboard_id) || initialValues.dashboardId);
     setDashboards(initialValues.dashboards);
 
     if (item?.dashboards) {
       const copy = [...item.dashboards];
       const dashboardsData = copy.map((dashboard) => {
-        const optionData = findOption(dashboard.panel_id);
+        const optionData = findOption(dashboard.dashboard_id);
         return { ...optionData, ...dashboard };
       });
       setDashboards(dashboardsData);
@@ -99,7 +99,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
         const options = response.hits.map((hit) => {
           return {
             label: hit._source.dashboard.title,
-            panel_id: hit._id.replace('dashboard:', ''),
+            dashboard_id: hit._id.replace('dashboard:', ''),
           };
         });
 
@@ -118,7 +118,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       {
         name: '',
         type: 'entry',
-        panel_id: '',
+        dashboard_id: '',
         label: '',
       },
     ]);
@@ -139,13 +139,13 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
 
     const newOption = {
       label: searchValue,
-      panel_id: searchValue,
+      dashboard_id: searchValue,
     };
 
     if (
       !flattenedOptions.find(
         (option) =>
-          option.panel_id.trim().toLowerCase() === normalizedSearchValue
+          option.dashboard_id.trim().toLowerCase() === normalizedSearchValue
       )
     ) {
       setOptions([...options, newOption]);
@@ -176,10 +176,10 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
     if (!name) {
       messages.push('Name is required');
     }
-    if (type === 'entry' && !dashboardId.panel_id) {
+    if (type === 'entry' && !dashboardId.dashboard_id) {
       messages.push('Dashboard ID is required');
     }
-    if (type === 'menu' && dashboards.some((d) => !d.name || !d.panel_id)) {
+    if (type === 'menu' && dashboards.some((d) => !d.name || !d.dashboard_id)) {
       messages.push('Missing menu item data');
     }
     if (messages.length > 0) {
@@ -191,11 +191,11 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
     const item = { name, type };
 
     if (type === 'entry') {
-      item.panel_id = dashboardId.panel_id;
+      item.dashboard_id = dashboardId.dashboard_id;
     } else {
       item.dashboards = dashboards.map((dashboard) => {
         return {
-          panel_id: dashboard.panel_id,
+          dashboard_id: dashboard.dashboard_id,
           name: dashboard.name,
           type: 'entry'
         };
@@ -258,7 +258,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
                 setDashboardData(
                   index,
                   e[0] || {
-                    panel_id: '',
+                    dashboard_id: '',
                     label: '',
                   }
                 )
