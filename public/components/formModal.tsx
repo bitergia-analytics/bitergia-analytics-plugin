@@ -211,22 +211,24 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       <EuiSpacer size="s" />
       <EuiFlexGroup>
         <EuiFlexItem>
-          <EuiFormRow label="Name">
+          <EuiFormRow label="Name" id="name">
             <EuiFieldText
               name="name"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiFormRow label="Dashboard ID or URL">
+          <EuiFormRow label="Dashboard ID or URL" id="dashboard-id">
             <EuiComboBox
               options={options}
               selectedOptions={[dashboardId]}
               singleSelection={{ asPlainText: true }}
               onChange={(e) => setDashboardId(e[0] || initialValues.dashboardId)}
               onCreateOption={(e) => setDashboardId(createOption(e))}
+              id="dashboard-id"
             />
           </EuiFormRow>
         </EuiFlexItem>
@@ -312,13 +314,13 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
           <EuiModal onClose={closeModal} style={{ width: 800 }}>
             <EuiModalHeader>
               <EuiModalHeaderTitle>
-                <h1>{item.name ? 'Edit item' : 'Add item'}</h1>
+                <h1>{item?.name ? 'Edit item' : 'Add item'}</h1>
               </EuiModalHeaderTitle>
             </EuiModalHeader>
 
             <EuiModalBody>
               <EuiForm component="form" isInvalid={isInvalid} error={errors}>
-                <EuiFormRow label="Type">
+                <EuiFormRow label="Type" id="type">
                   <EuiRadioGroup
                     options={[
                       {
@@ -333,6 +335,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
                     idSelected={type}
                     onChange={(id) => setType(id)}
                     name="type"
+                    id="type"
                   />
                 </EuiFormRow>
 

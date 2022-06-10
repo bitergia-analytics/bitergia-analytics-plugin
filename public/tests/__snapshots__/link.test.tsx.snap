@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Link /> Renders the component 1`] = `
+<a
+  class="euiButtonEmpty euiButtonEmpty--text euiHeaderLink"
+  href="/app/dashboards#/view/12345-abc"
+  rel="noreferrer"
+>
+  <span
+    class="euiButtonContent euiButtonEmpty__content"
+  >
+    <span
+      class="euiButtonEmpty__text"
+    >
+      Link name
+    </span>
+  </span>
+</a>
+`;

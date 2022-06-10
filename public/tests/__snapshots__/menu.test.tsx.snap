@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Menu /> Renders the component 1`] = `
+<div
+  class="euiHeaderSectionItem euiHeaderSectionItem--borderLeft"
+>
+  <nav
+    aria-label="App menu"
+    class="euiHeaderLinks bitergia-menu"
+  >
+    <div
+      class="euiHeaderLinks__list euiHeaderLinks__list--gutterXS"
+    >
+      <a
+        class="euiButtonEmpty euiButtonEmpty--text euiHeaderLink"
+        href="undefined#/view/Overview"
+        rel="noreferrer"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Overview
+          </span>
+        </span>
+      </a>
+      <div
+        class="euiPopover euiPopover--anchorDownCenter"
+      >
+        <div
+          class="euiPopover__anchor"
+        >
+          <button
+            class="euiButtonEmpty euiButtonEmpty--primary euiHeaderLink euiHeaderLink-isActive"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+            >
+              <div
+                class="euiButtonContent__icon"
+                data-euiicon-type="arrowDown"
+              />
+              <span
+                class="euiButtonEmpty__text"
+              >
+                About
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>
+`;

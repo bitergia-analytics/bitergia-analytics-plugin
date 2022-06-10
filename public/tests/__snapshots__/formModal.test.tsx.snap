@@ -1,0 +1,280 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormModal /> Renders the component 1`] = `
+<div
+  class="euiModal euiModal--maxWidth-default"
+  style="width: 800px;"
+  tabindex="0"
+>
+  <button
+    aria-label="Closes this modal window"
+    class="euiButtonIcon euiButtonIcon--text euiModal__closeIcon"
+    type="button"
+  >
+    <div
+      aria-hidden="true"
+      class="euiButtonIcon__icon"
+      data-euiicon-type="cross"
+    />
+  </button>
+  <div
+    class="euiModal__flex"
+  >
+    <div
+      class="euiModalHeader"
+    >
+      <div
+        class="euiModalHeader__title"
+      >
+        <h1>
+          Edit item
+        </h1>
+      </div>
+    </div>
+    <div
+      class="euiModalBody"
+    >
+      <div
+        class="euiModalBody__overflow"
+      >
+        <form
+          class="euiForm"
+        >
+          <div
+            class="euiFormRow"
+            id="type-row"
+          >
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                class="euiFormLabel euiFormRow__label"
+                for="type"
+              >
+                Type
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                id="type"
+              >
+                <div
+                  class="euiRadio euiRadioGroup__item"
+                >
+                  <input
+                    checked=""
+                    class="euiRadio__input"
+                    id="entry"
+                    name="type"
+                    type="radio"
+                    value=""
+                  />
+                  <div
+                    class="euiRadio__circle"
+                  />
+                  <label
+                    class="euiRadio__label"
+                    for="entry"
+                  >
+                    Link
+                  </label>
+                </div>
+                <div
+                  class="euiRadio euiRadioGroup__item"
+                >
+                  <input
+                    class="euiRadio__input"
+                    id="menu"
+                    name="type"
+                    type="radio"
+                    value=""
+                  />
+                  <div
+                    class="euiRadio__circle"
+                  />
+                  <label
+                    class="euiRadio__label"
+                    for="menu"
+                  >
+                    Dropdown menu
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--s"
+          />
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="name-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="name"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <input
+                        class="euiFieldText"
+                        id="name"
+                        name="name"
+                        type="text"
+                        value="name"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem"
+            >
+              <div
+                class="euiFormRow"
+                id="dashboard-id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="dashboard-id"
+                  >
+                    Dashboard ID or URL
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="euiComboBox"
+                    role="combobox"
+                  >
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <div
+                          class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                          data-test-subj="comboBoxInput"
+                          tabindex="-1"
+                        >
+                          <span
+                            class="euiComboBoxPill euiComboBoxPill--plainText"
+                            dashboard_id=""
+                          />
+                          <div
+                            class="euiComboBox__input"
+                            style="font-size: 14px; display: inline-block;"
+                          >
+                            <input
+                              aria-controls=""
+                              data-test-subj="comboBoxSearchInput"
+                              id="dashboard-id"
+                              role="textbox"
+                              style="box-sizing: content-box; width: 2px;"
+                              value=""
+                            />
+                            <div
+                              style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                        >
+                          <button
+                            aria-label="Clear input"
+                            class="euiFormControlLayoutClearButton"
+                            data-test-subj="comboBoxClearButton"
+                            type="button"
+                          >
+                            <div
+                              class="euiFormControlLayoutClearButton__icon"
+                              data-euiicon-type="cross"
+                            />
+                          </button>
+                          <button
+                            aria-label="Open list of options"
+                            class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                            data-test-subj="comboBoxToggleListButton"
+                            type="button"
+                          >
+                            <div
+                              aria-hidden="true"
+                              class="euiFormControlLayoutCustomIcon__icon"
+                              data-euiicon-type="arrowDown"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="euiModalFooter"
+    >
+      <button
+        class="euiButtonEmpty euiButtonEmpty--primary"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        type="submit"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Save
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
