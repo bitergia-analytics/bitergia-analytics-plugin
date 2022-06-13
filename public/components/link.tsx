@@ -17,11 +17,11 @@ import React from 'react';
 import { EuiHeaderLink } from '@elastic/eui';
 
 export const Link = ({ item, baseURL }) => {
+  const url = item.dashboard_id?.includes('http')
+    ? item.dashboard_id
+    : `${baseURL}#/view/${item.dashboard_id}`;
   return (
-    <EuiHeaderLink
-      href={`${baseURL}#/view/${item.panel_id}`}
-      isActive={item.isActive}
-    >
+    <EuiHeaderLink href={url} isActive={item.isActive}>
       {item.name}
     </EuiHeaderLink>
   );

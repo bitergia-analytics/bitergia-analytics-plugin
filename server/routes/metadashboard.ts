@@ -26,7 +26,7 @@ const metadashboardSchema = schema.object({
     schema.object({
       name: schema.string(),
       type: schema.oneOf([schema.literal('menu'), schema.literal('entry')]),
-      panel_id: schema.maybe(schema.string()),
+      dashboard_id: schema.maybe(schema.string()),
       description: schema.maybe(schema.string()),
       title: schema.maybe(schema.string()),
       dashboards: schema.maybe(
@@ -34,7 +34,7 @@ const metadashboardSchema = schema.object({
           schema.object({
             name: schema.string(),
             type: schema.string(),
-            panel_id: schema.string(),
+            dashboard_id: schema.string(),
             description: schema.maybe(schema.string()),
             title: schema.maybe(schema.string()),
           })

@@ -15,8 +15,10 @@
  */
 
 import { registerMetadashboardRoutes } from './metadashboard';
+import { registerSearchRoutes } from './search';
 import { IRouter } from '../../../../src/core/server';
 
 export function defineRoutes(router: IRouter) {
   registerMetadashboardRoutes(router);
+  registerSearchRoutes(router);
 }
