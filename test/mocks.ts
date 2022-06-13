@@ -38,7 +38,7 @@ const metadashboardMock = {
         },
       ],
     },
-  ]
+  ],
 };
 
 const initializerContextMock = {
@@ -89,7 +89,7 @@ const historyMock = {
   },
 };
 
-export default {
+export {
   metadashboardMock,
   initializerContextMock,
   coreServicesMock,

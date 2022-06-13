@@ -14,58 +14,57 @@
  * permissions and limitations under the License.
  */
 
- import { schema } from '@osd/config-schema';
- import {
-   IRouter,
-   OpenSearchDashboardsResponse,
-   ResponseError,
- } from '../../../../src/core/server';
- import { API_PREFIX } from '../../common';
+import { schema } from '@osd/config-schema';
+import {
+  IRouter,
+  OpenSearchDashboardsResponse,
+  ResponseError,
+} from '../../../../src/core/server';
+import { API_PREFIX } from '../../common';
 
- export const registerSearchRoutes = function (router: IRouter) {
-   router.put(
-     {
-       path: `${API_PREFIX}/search`,
-       validate: {
-         body: schema.any(),
-       },
-     },
-     async (
-       context,
-       request,
-       response
-     ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
-       try {
-         const requestClient = context.core.opensearch.client.asCurrentUser;
-         const result = await requestClient.search({
-           index: ".kibana",
-           size: 100,
-           body: {
-             "_source": ["dashboard.title"],
-             "query": {
-               "bool": {
-                 "must": [
-                   {
-                     "term": {
-                       "type": "dashboard"
-                     }
-                   }
-                 ]
-               }
-             }
-           }
-         });
+export const registerSearchRoutes = function (router: IRouter) {
+  router.put(
+    {
+      path: `${API_PREFIX}/search`,
+      validate: {
+        body: schema.any(),
+      },
+    },
+    async (
+      context,
+      request,
+      response
+    ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
+      try {
+        const requestClient = context.core.opensearch.client.asCurrentUser;
+        const result = await requestClient.search({
+          index: '.kibana',
+          size: 100,
+          body: {
+            _source: ['dashboard.title'],
+            query: {
+              bool: {
+                must: [
+                  {
+                    term: {
+                      type: 'dashboard',
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        });
 
-         return response.ok({
-           body: result.body?.hits
-         })
-       } catch (error) {
-         return response.customError({
-           body: error,
-           statusCode: error.statusCode
-         });
-       }
-     }
-   );
- };
- 
+        return response.ok({
+          body: result.body?.hits,
+        });
+      } catch (error) {
+        return response.customError({
+          body: error,
+          statusCode: error.statusCode,
+        });
+      }
+    }
+  );
+};
