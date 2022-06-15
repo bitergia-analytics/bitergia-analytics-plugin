@@ -96,14 +96,14 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       try {
         const response = await http.put('/api/dashboards/search');
 
-        const options = response.hits.map((hit) => {
+        const result = response.hits.map((hit) => {
           return {
             label: hit._source.dashboard.title,
             dashboard_id: hit._id.replace('dashboard:', ''),
           };
         });
 
-        setOptions(options);
+        setOptions(result);
       } catch (error) {
         console.log(error);
       }
@@ -188,21 +188,21 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       return;
     }
 
-    const item = { name, type };
+    const itemData = { name, type };
 
     if (type === 'entry') {
-      item.dashboard_id = dashboardId.dashboard_id;
+      itemData.dashboard_id = dashboardId.dashboard_id;
     } else {
-      item.dashboards = dashboards.map((dashboard) => {
+      itemData.dashboards = dashboards.map((dashboard) => {
         return {
           dashboard_id: dashboard.dashboard_id,
           name: dashboard.name,
-          type: 'entry'
+          type: 'entry',
         };
       });
     }
 
-    saveItem(item);
+    saveItem(itemData);
     closeModal();
   };
 
@@ -211,22 +211,26 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
       <EuiSpacer size="s" />
       <EuiFlexGroup>
         <EuiFlexItem>
-          <EuiFormRow label="Name">
+          <EuiFormRow label="Name" id="name">
             <EuiFieldText
               name="name"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiFormRow label="Dashboard ID or URL">
+          <EuiFormRow label="Dashboard ID or URL" id="dashboard-id">
             <EuiComboBox
               options={options}
               selectedOptions={[dashboardId]}
               singleSelection={{ asPlainText: true }}
-              onChange={(e) => setDashboardId(e[0] || initialValues.dashboardId)}
+              onChange={(e) =>
+                setDashboardId(e[0] || initialValues.dashboardId)
+              }
               onCreateOption={(e) => setDashboardId(createOption(e))}
+              id="dashboard-id"
             />
           </EuiFormRow>
         </EuiFlexItem>
@@ -312,13 +316,13 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
           <EuiModal onClose={closeModal} style={{ width: 800 }}>
             <EuiModalHeader>
               <EuiModalHeaderTitle>
-                <h1>{item.name ? 'Edit item' : 'Add item'}</h1>
+                <h1>{item?.name ? 'Edit item' : 'Add item'}</h1>
               </EuiModalHeaderTitle>
             </EuiModalHeader>
 
             <EuiModalBody>
               <EuiForm component="form" isInvalid={isInvalid} error={errors}>
-                <EuiFormRow label="Type">
+                <EuiFormRow label="Type" id="type">
                   <EuiRadioGroup
                     options={[
                       {
@@ -333,6 +337,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
                     idSelected={type}
                     onChange={(id) => setType(id)}
                     name="type"
+                    id="type"
                   />
                 </EuiFormRow>
 

@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Dropdown /> Renders the component 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButtonEmpty euiButtonEmpty--text euiHeaderLink"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+      >
+        <div
+          class="euiButtonContent__icon"
+          data-euiicon-type="arrowDown"
+        />
+        <span
+          class="euiButtonEmpty__text"
+        >
+          Menu name
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Dropdown /> Renders the component 2`] = `
+<body>
+  <div>
+    <div
+      class="euiPopover euiPopover--anchorDownCenter"
+    >
+      <div
+        class="euiPopover__anchor"
+      >
+        <button
+          class="euiButtonEmpty euiButtonEmpty--text euiHeaderLink"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+          >
+            <div
+              class="euiButtonContent__icon"
+              data-euiicon-type="arrowDown"
+            />
+            <span
+              class="euiButtonEmpty__text"
+            >
+              Menu name
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      data-eui="EuiFocusTrap"
+    >
+      <div
+        aria-live="assertive"
+        aria-modal="true"
+        class="euiPanel euiPanel--paddingMedium euiPopover__panel euiPopover__panel--bottom custom-panel"
+        role="dialog"
+        style="top: 16px; left: -22px; z-index: 2000;"
+      >
+        <div
+          class="euiPopover__panelArrow euiPopover__panelArrow--bottom"
+          style="left: 10px; top: 0px;"
+        />
+        <div>
+          <div
+            class="euiPopoverTitle"
+            paddingsize="l"
+          >
+            Menu name
+          </div>
+          <ul
+            class="euiListGroup euiListGroup-flush euiListGroup-maxWidthDefault"
+          >
+            <li
+              class="euiListGroupItem euiListGroupItem--small euiListGroupItem-isClickable"
+            >
+              <a
+                class="euiListGroupItem__button"
+                href="/app/dashboards#/view/123456"
+                rel="noreferrer"
+              >
+                <span
+                  class="euiListGroupItem__label"
+                  title="Link 1"
+                >
+                  Link 1
+                </span>
+              </a>
+            </li>
+            <li
+              class="euiListGroupItem euiListGroupItem--small euiListGroupItem-isClickable"
+            >
+              <a
+                class="euiListGroupItem__button"
+                href="/app/dashboards#/view/abcdef"
+                rel="noreferrer"
+              >
+                <span
+                  class="euiListGroupItem__label"
+                  title="Link 2"
+                >
+                  Link 2
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

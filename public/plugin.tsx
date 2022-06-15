@@ -83,9 +83,10 @@ export class BitergiaAnalyticsPlugin
 
     // Fetch and add metadashboard to header
     try {
+      /* eslint no-var: */
       var response = await core.http.fetch('/api/dashboards/getmetadashboard');
       const menuItems = JSON.parse(JSON.stringify(response.data.metadashboard));
-      
+
       if (Array.isArray(menuItems)) {
         core.chrome.navControls.registerCenter({
           order: 2,

@@ -48,14 +48,14 @@ export const JsonEditor = ({ http, renderToast, value }) => {
     setErrors([]);
   };
 
-  const onCodeEditorChange = (value) => {
+  const onCodeEditorChange = (newValue) => {
     try {
-      JSON.parse(value);
+      JSON.parse(newValue);
       setErrors([]);
     } catch (error) {
       setErrors(['Invalid JSON syntax']);
     }
-    setJsonValue(value);
+    setJsonValue(newValue);
   };
 
   const onSave = async () => {
@@ -76,8 +76,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
   }, [value]);
 
   useEffect(() => {
-    const isInvalid = errors.length > 0;
-    setIsInvalid(isInvalid);
+    setIsInvalid(errors.length > 0);
   }, [errors]);
 
   useEffect(() => {

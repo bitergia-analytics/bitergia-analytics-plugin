@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DraggableMenuItem /> Renders the component 1`] = `
+<div>
+  <div
+    class="euiDroppable euiDroppable--noGrow"
+    data-rbd-droppable-context-id="0"
+    data-rbd-droppable-id="testID"
+    data-test-subj="droppable"
+  >
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      class="euiDraggable euiDraggable--withoutDropAnimation euiDraggable--s"
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="parent_1_0"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="parent_1_0"
+      data-test-subj="draggable"
+      draggable="false"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="euiPanel euiPanel--paddingSmall euiPanel--flexGrowZero euiDraggable__item"
+        style="border: 0px; box-shadow: none; background: rgba(110, 169, 255, 0.05);"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              Overview
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              aria-label="Remove Overview"
+              class="euiButtonIcon euiButtonIcon--primary"
+              type="button"
+            >
+              <div
+                aria-hidden="true"
+                class="euiButtonIcon__icon"
+                data-euiicon-type="cross"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiDroppable__placeholder"
+    />
+  </div>
+</div>
+`;
