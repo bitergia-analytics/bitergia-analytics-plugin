@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2021-2022 Bitergia
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -14,15 +15,15 @@
  * permissions and limitations under the License.
  */
 
-module.exports = {
-  presets: [
-    require('@babel/preset-env'),
-    require('@babel/preset-react'),
-    require('@babel/preset-typescript'),
-  ],
-  plugins: [
-    [require('@babel/plugin-transform-runtime'), { regenerator: true }],
-    require('@babel/plugin-proposal-class-properties'),
-    require('@babel/plugin-proposal-object-rest-spread'),
-  ],
-};
+ module.exports = {
+   presets: [
+     require('@babel/preset-env'),
+     require('@babel/preset-react'),
+     require('@babel/preset-typescript'),
+   ],
+   plugins: [
+     [require('@babel/plugin-transform-runtime'), { regenerator: true }],
+     require('@babel/plugin-proposal-class-properties'),
+     require('@babel/plugin-proposal-object-rest-spread'),
+   ],
+ };
