@@ -20,7 +20,7 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { EuiHeaderLink } from '@elastic/eui';
 import { Menu } from './components/menu.tsx';
-import { PLUGIN_NAME } from '../common';
+import { PLUGIN_NAME, API_PREFIX } from '../common';
 import { AppPluginStartDependencies } from './types';
 import {
   AppMountParameters,
@@ -84,7 +84,7 @@ export class BitergiaAnalyticsPlugin
     // Fetch and add metadashboard to header
     try {
       /* eslint no-var: */
-      var response = await core.http.fetch('/api/dashboards/getmetadashboard');
+      var response = await core.http.fetch(`${API_PREFIX}/metadashboard`);
       const menuItems = JSON.parse(JSON.stringify(response.data.metadashboard));
 
       if (Array.isArray(menuItems)) {

@@ -26,7 +26,12 @@ const metadashboardSchema = schema.object({
     schema.object({
       name: schema.string(),
       type: schema.oneOf([schema.literal('menu'), schema.literal('entry')]),
-      dashboard_id: schema.maybe(schema.string()),
+      dashboard_id: schema.conditional(
+        schema.siblingRef('type'),
+        'entry',
+        schema.string(),
+        schema.never()
+      ),
       description: schema.maybe(schema.string()),
       title: schema.maybe(schema.string()),
       dashboards: schema.maybe(
@@ -72,7 +77,7 @@ const customErrorMessage = (error) => {
 export const registerMetadashboardRoutes = function (router: IRouter) {
   router.get(
     {
-      path: `${API_PREFIX}/getmetadashboard`,
+      path: `${API_PREFIX}/metadashboard`,
       validate: {},
     },
     async (
@@ -116,7 +121,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
   router.put(
     {
       authRequired: true,
-      path: `${API_PREFIX}/metadashboard/edit`,
+      path: `${API_PREFIX}/metadashboard`,
       validate: {
         body: schema.any(),
       },

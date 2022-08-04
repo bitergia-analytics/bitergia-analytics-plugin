@@ -22,9 +22,10 @@ import {
   coreServicesMock,
   mountParamsMock,
 } from '../../test/mocks';
+import { API_PREFIX } from '../../common';
 
 describe('Plugin setup', () => {
-  const apiURL = '/api/dashboards/getmetadashboard';
+  const apiURL = `${API_PREFIX}/metadashboard`;
   const plugin = new BitergiaAnalyticsPlugin(initializerContextMock);
 
   it('Registers menu', async () => {

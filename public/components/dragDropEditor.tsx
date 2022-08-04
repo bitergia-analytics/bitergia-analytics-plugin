@@ -29,6 +29,7 @@ import {
 } from '@elastic/eui';
 import { FormModal } from './formModal';
 import { DraggableMenuItem } from './draggableMenuItem';
+import { API_PREFIX } from '../../common';
 
 export const DragDropEditor = ({ value, http, renderToast }) => {
   const [metadashboard, setMetadashboard] = useState(value || []);
@@ -59,7 +60,7 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
   const onSave = async () => {
     try {
       const body = JSON.stringify({ metadashboard });
-      const response = await http.put('/api/dashboards/metadashboard/edit', {
+      const response = await http.put(`${API_PREFIX}/metadashboard`, {
         body,
       });
       renderToast();

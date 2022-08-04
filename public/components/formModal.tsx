@@ -34,6 +34,7 @@ import {
   EuiButtonIcon,
   EuiComboBox,
 } from '@elastic/eui';
+import { API_PREFIX } from '../../common';
 
 export const FormModal = ({ showModal, saveItem, item, http }) => {
   const initialValues = {
@@ -94,7 +95,7 @@ export const FormModal = ({ showModal, saveItem, item, http }) => {
   useEffect(() => {
     async function fetchDashboards() {
       try {
-        const response = await http.put('/api/dashboards/search');
+        const response = await http.put(`${API_PREFIX}/search/dashboards`);
 
         const result = response.hits.map((hit) => {
           return {

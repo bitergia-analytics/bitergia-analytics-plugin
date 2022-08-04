@@ -24,6 +24,7 @@ import {
   EuiFormRow,
   EuiSpacer,
 } from '@elastic/eui';
+import { API_PREFIX } from '../../common';
 
 export const JsonEditor = ({ http, renderToast, value }) => {
   const [jsonValue, setJsonValue] = useState(JSON.stringify({}));
@@ -60,7 +61,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
 
   const onSave = async () => {
     try {
-      const response = await http.put('/api/dashboards/metadashboard/edit', {
+      const response = await http.put(`${API_PREFIX}/metadashboard`, {
         body: jsonValue,
       });
       renderToast();

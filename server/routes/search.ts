@@ -25,7 +25,7 @@ import { API_PREFIX } from '../../common';
 export const registerSearchRoutes = function (router: IRouter) {
   router.put(
     {
-      path: `${API_PREFIX}/search`,
+      path: `${API_PREFIX}/search/dashboards`,
       validate: {
         body: schema.any(),
       },
