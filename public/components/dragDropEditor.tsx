@@ -32,35 +32,35 @@ import { DraggableMenuItem } from './draggableMenuItem';
 import { API_PREFIX } from '../../common';
 
 export const DragDropEditor = ({ value, http, renderToast }) => {
-  const [metadashboard, setMetadashboard] = useState(value || []);
+  const [menu, setMenu] = useState(value || []);
   const [showModal, setShowModal] = useState(false);
   const [editableItem, setEditableItem] = useState();
 
-  const openModal = (item, index = metadashboard.length + 1) => {
+  const openModal = (item, index = menu.length + 1) => {
     setShowModal(true);
     setEditableItem({ ...item, index });
   };
 
   const saveItem = (item) => {
-    const copy = [...metadashboard];
+    const copy = [...menu];
     copy.splice(editableItem.index, 1, item);
-    setMetadashboard(copy);
+    setMenu(copy);
   };
 
   const removeItem = (parentIndex, index) => {
-    const copy = [...metadashboard];
+    const copy = [...menu];
     if (index !== undefined) {
       copy[parentIndex].dashboards.splice(index, 1);
     } else {
       copy.splice(parentIndex, 1);
     }
-    setMetadashboard(copy);
+    setMenu(copy);
   };
 
   const onSave = async () => {
     try {
-      const body = JSON.stringify({ metadashboard });
-      const response = await http.put(`${API_PREFIX}/metadashboard`, {
+      const body = JSON.stringify({ menu });
+      const response = await http.put(`${API_PREFIX}/menu`, {
         body,
       });
       renderToast();
@@ -71,7 +71,7 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
   };
 
   const onDragEnd = ({ source, destination }) => {
-    const copy = [...metadashboard];
+    const copy = [...menu];
     if (source && destination) {
       if (source.droppableId === 'parent') {
         const item = copy.splice(source.index, 1);
@@ -87,7 +87,7 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
           item[0]
         );
       }
-      setMetadashboard(copy);
+      setMenu(copy);
     }
   };
 
@@ -126,7 +126,7 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
             overflowY: 'auto',
           }}
         >
-          {metadashboard.map((dashboard, index) => (
+          {menu.map((dashboard, index) => (
             <EuiDraggable
               key={index}
               index={index}
@@ -163,10 +163,10 @@ export const DragDropEditor = ({ value, http, renderToast }) => {
                       </EuiFlexGroup>
                     </EuiFlexItem>
                   </EuiFlexGroup>
-                  {metadashboard[index].dashboards && (
+                  {menu[index].dashboards && (
                     <EuiDroppable droppableId={index.toString()} spacing="none">
                       <EuiSpacer size="s" />
-                      {metadashboard[index].dashboards.map(({ name }, idx) => (
+                      {menu[index].dashboards.map(({ name }, idx) => (
                         <DraggableMenuItem
                           name={name}
                           key={idx}

@@ -14,11 +14,11 @@
  * permissions and limitations under the License.
  */
 
-import { registerMetadashboardRoutes } from './metadashboard';
+import { registerMenuRoutes } from './menu';
 import { registerSearchRoutes } from './search';
 import { IRouter } from '../../../../src/core/server';
 
 export function defineRoutes(router: IRouter) {
-  registerMetadashboardRoutes(router);
+  registerMenuRoutes(router);
   registerSearchRoutes(router);
 }

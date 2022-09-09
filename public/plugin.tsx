@@ -81,11 +81,11 @@ export class BitergiaAnalyticsPlugin
       order: 1,
     });
 
-    // Fetch and add metadashboard to header
+    // Fetch and add menu to header
     try {
       /* eslint no-var: */
-      var response = await core.http.fetch(`${API_PREFIX}/metadashboard`);
-      const menuItems = JSON.parse(JSON.stringify(response.data.metadashboard));
+      var response = await core.http.fetch(`${API_PREFIX}/menu`);
+      const menuItems = JSON.parse(JSON.stringify(response.data.menu));
 
       if (Array.isArray(menuItems)) {
         core.chrome.navControls.registerCenter({
@@ -93,7 +93,7 @@ export class BitergiaAnalyticsPlugin
           mount: (target) => this.mountMenu(menuItems, baseURL, target),
         });
       } else {
-        console.error('Error loading menu: invalid metadashboard data');
+        console.error('Error loading menu: invalid menu data');
       }
     } catch (error) {
       console.log(error);
@@ -103,7 +103,7 @@ export class BitergiaAnalyticsPlugin
 
     // Methods available at core.getStartServices()
     return {
-      getMetadashboard: () => {
+      getMenu: () => {
         return response?.data;
       },
     };
@@ -111,16 +111,12 @@ export class BitergiaAnalyticsPlugin
 
   public stop() {}
 
-  private mountMenu(metadashboard, baseURL, targetDomElement) {
+  private mountMenu(menu, baseURL, targetDomElement) {
     // Initialize router history to know which route is active
     const history = createBrowserHistory();
 
     ReactDOM.render(
-      <Menu
-        metadashboard={metadashboard}
-        baseURL={baseURL}
-        history={history}
-      />,
+      <Menu menu={menu} baseURL={baseURL} history={history} />,
       targetDomElement
     );
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);

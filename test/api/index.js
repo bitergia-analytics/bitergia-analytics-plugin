@@ -18,12 +18,12 @@ import expect from '@osd/expect';
 export default function ({ getService }) {
   const supertest = getService('supertest');
 
-  describe('/metadashboard', () => {
+  describe('/menu', () => {
     it('PUT should return 200', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               name: 'Name',
               type: 'entry',
@@ -36,9 +36,9 @@ export default function ({ getService }) {
 
     it('PUT fails if entry lacks dashboard_id', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               name: 'Name',
               type: 'entry',
@@ -48,15 +48,15 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.be(
-        '[metadashboard.0] missing field "dashboard_id"'
+        '[menu.0] missing field "dashboard_id"'
       );
     });
 
     it('PUT fails if entry lacks name', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               type: 'entry',
               dashboard_id: 'id',
@@ -66,15 +66,15 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.be(
-        '[metadashboard.0] missing field "name"'
+        '[menu.0] missing field "name"'
       );
     });
 
     it('PUT fails if entry lacks type', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               name: 'Name',
               dashboard_id: 'id',
@@ -84,15 +84,15 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.be(
-        '[metadashboard.0] missing field "type"'
+        '[menu.0] missing field "type"'
       );
     });
 
     it('PUT fails if type is invalid', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               name: 'Name',
               dashboard_id: 'id',
@@ -103,15 +103,15 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.contain(
-        '[metadashboard.0.type]: types that failed validation'
+        '[menu.0.type]: types that failed validation'
       );
     });
 
     it('PUT fails if key is invalid', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/metadashboard`)
+        .put(`/_plugins/_bap/menu`)
         .send({
-          metadashboard: [
+          menu: [
             {
               name: 'Name',
               dashboard_id: 'id',
@@ -123,17 +123,17 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.be(
-        'wrong key "invalid" at [metadashboard.0]'
+        'wrong key "invalid" at [menu.0]'
       );
     });
 
     it('GET should return 200', async () => {
       const response = await supertest
-        .get(`/_plugins/_bap/metadashboard`)
+        .get(`/_plugins/_bap/menu`)
         .expect(200);
 
       expect(response.body).to.have.property('data');
-      expect(response.body.data).to.have.property('metadashboard');
+      expect(response.body.data).to.have.property('menu');
     });
   });
 }

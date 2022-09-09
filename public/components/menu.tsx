@@ -19,18 +19,18 @@ import { Link } from './link.tsx';
 import { Dropdown } from './dropdown.tsx';
 
 export const Menu = (props) => {
-  const [metadashboard, setMetadashboard] = useState(props.metadashboard);
+  const [menu, setMenu] = useState(props.menu);
   const { baseURL, history } = props;
 
   function setActiveLink() {
-    let updated = metadashboard;
+    let updated = menu;
 
     if (history.location.hash.includes('#/view/')) {
       const currentDashboard = history.location.hash
         .split('#/view/')[1]
         .split('?')[0];
 
-      updated = metadashboard.map((dashboard) => {
+      updated = menu.map((dashboard) => {
         if (dashboard.type === 'entry') {
           return Object.assign(dashboard, {
             isActive: currentDashboard === dashboard.dashboard_id,
@@ -43,12 +43,12 @@ export const Menu = (props) => {
         });
       });
     } else {
-      updated = metadashboard.map((dashboard) =>
+      updated = menu.map((dashboard) =>
         Object.assign(dashboard, { isActive: false })
       );
     }
 
-    setMetadashboard(updated);
+    setMenu(updated);
   }
 
   useEffect(() => {
@@ -56,8 +56,8 @@ export const Menu = (props) => {
     setActiveLink();
 
     // Add class to parent container
-    const menu = document.querySelector('.bitergia-menu');
-    const parent = menu.closest('.euiHeaderSectionItem').parentElement;
+    const menuBar = document.querySelector('.bitergia-menu');
+    const parent = menuBar.closest('.euiHeaderSectionItem').parentElement;
     parent.classList.add('bitergia-menu-parent');
   }, []);
 
@@ -69,7 +69,7 @@ export const Menu = (props) => {
 
   return (
     <EuiHeaderLinks gutterSize="xs" className="bitergia-menu">
-      {metadashboard.map((link, index) =>
+      {menu.map((link, index) =>
         link.type === 'entry' ? (
           <Link item={link} baseURL={baseURL} key={index} />
         ) : (
