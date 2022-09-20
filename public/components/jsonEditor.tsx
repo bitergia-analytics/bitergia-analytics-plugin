@@ -24,6 +24,7 @@ import {
   EuiFormRow,
   EuiSpacer,
 } from '@elastic/eui';
+import { API_PREFIX } from '../../common';
 
 export const JsonEditor = ({ http, renderToast, value }) => {
   const [jsonValue, setJsonValue] = useState(JSON.stringify({}));
@@ -32,7 +33,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
   const [errors, setErrors] = useState([]);
 
   const placeholderJson = {
-    metadashboard: [
+    menu: [
       {
         name: 'Panel name',
         type: 'entry',
@@ -41,10 +42,10 @@ export const JsonEditor = ({ http, renderToast, value }) => {
     ],
   };
 
-  const metadashboard = value || placeholderJson;
+  const menu = value || placeholderJson;
 
   const setInitialValue = () => {
-    setJsonValue(JSON.stringify(metadashboard, null, 2));
+    setJsonValue(JSON.stringify(menu, null, 2));
     setErrors([]);
   };
 
@@ -60,7 +61,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
 
   const onSave = async () => {
     try {
-      const response = await http.put('/api/dashboards/metadashboard/edit', {
+      const response = await http.put(`${API_PREFIX}/menu`, {
         body: jsonValue,
       });
       renderToast();
@@ -80,7 +81,7 @@ export const JsonEditor = ({ http, renderToast, value }) => {
   }, [errors]);
 
   useEffect(() => {
-    const oldValue = JSON.stringify(metadashboard, null, 2);
+    const oldValue = JSON.stringify(menu, null, 2);
     setIsChanged(oldValue !== jsonValue);
   }, [jsonValue]);
 

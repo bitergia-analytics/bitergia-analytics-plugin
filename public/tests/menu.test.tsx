@@ -16,7 +16,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { historyMock, metadashboardMock } from '../../test/mocks';
+import { historyMock, menuMock } from '../../test/mocks';
 import { Menu } from '../components/menu';
 import { EuiHeaderSectionItem } from '@elastic/eui';
 
@@ -24,10 +24,7 @@ describe('<Menu />', () => {
   it('Renders the component', () => {
     const { container } = render(
       <EuiHeaderSectionItem>
-        <Menu
-          metadashboard={metadashboardMock.metadashboard}
-          history={historyMock}
-        />
+        <Menu menu={menuMock.menu} history={historyMock} />
       </EuiHeaderSectionItem>
     );
 
@@ -39,10 +36,7 @@ describe('<Menu />', () => {
   it('Sets the current URL as active', () => {
     const { container } = render(
       <EuiHeaderSectionItem>
-        <Menu
-          metadashboard={metadashboardMock.metadashboard}
-          history={historyMock}
-        />
+        <Menu menu={menuMock.menu} history={historyMock} />
       </EuiHeaderSectionItem>
     );
     const activeLink = container.querySelector('.euiHeaderLink-isActive');

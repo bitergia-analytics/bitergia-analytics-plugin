@@ -77,6 +77,60 @@ folder the following command:
 yarn start
 ```
 
+## API
+
+Use the API to import and export the plugin's menu. You must use the `osd-xsrf:true` header for all API calls and `Content-Type: application/json` when you send a payload.
+
+### Get menu
+
+Returns the menu data in a JSON format.
+
+```
+ GET /_plugins/_bap/menu
+```
+
+##### Sample request
+
+```
+curl -X GET <OSD URL>/_plugins/_bap/menu --header 'osd-xsrf: true' --user '<USERNAME>:<PASSWORD>'
+```
+
+### Update menu
+
+Updates the menu data or creates one if it does not exist.
+
+```
+ PUT /_plugins/_bap/menu
+```
+
+##### Sample request
+
+```
+curl -X PUT <OSD URL>/_plugins/_bap/menu \
+--header 'osd-xsrf: true' \
+--user '<USERNAME>:<PASSWORD>' \
+--header 'Content-Type: application/json' \
+-d '{
+  "menu": [
+    {
+      "name": "Overview",
+      "dashboard_id": "Overview",
+      "type": "entry"
+    },
+    {
+      "name": "About",
+      "type": "menu",
+      "dashboards": [
+        {
+          "name": "Contact",
+          "type": "entry",
+          "dashboard_id": "https://example.com"
+        }
+      ]
+    }
+  ]
+}'
+```
 
 ## License
 

@@ -15,8 +15,8 @@
 
 import { coreMock } from '../../../src/core/public/mocks';
 
-const metadashboardMock = {
-  metadashboard: [
+const menuMock = {
+  menu: [
     {
       name: 'Overview',
       dashboard_id: 'Overview',
@@ -63,7 +63,7 @@ const coreServicesMock = {
   },
   http: {
     fetch: jest.fn().mockResolvedValue({
-      data: metadashboardMock,
+      data: menuMock,
     }),
     put: jest.fn().mockResolvedValue({
       hits: [
@@ -90,7 +90,7 @@ const historyMock = {
 };
 
 export {
-  metadashboardMock,
+  menuMock,
   initializerContextMock,
   coreServicesMock,
   mountParamsMock,

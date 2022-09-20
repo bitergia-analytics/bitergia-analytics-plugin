@@ -17,21 +17,22 @@ import '@testing-library/jest-dom';
 import { BitergiaAnalyticsPlugin } from '../plugin';
 import { renderApp } from '../application';
 import {
-  metadashboardMock,
+  menuMock,
   initializerContextMock,
   coreServicesMock,
   mountParamsMock,
 } from '../../test/mocks';
+import { API_PREFIX } from '../../common';
 
 describe('Plugin setup', () => {
-  const apiURL = '/api/dashboards/getmetadashboard';
+  const apiURL = `${API_PREFIX}/menu`;
   const plugin = new BitergiaAnalyticsPlugin(initializerContextMock);
 
   it('Registers menu', async () => {
     const core = await plugin.start(coreServicesMock);
 
     expect(coreServicesMock.http.fetch).toHaveBeenCalledWith(apiURL);
-    expect(core.getMetadashboard()).toEqual(metadashboardMock);
+    expect(core.getMenu()).toEqual(menuMock);
 
     // Two calls to register project name and menu
     expect(
@@ -39,13 +40,13 @@ describe('Plugin setup', () => {
     ).toHaveBeenCalledTimes(2);
   });
 
-  it('Does not register menu if metadashboard data is invalid', async () => {
+  it('Does not register menu if data is invalid', async () => {
     // Spy console logs
     console.error = jest.fn();
 
     // Return invalid value
     coreServicesMock.http.fetch = jest.fn().mockReturnValue({
-      data: { metadashboard: null },
+      data: { menu: null },
     });
 
     const core = await plugin.start(coreServicesMock);
@@ -56,9 +57,9 @@ describe('Plugin setup', () => {
       coreServicesMock.chrome.navControls.registerCenter
     ).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(
-      'Error loading menu: invalid metadashboard data'
+      'Error loading menu: invalid menu data'
     );
-    expect(core.getMetadashboard()).toEqual({ metadashboard: null });
+    expect(core.getMenu()).toEqual({ menu: null });
   });
 
   it('Mounts and unmounts app', async () => {

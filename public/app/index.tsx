@@ -35,7 +35,7 @@ import { DragDropEditor } from './../components/dragDropEditor';
 import { JsonEditor } from './../components/jsonEditor';
 
 export const App = ({ basename, notifications, http, navigation, methods }) => {
-  const metadashboard = methods.getMetadashboard()?.metadashboard;
+  const menu = methods.getMenu()?.menu;
 
   const renderToast = (error) => {
     if (error) {
@@ -55,11 +55,7 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
       content: (
         <Fragment>
           <EuiSpacer />
-          <DragDropEditor
-            renderToast={renderToast}
-            http={http}
-            value={metadashboard}
-          />
+          <DragDropEditor renderToast={renderToast} http={http} value={menu} />
         </Fragment>
       ),
     },
@@ -72,7 +68,7 @@ export const App = ({ basename, notifications, http, navigation, methods }) => {
           <JsonEditor
             renderToast={renderToast}
             http={http}
-            value={methods.getMetadashboard()}
+            value={methods.getMenu()}
           />
         </Fragment>
       ),

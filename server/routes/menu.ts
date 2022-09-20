@@ -21,12 +21,17 @@ import {
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
 
-const metadashboardSchema = schema.object({
-  metadashboard: schema.arrayOf(
+const menuSchema = schema.object({
+  menu: schema.arrayOf(
     schema.object({
       name: schema.string(),
       type: schema.oneOf([schema.literal('menu'), schema.literal('entry')]),
-      dashboard_id: schema.maybe(schema.string()),
+      dashboard_id: schema.conditional(
+        schema.siblingRef('type'),
+        'entry',
+        schema.string(),
+        schema.never()
+      ),
       description: schema.maybe(schema.string()),
       title: schema.maybe(schema.string()),
       dashboards: schema.maybe(
@@ -69,10 +74,10 @@ const customErrorMessage = (error) => {
   return newError;
 };
 
-export const registerMetadashboardRoutes = function (router: IRouter) {
+export const registerMenuRoutes = function (router: IRouter) {
   router.get(
     {
-      path: `${API_PREFIX}/getmetadashboard`,
+      path: `${API_PREFIX}/menu`,
       validate: {},
     },
     async (
@@ -85,7 +90,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
           'get',
           {
             index: '.kibana',
-            id: 'metadashboard',
+            id: 'menu',
           }
         );
 
@@ -116,7 +121,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
   router.put(
     {
       authRequired: true,
-      path: `${API_PREFIX}/metadashboard/edit`,
+      path: `${API_PREFIX}/menu`,
       validate: {
         body: schema.any(),
       },
@@ -127,7 +132,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
       response
     ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
       try {
-        metadashboardSchema.validate(request.body);
+        menuSchema.validate(request.body);
       } catch (error) {
         return response.badRequest({
           body: customErrorMessage(error),
@@ -144,7 +149,7 @@ export const registerMetadashboardRoutes = function (router: IRouter) {
 
         const result = await requestClient.index({
           index: '.kibana',
-          id: 'metadashboard',
+          id: 'menu',
           body: request.body,
         });
 
