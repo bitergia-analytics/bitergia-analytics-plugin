@@ -21,7 +21,7 @@ export default function ({ getService }) {
   describe('/menu', () => {
     it('PUT should return 200', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -36,7 +36,7 @@ export default function ({ getService }) {
 
     it('PUT fails if entry lacks dashboard_id', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -54,7 +54,7 @@ export default function ({ getService }) {
 
     it('PUT fails if entry lacks name', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -72,7 +72,7 @@ export default function ({ getService }) {
 
     it('PUT fails if entry lacks type', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -90,7 +90,7 @@ export default function ({ getService }) {
 
     it('PUT fails if type is invalid', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -109,7 +109,7 @@ export default function ({ getService }) {
 
     it('PUT fails if key is invalid', async () => {
       const response = await supertest
-        .put(`/_plugins/_bap/menu`)
+        .put(`/api/_bap/menu`)
         .send({
           menu: [
             {
@@ -129,7 +129,7 @@ export default function ({ getService }) {
 
     it('GET should return 200', async () => {
       const response = await supertest
-        .get(`/_plugins/_bap/menu`)
+        .get(`/api/_bap/menu`)
         .expect(200);
 
       expect(response.body).to.have.property('data');
