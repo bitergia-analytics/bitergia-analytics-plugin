@@ -40,16 +40,32 @@
   justify-content: space-between;
 }
 
-.euiHeader--dark .project-link {
+.euiHeader .project-link {
   color: #ffffff;
-  font-size: 1.25rem;
-  letter-spacing: -0.025em;
-  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  &.euiHeaderLink:hover {
+    background: transparent;
+  }
 }
 
-.logoContainer img {
-  height: 100%;
-  max-width: 100%;
+a.logoContainer {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 3px 3px 3px 8px;
+
+  .logoContainer {
+    height: 100%;
+    padding: 0;
+  }
+
+  img {
+    height: 100%;
+  }
 }
 
 .euiHeader--dark .euiHeaderSection--dontGrow:nth-of-type(2) {

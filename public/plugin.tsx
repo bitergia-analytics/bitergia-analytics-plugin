@@ -18,8 +18,8 @@ import { i18n } from '@osd/i18n';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
-import { EuiHeaderLink } from '@elastic/eui';
 import { Menu } from './components/menu.tsx';
+import { ProjectName } from './components/projectName.tsx';
 import { PLUGIN_NAME, API_PREFIX } from '../common';
 import { AppPluginStartDependencies } from './types';
 import {
@@ -71,13 +71,13 @@ export class BitergiaAnalyticsPlugin
   public async start(core: CoreStart): BitergiaAnalyticsPluginStart {
     // Get branding from opensearch_dashboards.yml
     const { branding } = this.initializerContext.config.get();
-
     const baseURL = core.application.getUrlForApp('dashboards');
+    const tenant = await this.getTenant(core.http);
 
     // Add project name to header
     core.chrome.navControls.registerCenter({
       mount: (target) =>
-        this.mountProjectName(branding.projectName, baseURL, target),
+        this.mountProjectName(branding, tenant, baseURL, target),
       order: 1,
     });
 
@@ -122,15 +122,14 @@ export class BitergiaAnalyticsPlugin
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);
   }
 
-  private mountProjectName(name, baseURL, targetDomElement) {
+  private mountProjectName(branding, tenant, baseURL, targetDomElement) {
     ReactDOM.render(
-      <EuiHeaderLink
-        href={`${baseURL}#/view/Overview`}
-        color="ghost"
-        className="project-link"
-      >
-        {name}
-      </EuiHeaderLink>,
+      <ProjectName
+        name={branding.projectName}
+        tenant={tenant}
+        badgeColor={branding.selectedItemColor}
+        baseURL={baseURL}
+      />,
       targetDomElement
     );
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);
@@ -161,5 +160,21 @@ export class BitergiaAnalyticsPlugin
         branding.dropdownColor
       );
     }
+  }
+
+  private async getTenant(httpClient) {
+    let tenant = '';
+    try {
+      tenant = await httpClient.fetch('/api/v1/multitenancy/tenant');
+    } catch (error) {
+      console.log(`Error fetching tenant: ${error}`);
+    }
+
+    const privateTenant = '__user__';
+    if (tenant === privateTenant) {
+      tenant = 'Private';
+    }
+
+    return tenant;
   }
 }
