@@ -75,7 +75,7 @@ export class BitergiaAnalyticsPlugin
     const tenant = await this.getTenant(core.http);
 
     // Add project name to header
-    core.chrome.navControls.registerCenter({
+    core.chrome.navControls.registerExpandedCenter({
       mount: (target) =>
         this.mountProjectName(branding, tenant, baseURL, target),
       order: 1,
@@ -88,7 +88,7 @@ export class BitergiaAnalyticsPlugin
       const menuItems = JSON.parse(JSON.stringify(response.data.menu));
 
       if (Array.isArray(menuItems)) {
-        core.chrome.navControls.registerCenter({
+        core.chrome.navControls.registerExpandedRight({
           order: 2,
           mount: (target) => this.mountMenu(menuItems, baseURL, target),
         });

@@ -14,8 +14,9 @@ exports[`<Dropdown /> Renders the component 1`] = `
       <span
         class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
       >
-        <div
+        <span
           class="euiButtonContent__icon"
+          color="inherit"
           data-euiicon-type="arrowDown"
         />
         <span
@@ -45,8 +46,9 @@ exports[`<Dropdown /> Renders the component 2`] = `
           <span
             class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
           >
-            <div
+            <span
               class="euiButtonContent__icon"
+              color="inherit"
               data-euiicon-type="arrowDown"
             />
             <span
@@ -64,16 +66,24 @@ exports[`<Dropdown /> Renders the component 2`] = `
       data-eui="EuiFocusTrap"
     >
       <div
-        aria-live="assertive"
+        aria-describedby="generated-id"
+        aria-live="off"
         aria-modal="true"
-        class="euiPanel euiPanel--paddingMedium euiPopover__panel euiPopover__panel--bottom custom-panel"
+        class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--noShadow euiPopover__panel euiPopover__panel--bottom custom-panel"
         role="dialog"
-        style="top: 16px; left: -22px; z-index: 2000;"
+        style="top: 16px; left: -22px; will-change: transform, opacity; z-index: 2000;"
+        tabindex="0"
       >
         <div
           class="euiPopover__panelArrow euiPopover__panelArrow--bottom"
           style="left: 10px; top: 0px;"
         />
+        <p
+          class="euiScreenReaderOnly"
+          id="generated-id"
+        >
+          You are in a dialog. To close this dialog, hit escape.
+        </p>
         <div>
           <div
             class="euiPopoverTitle"

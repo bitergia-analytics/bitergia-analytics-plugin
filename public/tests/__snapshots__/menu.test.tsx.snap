@@ -39,8 +39,9 @@ exports[`<Menu /> Renders the component 1`] = `
             <span
               class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
             >
-              <div
+              <span
                 class="euiButtonContent__icon"
+                color="inherit"
                 data-euiicon-type="arrowDown"
               />
               <span

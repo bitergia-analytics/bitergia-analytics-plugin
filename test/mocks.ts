@@ -57,7 +57,8 @@ const coreServicesMock = {
   },
   chrome: {
     navControls: {
-      registerCenter: jest.fn(),
+      registerExpandedCenter: jest.fn(),
+      registerExpandedRight: jest.fn(),
     },
     setBreadcrumbs: jest.fn(),
   },

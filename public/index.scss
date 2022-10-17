@@ -72,7 +72,8 @@ a.logoContainer {
   flex-grow: 1;
 }
 
-.custom-panel {
+.custom-panel,
+.custom-panel.euiPanel--plain {
   background-color: var(--dropdown-color);
 
   .euiPopoverTitle {
