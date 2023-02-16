@@ -88,3 +88,10 @@ a.logoContainer {
     border-bottom-color: var(--dropdown-color);
   }
 }
+
+.hide-tenant-selector {
+  [data-test-subj="switch-tenants"],
+  [data-test-subj="switch-tenants"] + div hr {
+    display: none;
+  }
+}
