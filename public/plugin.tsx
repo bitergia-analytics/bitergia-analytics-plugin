@@ -101,8 +101,11 @@ export class BitergiaAnalyticsPlugin
 
     this.changeBranding(branding);
 
-    // Hide tenant selector for anonymous users
+    // Hide tenant selector for anonymous users in user menu
     this.hideAnonymousTenants(core.http);
+
+    // Hide popup tenant selector for all users
+    sessionStorage.setItem('opendistro::security::tenant::show_popup', 'false');
 
     // Methods available at core.getStartServices()
     return {
