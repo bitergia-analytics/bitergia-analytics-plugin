@@ -101,6 +101,12 @@ export class BitergiaAnalyticsPlugin
 
     this.changeBranding(branding);
 
+    // Hide tenant selector for anonymous users in user menu
+    this.hideAnonymousTenants(core.http);
+
+    // Hide popup tenant selector for all users
+    sessionStorage.setItem('opendistro::security::tenant::show_popup', 'false');
+
     // Methods available at core.getStartServices()
     return {
       getMenu: () => {
@@ -176,5 +182,20 @@ export class BitergiaAnalyticsPlugin
     }
 
     return tenant;
+  }
+
+  private async hideAnonymousTenants(httpClient) {
+    try {
+      const res = await httpClient.fetch('/api/v1/configuration/account');
+
+      if (
+        res.data.user_name &&
+        res.data.user_name === 'opendistro_security_anonymous'
+      ) {
+        document.body.classList.add('hide-tenant-selector');
+      }
+    } catch (error) {
+      console.log(`Error fetching user: ${error}`);
+    }
   }
 }
