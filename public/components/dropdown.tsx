@@ -50,6 +50,7 @@ export const Dropdown = ({ item, baseURL }) => {
     <EuiPopover
       button={
         <EuiHeaderLink
+          size="xs"
           iconType="arrowDown"
           iconSide="right"
           onClick={handleClick}

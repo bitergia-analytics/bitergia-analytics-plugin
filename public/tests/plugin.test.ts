@@ -34,10 +34,14 @@ describe('Plugin setup', () => {
     expect(coreServicesMock.http.fetch).toHaveBeenCalledWith(apiURL);
     expect(core.getMenu()).toEqual(menuMock);
 
-    // Two calls to register project name and menu
+    // Registers project name
     expect(
-      coreServicesMock.chrome.navControls.registerCenter
-    ).toHaveBeenCalledTimes(2);
+      coreServicesMock.chrome.navControls.registerExpandedCenter
+    ).toHaveBeenCalledTimes(1);
+    // Registers menu
+    expect(
+      coreServicesMock.chrome.navControls.registerExpandedRight
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('Does not register menu if data is invalid', async () => {
@@ -50,12 +54,11 @@ describe('Plugin setup', () => {
     });
 
     const core = await plugin.start(coreServicesMock);
+    
     expect(coreServicesMock.http.fetch).toHaveBeenCalledWith(apiURL);
-
-    // Only registers project name
     expect(
-      coreServicesMock.chrome.navControls.registerCenter
-    ).toHaveBeenCalledTimes(1);
+      coreServicesMock.chrome.navControls.registerExpandedRight
+    ).toHaveBeenCalledTimes(0);
     expect(console.error).toHaveBeenCalledWith(
       'Error loading menu: invalid menu data'
     );
