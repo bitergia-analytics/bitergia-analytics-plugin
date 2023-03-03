@@ -54,7 +54,7 @@ describe('Plugin setup', () => {
     });
 
     const core = await plugin.start(coreServicesMock);
-    
+
     expect(coreServicesMock.http.fetch).toHaveBeenCalledWith(apiURL);
     expect(
       coreServicesMock.chrome.navControls.registerExpandedRight

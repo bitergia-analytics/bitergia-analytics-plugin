@@ -39,7 +39,7 @@ jobs:
         id: versions
         run: |
           echo "::set-output name=node_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")"
-          echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")"
       - name: Setup node
         uses: actions/setup-node@v2
         with:
