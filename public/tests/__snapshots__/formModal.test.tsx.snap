@@ -8,12 +8,13 @@ exports[`<FormModal /> Renders the component 1`] = `
 >
   <button
     aria-label="Closes this modal window"
-    class="euiButtonIcon euiButtonIcon--text euiModal__closeIcon"
+    class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall euiModal__closeIcon"
     type="button"
   >
-    <div
+    <span
       aria-hidden="true"
       class="euiButtonIcon__icon"
+      color="inherit"
       data-euiicon-type="cross"
     />
   </button>
@@ -215,7 +216,7 @@ exports[`<FormModal /> Renders the component 1`] = `
                             data-test-subj="comboBoxClearButton"
                             type="button"
                           >
-                            <div
+                            <span
                               class="euiFormControlLayoutClearButton__icon"
                               data-euiicon-type="cross"
                             />
@@ -226,7 +227,7 @@ exports[`<FormModal /> Renders the component 1`] = `
                             data-test-subj="comboBoxToggleListButton"
                             type="button"
                           >
-                            <div
+                            <span
                               aria-hidden="true"
                               class="euiFormControlLayoutCustomIcon__icon"
                               data-euiicon-type="arrowDown"

@@ -16,7 +16,7 @@
 import { schema } from '@osd/config-schema';
 import {
   IRouter,
-  OpenSearchDashboardsResponse,
+  IOpenSearchDashboardsResponse,
   ResponseError,
 } from '../../../../src/core/server';
 import { API_PREFIX } from '../../common';
@@ -49,7 +49,7 @@ const menuSchema = schema.object({
   ),
 });
 
-const customErrorMessage = (error) => {
+const customErrorMessage = (error: any) => {
   const errors = [
     {
       error: /\[(.*?)\.(\w*)]: expected at least one defined value but got \[undefined\]/,
@@ -86,21 +86,19 @@ export const registerMenuRoutes = function (router: IRouter) {
       response
     ): Promise<IOpenSearchDashboardsResponse<any | ResponseError>> => {
       try {
-        const esResp = await context.core.opensearch.legacy.client.callAsCurrentUser(
-          'get',
-          {
-            index: '.kibana',
-            id: 'menu',
-          }
-        );
+        const requestClient = context.core.opensearch.client.asCurrentUser;
+        const responseOS = await requestClient.get({
+          id: 'menu',
+          index: '.kibana',
+        });
+        const menu = responseOS.body._source;
 
-        const responseES = esResp._source;
         return response.ok({
           body: {
-            data: responseES,
+            data: menu,
           },
         });
-      } catch (error) {
+      } catch (error: any) {
         let responseError;
         if (error.response) {
           try {
@@ -110,7 +108,7 @@ export const registerMenuRoutes = function (router: IRouter) {
             responseError = error.response;
           }
         }
-        return response.custom({
+        return response.customError({
           statusCode: error.statusCode,
           body: responseError,
         });
@@ -154,7 +152,7 @@ export const registerMenuRoutes = function (router: IRouter) {
         });
 
         return response.ok({ body: result });
-      } catch (error) {
+      } catch (error: any) {
         return response.customError({
           body: error,
           statusCode: error.statusCode,

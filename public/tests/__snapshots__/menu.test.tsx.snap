@@ -33,14 +33,15 @@ exports[`<Menu /> Renders the component 1`] = `
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--primary euiHeaderLink euiHeaderLink-isActive"
+            class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiHeaderLink euiHeaderLink-isActive"
             type="button"
           >
             <span
               class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
             >
-              <div
+              <span
                 class="euiButtonContent__icon"
+                color="inherit"
                 data-euiicon-type="arrowDown"
               />
               <span

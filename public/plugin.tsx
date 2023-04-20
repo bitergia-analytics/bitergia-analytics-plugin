@@ -18,8 +18,8 @@ import { i18n } from '@osd/i18n';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
-import { Menu } from './components/menu.tsx';
-import { ProjectName } from './components/projectName.tsx';
+import { Menu } from './components/menu';
+import { ProjectName } from './components/projectName';
 import { PLUGIN_NAME, API_PREFIX } from '../common';
 import { AppPluginStartDependencies } from './types';
 import {
@@ -75,7 +75,7 @@ export class BitergiaAnalyticsPlugin
     const tenant = await this.getTenant(core.http);
 
     // Add project name to header
-    core.chrome.navControls.registerCenter({
+    core.chrome.navControls.registerExpandedCenter({
       mount: (target) =>
         this.mountProjectName(branding, tenant, baseURL, target),
       order: 1,
@@ -88,7 +88,7 @@ export class BitergiaAnalyticsPlugin
       const menuItems = JSON.parse(JSON.stringify(response.data.menu));
 
       if (Array.isArray(menuItems)) {
-        core.chrome.navControls.registerCenter({
+        core.chrome.navControls.registerExpandedRight({
           order: 2,
           mount: (target) => this.mountMenu(menuItems, baseURL, target),
         });

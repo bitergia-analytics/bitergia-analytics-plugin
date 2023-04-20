@@ -75,7 +75,7 @@ exports[`<DragDropEditor /> Renders the component 1`] = `
       tabindex="0"
     >
       <div
-        class="euiPanel euiPanel--paddingSmall euiDraggable__item"
+        class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiDraggable__item"
         style="min-width: 150px; padding: 14px;"
       >
         <div
@@ -101,12 +101,13 @@ exports[`<DragDropEditor /> Renders the component 1`] = `
               >
                 <button
                   aria-label="Edit"
-                  class="euiButtonIcon euiButtonIcon--primary"
+                  class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
                   type="button"
                 >
-                  <div
+                  <span
                     aria-hidden="true"
                     class="euiButtonIcon__icon"
+                    color="inherit"
                     data-euiicon-type="pencil"
                   />
                 </button>
@@ -116,12 +117,13 @@ exports[`<DragDropEditor /> Renders the component 1`] = `
               >
                 <button
                   aria-label="Remove"
-                  class="euiButtonIcon euiButtonIcon--primary"
+                  class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
                   type="button"
                 >
-                  <div
+                  <span
                     aria-hidden="true"
                     class="euiButtonIcon__icon"
+                    color="inherit"
                     data-euiicon-type="cross"
                   />
                 </button>

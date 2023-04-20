@@ -21,7 +21,7 @@ exports[`<DraggableMenuItem /> Renders the component 1`] = `
       tabindex="0"
     >
       <div
-        class="euiPanel euiPanel--paddingSmall euiPanel--flexGrowZero euiDraggable__item"
+        class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--flexGrowZero euiDraggable__item"
         style="border: 0px; box-shadow: none; background: rgba(110, 169, 255, 0.05);"
       >
         <div
@@ -41,12 +41,13 @@ exports[`<DraggableMenuItem /> Renders the component 1`] = `
           >
             <button
               aria-label="Remove Overview"
-              class="euiButtonIcon euiButtonIcon--primary"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
               type="button"
             >
-              <div
+              <span
                 aria-hidden="true"
                 class="euiButtonIcon__icon"
+                color="inherit"
                 data-euiicon-type="cross"
               />
             </button>
