@@ -66,7 +66,7 @@ of this plugin.
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/bitergia-analytics-plugin-0.0.3_1.2.0.zip`
+Example output: `./build/bitergia-analytics-plugin-0.2.0_2.6.0.zip`
 
 ### Run
 
@@ -79,7 +79,9 @@ yarn start
 
 ## API
 
-Use the API to import and export the plugin's menu. You must use the `osd-xsrf:true` header for all API calls and `Content-Type: application/json` when you send a payload.
+Use the API to import and export the plugin's menu. You must use the
+`osd-xsrf:true` header for all API calls and `Content-Type: application/json`
+when you send a payload.
 
 ### Get menu
 
