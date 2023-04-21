@@ -75,6 +75,8 @@ jobs:
     name: Release plugin
     needs: [build]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Get release tag
         id: tag
