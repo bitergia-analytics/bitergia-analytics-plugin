@@ -14,20 +14,20 @@ jobs:
       filename: ${{ steps.build_zip.outputs.filename }}
     steps:
       - name: Checkout plugin source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
         with:
           path: plugin
       - name: Get plugin metadata
         id: plugin_metadata
         run: |
-          echo "::set-output name=name::$(node -p "(require('./plugin/package.json').name)")"
-          echo "::set-output name=version::$(node -p "(require('./plugin/package.json').version).match(/[.0-9]+/)[0]")"
+          echo "name=$(node -p "(require('./bitergia-analytics-plugin/package.json').name)")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "(require('./bitergia-analytics-plugin/package.json').version).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
       - name: Get OpenSearch Dashboards version
         id: osd_version
         run: |
-          echo "::set-output name=version::$(node -p "(require('./plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")"
+          echo "version=$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ steps.osd_version.outputs.version }}
@@ -35,10 +35,10 @@ jobs:
       - name: Get node and yarn versions
         id: versions
         run: |
-          echo "::set-output name=node_version::$(node -p "(require('./osd/package.json').engines.node).match(/[.0-9]+/)[0]")"
-          echo "::set-output name=yarn_version::$(node -p "require('./osd/package.json').engines.yarn")"
+          echo "node_version=$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
+          echo "yarn_version=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")" >> $GITHUB_OUTPUT
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # 3.6.0
         with:
           node-version: ${{ steps.versions.outputs.node_version }}
       - name: Setup yarn
@@ -63,10 +63,10 @@ jobs:
           filename=${{ steps.plugin_metadata.outputs.name }}-${{ steps.plugin_metadata.outputs.version }}_${{ steps.osd_version.outputs.version }}.zip
           zip_path=$(pwd)/build/$filename
           mv $tmp_zip_path $zip_path
-          echo "::set-output name=zip_path::$zip_path"
-          echo "::set-output name=filename::$filename"
+          echo "zip_path=$zip_path" >> $GITHUB_OUTPUT
+          echo "filename=$filename" >> $GITHUB_OUTPUT
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # 3.1.2
         with:
           name: plugin_artifact
           path: ${{ steps.build_zip.outputs.zip_path }}
@@ -79,14 +79,14 @@ jobs:
       - name: Get release tag
         id: tag
         run: |
-          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
         shell: bash
       - name: Checkout plugin source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
         with:
           path: plugin
       - name: Download plugin artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v29bc31d5ccc31df68ecc42ccf4149144866c47d8a # 3.0.2
         with:
           name: plugin_artifact
           path: plugin/build
