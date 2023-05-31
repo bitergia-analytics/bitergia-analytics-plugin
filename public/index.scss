@@ -93,6 +93,7 @@ a.logoContainer {
 
 .hide-tenant-selector {
   [data-test-subj="switch-tenants"],
+  [data-test-subj="switch-tenants"] + hr,
   [data-test-subj="switch-tenants"] + div hr {
     display: none;
   }
