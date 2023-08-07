@@ -24,6 +24,7 @@ import { BitergiaAnalyticsPlugin } from './plugin';
 export const config = {
   exposeToBrowser: {
     branding: true,
+    hideTenantSelector: true,
   },
   schema: schema.object({
     branding: schema.object({
@@ -36,6 +37,7 @@ export const config = {
       dropdownColor: schema.string({ defaultValue: '#525252' }),
       projectName: schema.string({ defaultValue: 'Bitergia Analytics' }),
     }),
+    hideTenantSelector: schema.boolean({ defaultValue: true }),
   }),
 };
 
