@@ -70,7 +70,10 @@ export class BitergiaAnalyticsPlugin
 
   public async start(core: CoreStart): BitergiaAnalyticsPluginStart {
     // Get branding from opensearch_dashboards.yml
-    const { branding } = this.initializerContext.config.get();
+    const {
+      branding,
+      hideTenantSelector,
+    } = this.initializerContext.config.get();
     const baseURL = core.application.getUrlForApp('dashboards');
     const tenant = await this.getTenant(core.http);
 
@@ -102,7 +105,9 @@ export class BitergiaAnalyticsPlugin
     this.changeBranding(branding);
 
     // Hide tenant selector in user menu
-    document.body.classList.add('hide-tenant-selector');
+    if (hideTenantSelector) {
+      document.body.classList.add('hide-tenant-selector');
+    }
 
     // Hide popup tenant selector for all users
     sessionStorage.setItem('opendistro::security::tenant::show_popup', 'false');

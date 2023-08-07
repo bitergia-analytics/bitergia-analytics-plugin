@@ -134,6 +134,15 @@ curl -X PUT <OSD URL>/_plugins/_bap/menu \
 }'
 ```
 
+## Configuration
+
+### Hide tenant selector
+
+To hide or show the `Switch tenants` button on the user menu, add the configuration
+property `bitergia_analytics.hideTenantSelector` to the `opensearch_dashboards.yml`
+file and set the value to either `true` or `false`. The selector is hidden by
+default.
+
 ## License
 
 This project is licensed under Apache 2.0. See the [LICENSE](./LICENSE) file
