@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
+import { BehaviorSubject } from 'rxjs';
 import { i18n } from '@osd/i18n';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -24,17 +24,21 @@ import { PLUGIN_NAME, API_PREFIX } from '../common';
 import { AppPluginStartDependencies } from './types';
 import {
   AppMountParameters,
+  AppNavLinkStatus,
+  AppUpdater,
   CoreSetup,
   CoreStart,
   PluginInitializerContext,
 } from '../../../src/core/public';
+
+const APP_LIST_FOR_LIMITED_ROLE = ['discover', 'dashboards', 'visualize'];
 
 export class BitergiaAnalyticsPlugin
   implements
     Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
   // @ts-ignore : initializerContext not used
   constructor(private readonly initializerContext: PluginInitializerContext) {}
-  public setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
+  public async setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
     // Register an application into the side navigation menu
     core.application.register({
       id: PLUGIN_NAME,
@@ -63,6 +67,26 @@ export class BitergiaAnalyticsPlugin
         );
       },
     });
+
+    // Hide links to apps for non-privileged users
+    try {
+      const accountInfo = await core.http.get('/api/v1/configuration/account');
+      const isLimited = accountInfo?.data?.roles.includes(
+        'bap_plugins_visibility'
+      );
+
+      core.application.registerAppUpdater(
+        new BehaviorSubject<AppUpdater>((app) => {
+          if (isLimited && !APP_LIST_FOR_LIMITED_ROLE.includes(app.id)) {
+            return {
+              navLinkStatus: AppNavLinkStatus.hidden,
+            };
+          }
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
 
     // Return methods that should be available to other plugins
     return {};
