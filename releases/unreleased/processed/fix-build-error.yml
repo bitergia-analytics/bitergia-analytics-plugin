@@ -1,8 +1,0 @@
----
-title: Fix build error
-category: fixed
-author: Eva Millán <evamillan@bitergia.com>
-issue: null
-notes: >
-  Fixes an error in the plugin build that prevented
-  OpenSearch Dashboards from loading.
