@@ -1,0 +1,8 @@
+---
+title: Set OpenSearch Dashboards version to 2.10
+category: dependency
+author: Santiago Dueñas <sduenas@bitergia.com>
+issue: null
+notes: >
+  The plugin is updated to use the latest compatible
+  OpenSearch Dashboards version.
