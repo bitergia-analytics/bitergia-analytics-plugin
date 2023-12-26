@@ -1,5 +1,14 @@
 # Releases
 
+## bitergia-analytics-plugin 0.14.1 - (2023-12-26)
+
+**Dependencies updateds:**
+
+ * Set OpenSearch Dashboards version to 2.10\
+   The plugin is updated to use the latest compatible OpenSearch
+   Dashboards version.
+
+
   ## bitergia-analytics-plugin 0.14.0 - (2023-11-17)
   
   * No changes on this component. The version is bumped to align it
