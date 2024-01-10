@@ -59,12 +59,20 @@ const coreServicesMock = {
     navControls: {
       registerExpandedCenter: jest.fn(),
       registerExpandedRight: jest.fn(),
+      registerRight: jest.fn(),
     },
     setBreadcrumbs: jest.fn(),
   },
   http: {
     fetch: jest.fn().mockResolvedValue({
       data: menuMock,
+    }),
+    get: jest.fn().mockResolvedValue({
+      data: {
+        user_name: 'opendistro_security_anonymous',
+        user_requested_tenant: 'test_tenant',
+        roles: ['bap_plugins_visibility'],
+      },
     }),
     put: jest.fn().mockResolvedValue({
       hits: [
@@ -77,6 +85,22 @@ const coreServicesMock = {
           _id: '12345',
         },
       ],
+    }),
+  },
+};
+
+const coreSetupMock = {
+  application: {
+    register: jest.fn(),
+    registerAppUpdater: jest.fn(),
+  },
+  http: {
+    get: jest.fn().mockResolvedValue({
+      data: {
+        user_name: 'opendistro_security_anonymous',
+        user_requested_tenant: 'test_tenant',
+        roles: ['bap_plugins_visibility'],
+      },
     }),
   },
 };
@@ -94,6 +118,7 @@ export {
   menuMock,
   initializerContextMock,
   coreServicesMock,
+  coreSetupMock,
   mountParamsMock,
   historyMock,
 };

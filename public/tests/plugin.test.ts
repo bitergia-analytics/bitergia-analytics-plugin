@@ -20,6 +20,7 @@ import {
   menuMock,
   initializerContextMock,
   coreServicesMock,
+  coreSetupMock,
   mountParamsMock,
 } from '../../test/mocks';
 import { API_PREFIX } from '../../common';
@@ -27,6 +28,7 @@ import { API_PREFIX } from '../../common';
 describe('Plugin setup', () => {
   const apiURL = `${API_PREFIX}/menu`;
   const plugin = new BitergiaAnalyticsPlugin(initializerContextMock);
+  plugin.setup(coreSetupMock);
 
   it('Registers menu', async () => {
     const core = await plugin.start(coreServicesMock);
@@ -41,6 +43,20 @@ describe('Plugin setup', () => {
     // Registers menu
     expect(
       coreServicesMock.chrome.navControls.registerExpandedRight
+    ).toHaveBeenCalledTimes(1);
+  });
+
+  it('Registers login button', async () => {
+    await plugin.start(coreServicesMock);
+
+    expect(plugin.accountInfo).toEqual({
+      user_name: 'opendistro_security_anonymous',
+      user_requested_tenant: 'test_tenant',
+      roles: ['bap_plugins_visibility'],
+    });
+
+    expect(
+      coreServicesMock.chrome.navControls.registerRight
     ).toHaveBeenCalledTimes(1);
   });
 
