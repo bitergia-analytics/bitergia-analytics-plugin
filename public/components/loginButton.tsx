@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 Bitergia
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2021-2023 Bitergia
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -14,14 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { NavigationPublicPluginStart } from '../../../src/plugins/navigation/public';
+import React from 'react';
+import { EuiButtonEmpty } from '@elastic/eui';
 
-export interface AppPluginStartDependencies {
-  navigation: NavigationPublicPluginStart;
-}
-
-export interface AccountInfo {
-  user_name?: string;
-  user_requested_tenant?: string;
-  roles?: string[];
-}
+export const LoginButton = ({ url }) => {
+  return <EuiButtonEmpty href={url} aria-label="Log in" iconType="push" />;
+};

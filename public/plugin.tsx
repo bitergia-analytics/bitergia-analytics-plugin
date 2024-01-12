@@ -20,8 +20,9 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { Menu } from './components/menu';
 import { ProjectName } from './components/projectName';
+import { LoginButton } from './components/loginButton';
 import { PLUGIN_NAME, API_PREFIX } from '../common';
-import { AppPluginStartDependencies } from './types';
+import { AppPluginStartDependencies, AccountInfo } from './types';
 import {
   AppMountParameters,
   AppNavLinkStatus,
@@ -30,15 +31,16 @@ import {
   CoreStart,
   PluginInitializerContext,
 } from '../../../src/core/public';
+import { HttpSetup } from '../../../src/core/public';
 
 const APP_LIST_FOR_LIMITED_ROLE = ['discover', 'dashboards', 'visualize'];
+const ANONYMOUS_USER = 'opendistro_security_anonymous';
 
-export class BitergiaAnalyticsPlugin
-  implements
-    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+export class BitergiaAnalyticsPlugin {
+  accountInfo!: AccountInfo;
   // @ts-ignore : initializerContext not used
   constructor(private readonly initializerContext: PluginInitializerContext) {}
-  public async setup(core: CoreSetup): BitergiaAnalyticsPluginSetup {
+  public async setup(core: CoreSetup) {
     // Register an application into the side navigation menu
     core.application.register({
       id: PLUGIN_NAME,
@@ -51,7 +53,6 @@ export class BitergiaAnalyticsPlugin
         order: 5000,
         euiIconType: 'managementApp',
       },
-      updater$: this.appUpdater,
       async mount(params: AppMountParameters) {
         // Load application bundle
         const { renderApp } = await import('./application');
@@ -74,6 +75,7 @@ export class BitergiaAnalyticsPlugin
       const isLimited = accountInfo?.data?.roles.includes(
         'bap_plugins_visibility'
       );
+      this.accountInfo = accountInfo.data;
 
       core.application.registerAppUpdater(
         new BehaviorSubject<AppUpdater>((app) => {
@@ -85,6 +87,7 @@ export class BitergiaAnalyticsPlugin
         })
       );
     } catch (error) {
+      this.accountInfo = {};
       console.log(error);
     }
 
@@ -99,7 +102,8 @@ export class BitergiaAnalyticsPlugin
       hideTenantSelector,
     } = this.initializerContext.config.get();
     const baseURL = core.application.getUrlForApp('dashboards');
-    const tenant = await this.getTenant(core.http);
+    const tenant = this.accountInfo.user_requested_tenant;
+    const isAnonymous = this.accountInfo.user_name === ANONYMOUS_USER;
 
     // Add project name to header
     core.chrome.navControls.registerExpandedCenter({
@@ -131,6 +135,14 @@ export class BitergiaAnalyticsPlugin
     // Hide tenant selector in user menu
     if (hideTenantSelector) {
       document.body.classList.add('hide-tenant-selector');
+    }
+
+    // Replace anonymous user dropdown with custom button
+    if (isAnonymous) {
+      document.body.classList.add('hide-anonymous-user');
+      core.chrome.navControls.registerRight({
+        mount: (target) => this.mountLogin(core.http, target),
+      });
     }
 
     // Hide popup tenant selector for all users
@@ -197,19 +209,14 @@ export class BitergiaAnalyticsPlugin
     }
   }
 
-  private async getTenant(httpClient) {
-    let tenant = '';
-    try {
-      tenant = await httpClient.fetch('/api/v1/multitenancy/tenant');
-    } catch (error) {
-      console.log(`Error fetching tenant: ${error}`);
-    }
+  private mountLogin(httpClient: HttpSetup, targetDomElement: HTMLElement) {
+    const basePath = httpClient.basePath.serverBasePath
+      ? httpClient.basePath.serverBasePath
+      : '/';
+    const nextUrl = encodeURIComponent(basePath);
+    const loginURL = `${httpClient.basePath.serverBasePath}/app/login?nextUrl=${nextUrl}`;
 
-    const privateTenant = '__user__';
-    if (tenant === privateTenant) {
-      tenant = 'Private';
-    }
-
-    return tenant;
+    ReactDOM.render(<LoginButton url={loginURL} />, targetDomElement);
+    return () => ReactDOM.unmountComponentAtNode(targetDomElement);
   }
 }
