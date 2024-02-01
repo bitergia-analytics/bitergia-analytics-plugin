@@ -1,8 +1,0 @@
----
-title: Login button for anonymous users
-category: added
-author: Eva Millán <evamillan@bitergia.com>
-issue: null
-notes: >
-  The header now includes a login button in public dashboards,
-  replacing the anonymous user icon.

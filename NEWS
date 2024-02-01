@@ -1,5 +1,14 @@
 # Releases
 
+## bitergia-analytics-plugin 0.16.1 - (2024-02-01)
+
+**New features:**
+
+ * Login button for anonymous users\
+   The header now includes a login button in public dashboards, replacing
+   the anonymous user icon.
+
+
 ## bitergia-analytics-plugin 0.15.0 - (2024-01-02)
 
 **New features:**
