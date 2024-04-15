@@ -14,7 +14,7 @@ jobs:
       filename: ${{ steps.build_zip.outputs.filename }}
     steps:
       - name: Checkout plugin source code
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: bitergia-analytics-plugin
       - name: Get plugin metadata
@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "version=$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ steps.osd_version.outputs.version }}
@@ -38,7 +38,7 @@ jobs:
           echo "node_version=$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
           echo "yarn_version=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")" >> $GITHUB_OUTPUT
       - name: Setup node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # 3.6.0
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # 4.0.1
         with:
           node-version: ${{ steps.versions.outputs.node_version }}
       - name: Setup yarn
@@ -66,7 +66,7 @@ jobs:
           echo "zip_path=$zip_path" >> $GITHUB_OUTPUT
           echo "filename=$filename" >> $GITHUB_OUTPUT
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # 3.1.2
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
         with:
           name: plugin_artifact
           path: ${{ steps.build_zip.outputs.zip_path }}
@@ -84,11 +84,11 @@ jobs:
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
         shell: bash
       - name: Checkout plugin source code
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: plugin
       - name: Download plugin artifact
-        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # 3.0.2
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
         with:
           name: plugin_artifact
           path: plugin/build
