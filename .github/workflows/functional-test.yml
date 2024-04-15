@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout plugin source code
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: bitergia-analytics-plugin
       - name: Get plugin metadata
@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "version=$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # 3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ steps.osd_version.outputs.version }}
@@ -41,7 +41,7 @@ jobs:
           echo "node_version=$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
           echo "yarn_version=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")" >> $GITHUB_OUTPUT
       - name: Setup node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # 3.6.0
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # 4.0.1
         with:
           node-version: ${{ steps.versions.outputs.node_version }}
       - name: Setup yarn
