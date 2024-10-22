@@ -134,6 +134,32 @@ curl -X PUT <OSD URL>/_plugins/_bap/menu \
 }'
 ```
 
+### Create tenant
+
+Creates a tenant, maps roles and imports the default dashboards into the new tenant. 
+
+```
+ POST /api/tenant/<TENANT NAME>
+```
+
+#### Body parameters
+
+- `anonymous`: (optional) create anonymous access role (`true | false`, by default is `false`).
+- `force`: (optional) overwrite roles and tenant (`true | false`, by default is `false`).
+
+##### Sample request
+
+```
+curl -X POST <OSD URL>/api/tenant/new_tenant_name \
+--header 'osd-xsrf: true' \
+--user '<USERNAME>:<PASSWORD>' \
+--header 'Content-Type: application/json' \
+-d '{
+  "anonymous": true,
+  "force": false
+}'
+```
+
 ## Configuration
 
 ### Hide tenant selector
