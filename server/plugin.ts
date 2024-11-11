@@ -15,6 +15,7 @@
  */
 
 import {
+  Plugin,
   PluginInitializerContext,
   CoreSetup,
   CoreStart,
@@ -37,10 +38,11 @@ export class BitergiaAnalyticsPlugin
 
   public setup(core: CoreSetup) {
     this.logger.debug('bitergia_analytics: Setup');
+    const basePath = core.http.basePath;
     const router = core.http.createRouter();
 
     // Register server side APIs
-    defineRoutes(router);
+    defineRoutes(router, basePath);
 
     return {};
   }
