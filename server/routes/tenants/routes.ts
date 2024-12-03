@@ -19,19 +19,20 @@ import StreamZip from 'node-stream-zip';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { schema } from '@osd/config-schema';
 import { ImportResponse } from 'server/types';
-import { IBasePath, IRouter, ILegacyScopedClusterClient } from '../../../../../src/core/server';
+import {
+  IBasePath,
+  IRouter,
+  ILegacyScopedClusterClient,
+} from '../../../../../src/core/server';
 import { getRolesMapping } from './roles_mapping';
 
-export function registerTenantRoutes(
-  router: IRouter,
-  basePath: IBasePath
-) {
+export function registerTenantRoutes(router: IRouter, basePath: IBasePath) {
   router.post(
     {
       path: '/api/_bap/tenant/{tenant}',
       validate: {
         params: schema.object({
-          tenant: schema.string()
+          tenant: schema.string(),
         }),
         body: schema.object({
           anonymous: schema.maybe(schema.boolean()),
@@ -96,7 +97,62 @@ export function registerTenantRoutes(
       } catch (error: any) {
         return response.customError({
           body: { message: error },
-          statusCode: 400
+          statusCode: 400,
+        });
+      }
+    }
+  );
+
+  router.delete(
+    {
+      path: '/api/_bap/tenant/{tenant}',
+      validate: {
+        params: schema.object({
+          tenant: schema.string(),
+        }),
+        body: schema.object({
+          deleteIndices: schema.maybe(schema.boolean()),
+        }),
+      },
+    },
+    async (context, request, response) => {
+      const { tenant } = request.params;
+      const { deleteIndices } = request.body;
+      const config = {
+        headers: {
+          authorization: request.headers.authorization,
+          'osd-xsrf': 'osd-fetch',
+        },
+        adapter: require('axios/lib/adapters/http'),
+      };
+      const baseURL = request.url.origin + basePath.get(request);
+      const openSearchClient = context.core.opensearch.legacy.client;
+      const tenantURL = `${baseURL}/api/v1/configuration/tenants/${tenant}`;
+
+      try {
+        const tenantExists = await exists(tenantURL, config);
+        if (!tenantExists) {
+          throw new Error(`The tenant '${tenant}' does not exist.`);
+        }
+
+        const roles = await getRoles(baseURL, config, tenant);
+        for (const role of roles) {
+          if (role.includes(tenant)) {
+            await deleteRole(baseURL, config, role);
+          }
+        }
+
+        await deleteTenant(baseURL, config, tenant);
+
+        if (deleteIndices) {
+          await deleteTenantIndices(openSearchClient, config.headers, tenant);
+        }
+
+        return response.ok({ body: `Tenant '${tenant}' deleted.` });
+      } catch (error: any) {
+        return response.customError({
+          body: { message: error },
+          statusCode: 400,
         });
       }
     }
@@ -319,5 +375,32 @@ async function deleteRole(
     return response.data?.message;
   } catch (error) {
     return error;
+  }
+}
+
+async function deleteTenantIndices(
+  opensearchClient: ILegacyScopedClusterClient,
+  headers: any,
+  tenant: string
+) {
+  const patterns = [
+    `grimoirelab_${tenant}_*`,
+    `bap_${tenant}_*`,
+    `custom_${tenant}_*`,
+    `c_${tenant}_*`,
+  ];
+
+  for (const pattern of patterns) {
+    await opensearchClient
+      .callAsCurrentUser('indices.delete', {
+        index: pattern,
+        headers,
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        return Promise.reject(new Error(error));
+      });
   }
 }

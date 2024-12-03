@@ -151,7 +151,7 @@ describe('Tenant API', () => {
     const seed = await osdTestServer.request
       .post(root, '/api/v1/configuration/tenants/new_tenant_name')
       .set('Authorization', credentials)
-      .send({'description': ''})
+      .send({ description: '' });
 
     expect(seed.status).toEqual(200);
 
@@ -225,5 +225,93 @@ describe('Tenant API', () => {
       },
       dashboards: expect.anything(),
     });
+  });
+
+  it('Deletes a tenant', async () => {
+    const seed = await osdTestServer.request
+      .post(root, '/api/_bap/tenant/new_tenant_name')
+      .set('Authorization', credentials)
+      .send({});
+
+    expect(seed.status).toEqual(200);
+
+    const indicesBefore = await osdTestServer.request
+      .post(root, '/api/console/proxy?path=%2F*new*&method=GET&dataSourceId=')
+      .set({
+        Authorization: credentials,
+        securitytenant: 'new_tenant_name',
+      });
+
+    const response = await osdTestServer.request
+      .delete(root, '/api/_bap/tenant/new_tenant_name')
+      .set('Authorization', credentials)
+      .send({ deleteIndices: false });
+
+    expect(response.status).toEqual(200);
+    expect(response.text).toBe("Tenant 'new_tenant_name' deleted.");
+
+    // Check that the tenant were deleted
+    const tenantResponse = await osdTestServer.request
+      .get(root, '/api/v1/configuration/tenants/new_tenant_name')
+      .set('Authorization', credentials);
+
+    expect(tenantResponse.status).toEqual(404);
+
+    // Check that the roles were deleted
+    const rolesResponse = await osdTestServer.request
+      .get(root, '/api/v1/configuration/roles')
+      .set('Authorization', credentials);
+    const roles = Object.keys(rolesResponse.body.data);
+
+    expect(roles).not.toContain('bap_new_tenant_name_anonymous_access_role');
+    expect(roles).not.toContain('bap_new_tenant_name_privileged_user_role');
+    expect(roles).not.toContain('bap_new_tenant_name_user_role');
+    expect(roles).not.toContain('bap_new_tenant_name_mordred_role');
+
+    // Check that the indices were not deleted
+    const indicesAfter = await osdTestServer.request
+      .post(root, '/api/console/proxy?path=%2F*new*&method=GET&dataSourceId=')
+      .set({ Authorization: credentials, securitytenant: 'new_tenant_name' });
+
+    expect(indicesAfter.body).toMatchObject(indicesBefore.body);
+  });
+
+  it("Deletes indices if set to 'true'", async () => {
+    const seed = await osdTestServer.request
+      .post(root, '/api/_bap/tenant/new_tenant_name')
+      .set('Authorization', credentials)
+      .send({ force: true });
+
+    expect(seed.status).toEqual(200);
+
+    const response = await osdTestServer.request
+      .delete(root, '/api/_bap/tenant/new_tenant_name')
+      .set('Authorization', credentials)
+      .send({ deleteIndices: true });
+
+    expect(response.status).toEqual(200);
+    expect(response.text).toBe("Tenant 'new_tenant_name' deleted.");
+
+    const indexResponse = await osdTestServer.request
+      .post(
+        root,
+        '/api/console/proxy?path=%2F*newtenantname*&method=GET&dataSourceId='
+      )
+      .set('Authorization', credentials)
+      .set('securitytenant', 'new_tenant_name');
+
+    expect(indexResponse.text).toBe('{}');
+  });
+
+  it('Fails to delete a tenant if it does not exist', async () => {
+    const response = await osdTestServer.request
+      .delete(root, '/api/_bap/tenant/new_tenant_name')
+      .set('Authorization', credentials)
+      .send({});
+
+    expect(response.status).toEqual(400);
+    expect(response.body.message).toBe(
+      "The tenant 'new_tenant_name' does not exist."
+    );
   });
 });
