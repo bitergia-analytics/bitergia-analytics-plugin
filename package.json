@@ -10,13 +10,18 @@
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",
     "plugin_helpers": "node ../../scripts/plugin_helpers",
-    "test:jest": "node ./test/run_jest_tests.js --config ./test/jest.config.js",
-    "test:api": "node ../../scripts/functional_tests --config ./test/api.config.js"
+    "test:jest": "node ./test/run_jest_tests.js --config ./test/jest.config.unit.js",
+    "test:api": "node ../../scripts/functional_tests --config ./test/api.config.js",
+    "test:jest_server": "node ./test/run_jest_tests.js --config ./test/jest.config.server.js",
+    "build:plugins": "node ../../scripts/build_opensearch_dashboards_platform_plugins"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1"
+  },
+  "dependencies": {
+    "node-stream-zip": "^1.15.0"
   }
 }
