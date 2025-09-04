@@ -46,6 +46,11 @@ jobs:
           YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
           echo "Installing yarn @$YARN_VERSION"
           npm i -g yarn@$YARN_VERSION
+      - name: Setup Java
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
       - name: Move plugin to OpenSearch Dashboards folder
         run: |
           mkdir -p OpenSearch-Dashboards/plugins
