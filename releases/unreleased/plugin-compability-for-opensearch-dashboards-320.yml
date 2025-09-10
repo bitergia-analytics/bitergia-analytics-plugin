@@ -1,0 +1,7 @@
+---
+title: Upgrade to OpenSearch Dashboards 3.2.0
+category: added
+author: Jose Javier Merchante <jjmerchante@bitergia.com>
+issue: null
+notes: >
+  Upgrade plugin compatibility with OpenSearch Dashboards 3.2.0.
