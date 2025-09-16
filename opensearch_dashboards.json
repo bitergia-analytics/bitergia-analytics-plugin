@@ -1,6 +1,6 @@
 {
   "id": "bitergiaAnalytics",
-  "version": "0.33.0-rc.4",
+  "version": "0.33.0-rc.5",
   "opensearchDashboardsVersion": "3.2.0",
   "configPath": [
     "bitergia_analytics"
