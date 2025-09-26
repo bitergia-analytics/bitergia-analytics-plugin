@@ -121,7 +121,13 @@ export class BitergiaAnalyticsPlugin {
       if (Array.isArray(menuItems)) {
         core.chrome.navControls.registerExpandedRight({
           order: 2,
-          mount: (target) => this.mountMenu(menuItems, baseURL, target),
+          mount: (target) =>
+            this.mountMenu(
+              menuItems,
+              baseURL,
+              target,
+              core.application.navigateToUrl
+            ),
         });
       } else {
         console.error('Error loading menu: invalid menu data');
@@ -158,12 +164,17 @@ export class BitergiaAnalyticsPlugin {
 
   public stop() {}
 
-  private mountMenu(menu, baseURL, targetDomElement) {
+  private mountMenu(menu, baseURL, targetDomElement, navigateToUrl) {
     // Initialize router history to know which route is active
     const history = createBrowserHistory();
 
     ReactDOM.render(
-      <Menu menu={menu} baseURL={baseURL} history={history} />,
+      <Menu
+        menu={menu}
+        baseURL={baseURL}
+        history={history}
+        navigateToUrl={navigateToUrl}
+      />,
       targetDomElement
     );
     return () => ReactDOM.unmountComponentAtNode(targetDomElement);
