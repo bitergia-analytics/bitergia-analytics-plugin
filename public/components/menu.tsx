@@ -15,13 +15,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { EuiHeaderLinks } from '@elastic/eui';
-import { Link } from './link.tsx';
-import { Dropdown } from './dropdown.tsx';
+import { Link } from './link';
+import { Dropdown } from './dropdown';
 
 export const Menu = (props) => {
   const [menu, setMenu] = useState(props.menu);
-  const { baseURL, history } = props;
-
+  const { baseURL, history, navigateToUrl } = props;
   function setActiveLink() {
     let updated = menu;
 
@@ -37,7 +36,7 @@ export const Menu = (props) => {
           });
         }
         return Object.assign(dashboard, {
-          isActive: dashboard.dashboards.some(
+          isActive: dashboard.dashboards?.some(
             (d) => currentDashboard === d.dashboard_id
           ),
         });
@@ -57,8 +56,8 @@ export const Menu = (props) => {
 
     // Add class to parent container
     const menuBar = document.querySelector('.bitergia-menu');
-    const parent = menuBar.closest('.euiHeaderSectionItem').parentElement;
-    parent.classList.add('bitergia-menu-parent');
+    const parent = menuBar?.closest('.euiHeaderSectionItem')?.parentElement;
+    parent?.classList.add('bitergia-menu-parent');
   }, []);
 
   useEffect(() => {
@@ -69,9 +68,14 @@ export const Menu = (props) => {
 
   return (
     <EuiHeaderLinks gutterSize="xs" className="bitergia-menu">
-      {menu.map((link, index) =>
+      {menu.map((link, index: number) =>
         link.type === 'entry' ? (
-          <Link item={link} baseURL={baseURL} key={index} />
+          <Link
+            item={link}
+            baseURL={baseURL}
+            key={index}
+            navigateToUrl={navigateToUrl}
+          />
         ) : (
           <Dropdown item={link} baseURL={baseURL} key={index} />
         )
