@@ -16,12 +16,25 @@
 import React from 'react';
 import { EuiHeaderLink } from '@elastic/eui';
 
-export const Link = ({ item, baseURL }) => {
+export const Link = ({ item, baseURL, navigateToUrl }) => {
   const url = item.dashboard_id?.includes('http')
     ? item.dashboard_id
     : `${baseURL}#/view/${item.dashboard_id}`;
+
+  const isLeftClickEvent = (event: React.MouseEvent) => {
+    return event.button === 0;
+  };
+
+  const navigateToLink = (event: React.MouseEvent) => {
+    if (isLeftClickEvent(event)) {
+      event.preventDefault();
+      navigateToUrl(url);
+    }
+    return;
+  };
+
   return (
-    <EuiHeaderLink href={url} isActive={item.isActive}>
+    <EuiHeaderLink href={url} isActive={item.isActive} onClick={navigateToLink}>
       {item.name}
     </EuiHeaderLink>
   );
