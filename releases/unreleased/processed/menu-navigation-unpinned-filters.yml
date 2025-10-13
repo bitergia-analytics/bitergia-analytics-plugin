@@ -1,8 +1,0 @@
----
-title: Menu navigation unpinned filters
-category: fixed
-author: Eva Millán <evamillan@bitergia.com>
-issue: null
-notes: >
- The menu links didn't keep the pinned filters when navigating
- from some URLs.

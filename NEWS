@@ -1,5 +1,14 @@
 # Releases
 
+## bitergia-analytics-plugin 0.34.0 - (2025-10-13)
+
+**Bug fixes:**
+
+ * Menu navigation unpinned filters\
+   The menu links didn't keep the pinned filters when navigating from
+   some URLs.
+
+
 ## bitergia-analytics-plugin 0.33.0 - (2025-09-24)
 
 **New features:**
