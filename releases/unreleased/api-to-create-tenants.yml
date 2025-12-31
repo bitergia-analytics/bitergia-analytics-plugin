@@ -1,0 +1,15 @@
+---
+title: API to create tenants
+category: added
+author: Eva Millán <evamillan@bitergia.com>
+issue: null
+notes: >
+  The `/api/create_tenant` endpoint creates a tenant with
+  the given name, along with its roles and dashboards.
+
+  Body parameters for the POST request:
+  - `tenant`: name of the tenant to be created.
+  - `anonymous`: (optional) create anonymous access role
+    (`true | false`, by default is `false`).
+  - `force`: (optional) overwrite roles and tenant
+    (`true | false`, by default is `false`).

@@ -17,3 +17,31 @@
 export interface BitergiaAnalyticsPluginSetup {}
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BitergiaAnalyticsPluginStart {}
+
+interface RoleIndexPermission {
+  index_patterns: string[];
+  allowed_actions: string[];
+  dls?: string;
+  fls?: string[];
+  masked_fields?: string[];
+}
+
+interface RoleTenantPermission {
+  tenant_patterns: string[];
+  allowed_actions: string[];
+}
+
+export interface RoleMapping {
+  [key: string]: {
+    cluster_permissions: string[];
+    index_permissions: RoleIndexPermission[];
+    tenant_permissions?: RoleTenantPermission[];
+  };
+}
+
+export interface ImportResponse {
+  [key: string]: {
+    success: boolean;
+    count: number;
+  };
+}
