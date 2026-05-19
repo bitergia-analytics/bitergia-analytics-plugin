@@ -1,0 +1,8 @@
+module.exports = {
+  extends: ["@elastic/eslint-config-kibana"],
+  rules: {
+    "@osd/eslint/require-license-header": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-console": "off"
+  }
+}

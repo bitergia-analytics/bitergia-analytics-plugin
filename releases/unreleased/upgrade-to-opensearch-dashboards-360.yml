@@ -1,0 +1,7 @@
+---
+title: Upgrade to OpenSearch Dashboards 3.6.0
+category: added
+author: Eva Millán <evamillan@bitergia.com>
+issue: null
+notes: >
+  Upgrade plugin compatibility with OpenSearch Dashboards 3.6.0
