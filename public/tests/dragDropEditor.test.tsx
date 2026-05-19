@@ -23,6 +23,7 @@ describe('<DragDropEditor />', () => {
   const value = [{ name: 'Overview', dashboard_id: 'Overview', type: 'entry' }];
 
   it('Renders the component', async () => {
+    let component;
     await act(async () => {
       const { container } = render(
         <DragDropEditor
@@ -31,9 +32,9 @@ describe('<DragDropEditor />', () => {
           renderToast={jest.fn()}
         />
       );
-
-      expect(container).toMatchSnapshot();
+      component = container;
     });
+    expect(component).toMatchSnapshot();
   });
 
   it('Removes an item', async () => {

@@ -35,12 +35,10 @@ describe('<FormModal />', () => {
           http={coreServicesMock.http}
         />
       );
-
-      // Wait for state change and component render
-      await waitFor(() => {
-        expect(document.querySelector('.euiModal')).toBeVisible();
-        expect(document.querySelector('.euiModal')).toMatchSnapshot();
-      });
+    });
+    await waitFor(() => {
+      expect(document.querySelector('.euiModal')).toBeVisible();
+      expect(document.querySelector('.euiModal')).toMatchSnapshot();
     });
   });
 
@@ -57,10 +55,9 @@ describe('<FormModal />', () => {
           saveItem={saveItem}
         />
       );
-
-      await waitFor(() => {
-        expect(document.querySelector('.euiModal')).toBeVisible();
-      });
+    });
+    await waitFor(() => {
+      expect(document.querySelector('.euiModal')).toBeVisible();
     });
 
     // Fill in dashboard ID field
@@ -88,10 +85,9 @@ describe('<FormModal />', () => {
           saveItem={saveItem}
         />
       );
-
-      await waitFor(() => {
-        expect(document.querySelector('.euiModal')).toBeVisible();
-      });
+    });
+    await waitFor(() => {
+      expect(document.querySelector('.euiModal')).toBeVisible();
     });
 
     fireEvent.click(screen.getByText('Save'));
