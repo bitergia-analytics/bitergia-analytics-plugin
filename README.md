@@ -134,6 +134,56 @@ curl -X PUT <OSD URL>/_plugins/_bap/menu \
 }'
 ```
 
+### Create tenant
+
+Creates a tenant, maps roles and imports the default dashboards into the new tenant. 
+
+```
+ POST /api/_bap/tenant/<TENANT NAME>
+```
+
+#### Body parameters
+
+- `anonymous`: (optional) create anonymous access role (`true | false`, by default is `false`).
+- `force`: (optional) overwrite roles and tenant (`true | false`, by default is `false`).
+
+##### Sample request
+
+```
+curl -X POST <OSD URL>/api/_bap/tenant/<TENANT NAME> \
+--header 'osd-xsrf: true' \
+--user '<USERNAME>:<PASSWORD>' \
+--header 'Content-Type: application/json' \
+-d '{
+  "anonymous": true,
+  "force": false
+}'
+```
+
+### Delete tenant
+
+Deletes a tenant and all of its associated roles and indices. 
+
+```
+ DELETE /api/_bap/tenant/<TENANT NAME>
+```
+
+#### Body parameters
+
+- `deleteIndices`: (optional) also delete the tenant indices (`true | false`, by default is `false`).
+
+##### Sample request
+
+```
+curl -X DELETE <OSD URL>/api/_bap/tenant/<TENANT NAME> \
+--header 'osd-xsrf: true' \
+--user '<USERNAME>:<PASSWORD>' \
+--header 'Content-Type: application/json' \
+-d '{
+  "deleteIndices": false
+}'
+```
+
 ## Configuration
 
 ### Hide tenant selector

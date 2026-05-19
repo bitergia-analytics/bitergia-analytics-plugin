@@ -16,9 +16,11 @@
 
 import { registerMenuRoutes } from './menu';
 import { registerSearchRoutes } from './search';
-import { IRouter } from '../../../../src/core/server';
+import { registerTenantRoutes } from './tenants/routes';
+import { IRouter, IBasePath } from '../../../../src/core/server';
 
-export function defineRoutes(router: IRouter) {
+export function defineRoutes(router: IRouter, basePath: IBasePath) {
   registerMenuRoutes(router);
   registerSearchRoutes(router);
+  registerTenantRoutes(router, basePath);
 }

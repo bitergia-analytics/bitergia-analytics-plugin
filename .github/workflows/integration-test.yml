@@ -1,0 +1,79 @@
+name: integration testing
+
+on: [push, pull_request]
+
+env:
+  CI: 1
+  OPENSEARCH_INITIAL_ADMIN_PASSWORD: myStrongPassword123!
+
+jobs:
+  test:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin source code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          path: bitergia-analytics-plugin
+      - name: Get plugin metadata
+        id: plugin_metadata
+        run: |
+          echo "name=$(node -p "(require('./bitergia-analytics-plugin/package.json').name)")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "(require('./bitergia-analytics-plugin/package.json').version).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
+      - name: Get OpenSearch Dashboards version
+        id: osd_version
+        run: |
+          echo "version=$(node -p "(require('./bitergia-analytics-plugin/opensearch_dashboards.json').opensearchDashboardsVersion).match(/[.0-9]+/)[0]")" >> $GITHUB_OUTPUT
+      - name: Get security plugin version
+        id: security_version
+        run: |
+          osd_version="${{ steps.osd_version.outputs.version }}"
+          echo "version=${osd_version}.0" >> $GITHUB_OUTPUT
+      - name: Checkout OpenSearch Dashboards
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          repository: opensearch-project/OpenSearch-Dashboards
+          ref: ${{ steps.osd_version.outputs.version }}
+          path: OpenSearch-Dashboards
+      - name: Checkout security plugin
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          repository: opensearch-project/security-dashboards-plugin
+          ref: ${{ steps.security_version.outputs.version }}
+          path: security-dashboards-plugin
+      - name: Setup node
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # 4.0.1
+        with:
+          node-version-file: './OpenSearch-Dashboards/.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Setup yarn
+        run: |
+          npm uninstall -g yarn
+          YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
+          echo "Installing yarn @$YARN_VERSION"
+          npm i -g yarn@$YARN_VERSION
+      - name: Move plugins to OpenSearch Dashboards folder
+        run: |
+          mkdir -p OpenSearch-Dashboards/plugins
+          mv bitergia-analytics-plugin OpenSearch-Dashboards/plugins
+          mv security-dashboards-plugin OpenSearch-Dashboards/plugins
+      - name: Bootstrap plugin/opensearch-dashboards
+        run: |
+          cd OpenSearch-Dashboards/plugins/bitergia-analytics-plugin
+          yarn osd bootstrap
+      - name: Start OpenSearch server with security
+        run: |
+          cd ./OpenSearch-Dashboards
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD=${{ env.OPENSEARCH_INITIAL_ADMIN_PASSWORD }} yarn opensearch snapshot --security -E discovery.type=single-node &
+      - name: Sleep while OpenSearch starts
+        uses: peternied/action-sleep@v1
+        with:
+          seconds: 30
+      - name: Check OpenSearch is running
+        run: |
+          curl https://localhost:9200/_cat/plugins -u 'admin:${{ env.OPENSEARCH_INITIAL_ADMIN_PASSWORD }}' -k -v --fail-with-body
+        shell: bash 
+      - name: Run integration tests
+        run: |
+          cd ./OpenSearch-Dashboards/plugins/bitergia-analytics-plugin
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD=${{ env.OPENSEARCH_INITIAL_ADMIN_PASSWORD }} yarn test:jest_server

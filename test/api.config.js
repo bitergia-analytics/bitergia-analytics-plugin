@@ -5,7 +5,7 @@ export default async function ({ readConfigFile }) {
   const functionalConfig = await readConfigFile(require.resolve('../../../test/functional/config'));
 
   return {
-    testFiles: [require.resolve('./api/index.js')],
+    testFiles: [require.resolve('./api/menu.js')],
     services,
     servers: functionalConfig.get('servers'),
     junit: {
