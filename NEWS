@@ -1,5 +1,15 @@
 # Releases
 
+## bitergia-analytics-plugin 0.40.0 - (2026-06-22)
+
+**New features:**
+
+ * Upgrade to OpenSearch Dashboards 3.7.0\
+   Upgrade plugin compatibility with OpenSearch Dashboards 3.7.0
+ * Upgrade to OpenSearch Dashboards 3.6.0\
+   Upgrade plugin compatibility with OpenSearch Dashboards 3.6.0
+
+
   ## bitergia-analytics-plugin 0.39.0 - (2026-05-06)
   
   * No changes on this component. The version is bumped to align it
