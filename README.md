@@ -88,13 +88,13 @@ when you send a payload.
 Returns the menu data in a JSON format.
 
 ```
- GET /_plugins/_bap/menu
+ GET /api/_bap/menu
 ```
 
 ##### Sample request
 
 ```
-curl -X GET <OSD URL>/_plugins/_bap/menu --header 'osd-xsrf: true' --user '<USERNAME>:<PASSWORD>'
+curl -X GET <OSD URL>/api/_bap/menu --header 'osd-xsrf: true' --user '<USERNAME>:<PASSWORD>'
 ```
 
 ### Update menu
@@ -102,13 +102,13 @@ curl -X GET <OSD URL>/_plugins/_bap/menu --header 'osd-xsrf: true' --user '<USER
 Updates the menu data or creates one if it does not exist.
 
 ```
- PUT /_plugins/_bap/menu
+ PUT /api/_bap/menu
 ```
 
 ##### Sample request
 
 ```
-curl -X PUT <OSD URL>/_plugins/_bap/menu \
+curl -X PUT <OSD URL>/api/_bap/menu \
 --header 'osd-xsrf: true' \
 --user '<USERNAME>:<PASSWORD>' \
 --header 'Content-Type: application/json' \
