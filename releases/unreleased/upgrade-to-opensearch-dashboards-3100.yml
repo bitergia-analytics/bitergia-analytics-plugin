@@ -1,0 +1,7 @@
+---
+title: Upgrade to OpenSearch Dashboards 3.10.0
+category: added
+author: Jose Javier Merchante <jose.javier.merchante@eclipse-foundation.org>
+issue: null
+notes: >
+  Upgrade plugin compatibility with OpenSearch Dashboards 3.10.0
