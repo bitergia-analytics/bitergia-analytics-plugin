@@ -26,9 +26,10 @@ import {
 } from './types';
 import { defineRoutes } from './routes';
 
-export class BitergiaAnalyticsPlugin
-  implements
-    Plugin<BitergiaAnalyticsPluginSetup, BitergiaAnalyticsPluginStart> {
+export class BitergiaAnalyticsPlugin implements Plugin<
+  BitergiaAnalyticsPluginSetup,
+  BitergiaAnalyticsPluginStart
+> {
   private readonly logger: Logger;
 
   constructor(initializerContext: PluginInitializerContext) {

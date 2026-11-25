@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "osd": "node ../../scripts/osd",
-    "lint": "node ../../scripts/eslint '**/*.tsx' '**/*.ts' --ignore-path .gitignore",
+    "lint": "node ../../scripts/eslint '**/*.tsx' '**/*.ts'",
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",
     "plugin_helpers": "node ../../scripts/plugin_helpers",
@@ -16,7 +16,7 @@
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
-    "eslint-plugin-no-unsanitized": "^3.0.2",
+    "eslint-plugin-no-unsanitized": "^4.1.5",
     "eslint-plugin-prefer-object-spread": "^1.2.1"
   }
 }
