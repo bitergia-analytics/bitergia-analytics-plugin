@@ -92,7 +92,7 @@ describe('<FormModal />', () => {
 
     fireEvent.click(screen.getByText('Save'));
 
-    expect(saveItem).not.toBeCalled();
+    expect(saveItem).not.toHaveBeenCalled();
     expect(
       screen.getByText('Please address the highlighted errors.')
     ).toBeVisible();

@@ -97,10 +97,8 @@ export class BitergiaAnalyticsPlugin {
 
   public async start(core: CoreStart): BitergiaAnalyticsPluginStart {
     // Get branding from opensearch_dashboards.yml
-    const {
-      branding,
-      hideTenantSelector,
-    } = this.initializerContext.config.get();
+    const { branding, hideTenantSelector } =
+      this.initializerContext.config.get();
     const baseURL = core.application.getUrlForApp('dashboards');
     const tenant = this.accountInfo.user_requested_tenant;
     const isAnonymous = this.accountInfo.user_name === ANONYMOUS_USER;

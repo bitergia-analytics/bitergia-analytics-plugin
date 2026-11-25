@@ -1,7 +1,0 @@
-module.exports = {
-  rules: {
-    "@osd/eslint/require-license-header": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "no-console": "off"
-  }
-}

@@ -52,11 +52,13 @@ const menuSchema = schema.object({
 const customErrorMessage = (error: any) => {
   const errors = [
     {
-      error: /\[(.*?)\.(\w*)]: expected at least one defined value but got \[undefined\]/,
+      error:
+        /\[(.*?)\.(\w*)]: expected at least one defined value but got \[undefined\]/,
       message: `[$1] missing field "$2"`,
     },
     {
-      error: /\[(.*?)\.(\w*)]: expected value of type \[\w*\] but got \[undefined\]/,
+      error:
+        /\[(.*?)\.(\w*)]: expected value of type \[\w*\] but got \[undefined\]/,
       message: `[$1] missing field "$2"`,
     },
     {

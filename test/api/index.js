@@ -103,7 +103,7 @@ export default function ({ getService }) {
         .expect(400);
 
       expect(response.body.message).to.contain(
-        '[menu.0.type]: types that failed validation'
+        '[menu.0.type]: SchemaTypeError'
       );
     });
 

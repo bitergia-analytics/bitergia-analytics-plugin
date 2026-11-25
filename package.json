@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "osd": "node ../../scripts/osd",
-    "lint": "node ../../scripts/eslint '**/*.tsx' '**/*.ts' --ignore-path .gitignore",
+    "lint": "node ../../scripts/eslint '**/*.tsx' '**/*.ts'",
     "start": "yarn plugin_helpers start",
     "build": "yarn plugin_helpers build",
     "plugin_helpers": "node ../../scripts/plugin_helpers",
